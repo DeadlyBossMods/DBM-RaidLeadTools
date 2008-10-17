@@ -29,7 +29,7 @@ local default_settings = {
 	enabled = true,			-- BidBot ein/aus
 	chatchannel = "GUILD",		-- Ausgabe channel
 	minGebot = 10,			-- Mindest Gebot
-	duration = 15,			-- Laufzeit einer auction
+	duration = 30,			-- Laufzeit einer auction
 	output = 4,			-- max. Menge der ausgegebenen Gebote
 	bidtyp_open = false,		-- post each Bid in the Raidchan
 	bidtyp_payall = false,		-- pay the price you bid
@@ -391,7 +391,7 @@ do
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon
-			settings = DBM_DKP_System_Settings
+			settings = DBM_BidBot_Settings
 			addDefaultOptions(settings, default_settings)
 
 			RegisterEvents(
