@@ -394,7 +394,7 @@ do
 		end
 	end)
 	mainframe:SetScript("OnUpdate", function(self, e)	
-		if not settings.time_event or settings.time_to_count < 5 then return end
+		if start_time == 0 or not settings.time_event or settings.time_to_count < 5 then return end
 		timespend = timespend + e
 		if timespend/60 >= settings.time_to_count then
 			DBM:AddMsg(L.Local_TimeReached)
