@@ -17,10 +17,29 @@ L.Local_CantRemove	= "Sorry, can't add player."
 L.Current_StandbyTime	= "StandbyTimes from %s:"
 L.DateTimeFormat	= "%c"
 
+L.History_OnJoin	= "%s joins StandBy at %s"
+L.History_OnLeave	= "%s leaves StandBy at %s after %s min"
+L.SB_History_Saved	= "The Standbylist where saved as %s"
+L.SB_History_NotSaved	= "No player where Standby, no History where saved"
+
+
 -- GUI
 L.TabCategory_Standby	= "StandbyBot"
 L.AreaGeneral		= "Gernal StandbyBot Settings"
 L.Enable		= "Enable StandbyBot (!sb)"
 L.AreaStandbyHistory	= "Standby History"
 L.NoHistoryAvailable	= "Sorry, no saved Raids with Standby Players"
+
+L.SB_Documentation	= [[This Standby module allows a Raidleader to manage players who currently can't raid because of a full raid or something like this. All listed commands are for Guildchat use. 
+!sb	       - shows a list of standby players
+!sb times      - shows the current standby times (how long a player is standby)
+!sb add <nick> - add a player to standby
+!sb del <nick> - remove a player from stanbdy
+!sb save       - save the current state to the history and remove all player from SB
+!sb reset      - clears all standby informations (just a failsave function)
+
+Players who want to get standby have to whisper '!sb' to the Player with the Standby response from GuildChat commands. A confirmation will be send to the player. Otherwise to leave the standby they have to whisper '!sb off'.
+]]
+
+
 

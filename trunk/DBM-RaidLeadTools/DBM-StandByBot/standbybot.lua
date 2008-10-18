@@ -28,10 +28,10 @@ local mainframe = CreateFrame("frame", "DBM_StandyByBot", UIParent)
 
 local default_settings = {
 	enabled = true,
-	sb_users = {},
-	sb_times = {},
-	history = {},
-	log = {}
+	sb_users = {},		-- currently standby
+	sb_times = {},		-- times since last reset
+	history = {},		-- save history on raidleave
+	log = {}		-- bla joins at xx   bla leaves at xx
 }
 
 DBM_Standby_Settings = {}
@@ -40,14 +40,22 @@ local settings = default_settings
 local L = DBM_StandbyBot_Translations
 local sbbot_clients = {}
 
+local SaveTimeHistory
+
 do 
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 50, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 150, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
+
+			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontNormal)
+			ptext:ClearAllPoints()
+			ptext:SetPoint('TOPLEFT', panel, "TOPLEFT", 20, -50)
+			ptext:SetPoint('BOTTOMRIGHT', enabled, "BOTTOMRIGHT", -20, 10)
+			
 		end
 		do	
 			local area = panel:CreateArea(L.AreaStandbyHistory, nil, 260, true)
@@ -73,6 +81,39 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
 end
 
+local function setStandby(name, nowsb)
+	-- set player StandBy
+	if nowsb then
+		if settings.sb_users[name] then return false end -- allready SB
+		table.insert(settings.log, L.History_OnJoin:format(name, date("%c")))
+		settings.sb_users[name] = time()
+		return true
+
+	else -- remove from StandBy
+		if not settings.sb_users[name] then return false end
+
+		local sbtime = (time() - settings.sb_users[name]) / 60 	-- time in minutes
+		table.insert(settings.log, L.History_OnLeave:format(name, date("%c"), sbtimes))
+		
+		if not settings.sb_times[name] then settings.sb_times[name] = 0 end
+		settings.sb_times[name] = settings.sb_times[name] + sbtime
+
+		settings.sb_users[name] = nil
+		return settings.sb_times[name]
+	end
+end
+
+-- Function to update (save) all times to prevent problems from disconnects / stuff like this!
+-- also required for !sb times to show users their SB Time
+local function UpdateTimes()
+	if #settings.sb_users > 0 then
+		for name, starttime in pairs(settings.sb_users) do
+			settings.sb_times[name] = settings.sb_times[name] + ((time() - starttime) / 60)
+			settings.sb_users[name] = time()
+		end
+	end
+end
+
 
 local function amIactive()
 	for k,v in pairs(sbbot_clients) do
@@ -94,10 +135,7 @@ local function AddStandbyMember(name, quiet)
 			DBM:AddMsg( L.Local_AddedPlayer:format(name) )
 			SendChatMessage("<DBM> "..L.AddedSBUser, "WHISPER", nil, name)
 		end
-		settings.sb_users[name] = time()
-		if settings.sb_times[name] == nil then
-			settings.sb_times[name] = 0		-- user is now firsttime SB (0 Seconds)
-		end
+		setStandby(name, true)
 	else
 		-- member allready on the list
 		if not quiet then 
@@ -118,14 +156,17 @@ local function RemoveStandbyMember(name, quiet)
 		return false
 	else
 		-- remove user
+		local sbtime = setStandby(name, false)
+		if not sbtime then 
+			DBM:AddMsg( "ERROR while removing player !!! " ) 
+		end
+
 		if not quiet then
 			DBM:AddMsg( L.Local_RemovedPlayer:format(name) )
 		end
-		settings.sb_times[name] = settings.sb_times[name] + (time() - settings.sb_users[name])
-		settings.sb_users[name] = nil
 
-		local hours = math.floor(settings.sb_times[name]/60/60)
-		local minutes = math.floor((settings.sb_times[name]-(hours*60*60))/60)
+		local hours = math.floor(sbtime/60)
+		local minutes = math.floor((sbtime-(hours*60))/60)
 
 		if not quiet then
 			SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours, minutes), "WHISPER", nil, name)
@@ -135,29 +176,22 @@ local function RemoveStandbyMember(name, quiet)
 	end
 end
 
-local function UpdateTimes()
-	if #settings.sb_users > 0 then
-		for name, starttime in pairs(settings.sb_users) do
-			settings.sb_times[name] = settings.sb_times[name] + (time() - starttime)
-			settings.sb_users[name] = time()
-		end
-	end
-end
-
-local function SaveTimeHistory()
-	if #settings.sb_times > 0 then
-		local key = date(L.DateTimeFormat)
-		for name,v in pairs(settings.sb_users) do
-			settings.sb_times[name] = settings.sb_times[name] + (time() - v)
-			settings.sb_users[name] = nil
-		end
-		settings.history[key] = settings.sb_times
-		settings.sb_times = {}
-	end
-end
-DBM:RegisterCallback("raidLeave", function(name) if name == UnitName("player") then SaveTimeHistory() end end)
-
 do
+	function SaveTimeHistory()
+		if #settings.sb_times > 0 then
+			local key = date(L.DateTimeFormat)
+			UpdateTimes()
+			table.wipe(settings.sb_users)
+			settings.history[key] = settings.sb_times
+			settings.sb_times = {}
+
+			DBM:AddMsg( L.SB_History_Saved:format(key) )
+		else
+			DBM:AddMsg( L.SB_History_NotSaved )
+		end
+	end
+	DBM:RegisterCallback("raidLeave", function(name) if DBM:IsInRaid() and name == UnitName("player") then SaveTimeHistory() end end)
+
 	local function send_leave_whisper(name)
 		if not amIactive() then return end
 		SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
@@ -254,8 +288,8 @@ do
 					UpdateTimes()
 					for k,v in pairs(settings.sb_times) do
 						count = count + 1 
-						local hours = math.floor(settings.sb_times[k]/60/60)
-						local minutes = math.floor((settings.sb_times[k]-(hours*60*60))/60)
+						local hours = math.floor(settings.sb_times[k]/60)
+						local minutes = math.floor((settings.sb_times[k]-(hours*60))/60)
 						users = users..k.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes).."), "
 
 						if count >= 3 then
@@ -280,6 +314,12 @@ do
 				if not RemoveStandbyMember(name) then
 					DBM:AddMsg(L.Local_CantRemove)
 				end
+
+			elseif msg == "!sb reset" and author == UnitName("player") then
+				table.wipe(settings.sb_times)
+				table.wipe(settings.sb_users)
+
+			elseif msg == "!sb save" and author == UnitName("player") then
 			end
 
 		end
