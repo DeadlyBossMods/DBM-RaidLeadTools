@@ -51,9 +51,10 @@ do
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
 
+
 			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontNormal)
 			ptext:ClearAllPoints()
-			ptext:SetPoint('TOPLEFT', panel, "TOPLEFT", 20, -50)
+			ptext:SetPoint('TOPLEFT', area.frame, "TOPLEFT", 20, -50)
 			ptext:SetPoint('BOTTOMRIGHT', enabled, "BOTTOMRIGHT", -20, 10)
 			
 		end
@@ -93,7 +94,7 @@ local function setStandby(name, nowsb)
 		if not settings.sb_users[name] then return false end
 
 		local sbtime = (time() - settings.sb_users[name]) / 60 	-- time in minutes
-		table.insert(settings.log, L.History_OnLeave:format(name, date("%c"), sbtimes))
+		table.insert(settings.log, L.History_OnLeave:format(name, date("%c"), sbtime))
 		
 		if not settings.sb_times[name] then settings.sb_times[name] = 0 end
 		settings.sb_times[name] = settings.sb_times[name] + sbtime
@@ -126,6 +127,7 @@ local function amIactive()
 end
 
 local function AddStandbyMember(name, quiet)
+	if not settings.enabled then return end
 	if not name then return false end
 	if not amIactive() then quite = true end
 
@@ -145,6 +147,7 @@ local function AddStandbyMember(name, quiet)
 end
 
 local function RemoveStandbyMember(name, quiet)
+	if not settings.enabled then return end
 	if not name then return false end
 	if not amIactive() then quite = true end
 
@@ -193,6 +196,7 @@ do
 	DBM:RegisterCallback("raidLeave", function(name) if DBM:IsInRaid() and name == UnitName("player") then SaveTimeHistory() end end)
 
 	local function send_leave_whisper(name)
+		if not settings.enabled then return end
 		if not amIactive() then return end
 		SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
 	end
