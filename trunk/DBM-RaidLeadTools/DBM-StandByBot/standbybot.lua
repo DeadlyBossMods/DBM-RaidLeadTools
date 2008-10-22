@@ -40,22 +40,24 @@ local settings = default_settings
 local L = DBM_StandbyBot_Translations
 local sbbot_clients = {}
 
+local revision = ("$Revision$"):sub(12, -3)
+
 local SaveTimeHistory
+local amIactive
 
 do 
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 150, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 200, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
 
-
-			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontNormal)
+			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
 			ptext:ClearAllPoints()
-			ptext:SetPoint('TOPLEFT', area.frame, "TOPLEFT", 20, -50)
-			ptext:SetPoint('BOTTOMRIGHT', enabled, "BOTTOMRIGHT", -20, 10)
+			ptext:SetPoint('TOPLEFT', area.frame, "TOPLEFT", 20, -40)
+			ptext:SetPoint('BOTTOMRIGHT', area.frame, "BOTTOMRIGHT", -20, 10)
 			
 		end
 		do	
@@ -65,15 +67,9 @@ do
 			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
 
 			history:SetScript("OnShow", function(self)
-				self:SetMaxLines(#settings.history+1)
-				for k,v in pairs(settings.history) do
-					local mytext = mytext.."["..k.."]: "
-					for name,sbtime in pairs(v) do
-						local hours = math.floor(sbtime/60/60)
-						local minutes = math.floor((sbtime-(hours*60*60))/60)
-						mytext = mytext..name.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes)..") "
-					end
-					self:AddMessage(mytext)
+				self:SetMaxLines(#settings.log+1)
+				for k,v in pairs(settings.log) do
+					self:AddMessage(v)
 				end
 			end)
 		end
@@ -86,18 +82,26 @@ local function setStandby(name, nowsb)
 	-- set player StandBy
 	if nowsb then
 		if settings.sb_users[name] then return false end -- allready SB
-		table.insert(settings.log, L.History_OnJoin:format(name, date("%c")))
+		table.insert(settings.log, L.History_OnJoin:format(date("%c"), name))
 		settings.sb_users[name] = time()
+
+		if amIactive() then 
+			SendAddonMessage("DBM_SbBot", "!sb add "..name, "RAID")
+		end
 		return true
 
 	else -- remove from StandBy
 		if not settings.sb_users[name] then return false end
 
-		local sbtime = (time() - settings.sb_users[name]) / 60 	-- time in minutes
-		table.insert(settings.log, L.History_OnLeave:format(name, date("%c"), sbtime))
+		local sbtime = math.floor((time() - settings.sb_users[name]) / 60) 	-- time in minutes
+		table.insert(settings.log, L.History_OnLeave:format(date("%c"), name, sbtime))
 		
 		if not settings.sb_times[name] then settings.sb_times[name] = 0 end
 		settings.sb_times[name] = settings.sb_times[name] + sbtime
+
+		if amIactive() then
+			SendAddonMessage("DBM_SbBot", "!sb del "..name, "RAID")
+		end
 
 		settings.sb_users[name] = nil
 		return settings.sb_times[name]
@@ -115,8 +119,8 @@ local function UpdateTimes()
 	end
 end
 
-
-local function amIactive()
+function amIactive()
+	if not DBM:IsInRaid() then return false end
 	for k,v in pairs(sbbot_clients) do
 		if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < UnitName("player") then
 			-- we don't need to start, the player with hightest name is used
@@ -181,9 +185,9 @@ end
 
 do
 	function SaveTimeHistory()
+		UpdateTimes()
 		if #settings.sb_times > 0 then
 			local key = date(L.DateTimeFormat)
-			UpdateTimes()
 			table.wipe(settings.sb_users)
 			settings.history[key] = settings.sb_times
 			settings.sb_times = {}
@@ -284,10 +288,10 @@ do
 				if output == "" then output = "none" end
 				SendChatMessage("<DBM> "..L.PostStandybyList.." "..output, "WHISPER", nil, author)
 
-			elseif msg == "!sb time" then
+			elseif msg == "!sb time" or msg == "!sb times" then
 				if #settings.sb_times then
 					SendChatMessage(L.Current_StandbyTime:format(date(L.DateTimeFormat)), "GUILD")
-					local users = ""
+					local users
 					local count = 0
 					UpdateTimes()
 					for k,v in pairs(settings.sb_times) do
@@ -324,6 +328,7 @@ do
 				table.wipe(settings.sb_users)
 
 			elseif msg == "!sb save" and author == UnitName("player") then
+				SaveTimeHistory()
 			end
 
 		end
@@ -331,6 +336,12 @@ do
 	
 	-- lets register the Events
 	RegisterEvents("ADDON_LOADED")
+
+	DBM:RegisterCallback("raidJoin", function(name) 
+		if name == UnitName("player") then 
+			SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+		end 
+	end)
 end
 
 
