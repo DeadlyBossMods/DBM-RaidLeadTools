@@ -52,7 +52,17 @@ do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 200, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
-			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
+			enabled:SetScript("OnClick", function(self) 
+				if DBM:IsInRaid() then
+					if settings.enabled then
+						SendAddonMessage("DBM_SbBot", "bye!", "RAID")
+					else
+						SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+					end
+				end
+				settings.enabled = not not self:GetChecked() 
+				
+			end)
 
 			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
 			ptext:ClearAllPoints()
@@ -76,6 +86,27 @@ do
 		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
+end
+
+local function table_empty(table)
+	for _,v in pairs(table) do
+		return false
+	end
+	return true 
+end
+
+local function table_count(table)
+	local count = 0
+	for _ in pairs(table) do
+		count = count + 1
+	end
+	return count
+end
+
+local function raidtime(minutes)
+	local hours = math.floor(minutes/60)
+	local minutes = (v-(hours*60))
+	return minutes, hours
 end
 
 local function setStandby(name, nowsb)
@@ -111,11 +142,11 @@ end
 -- Function to update (save) all times to prevent problems from disconnects / stuff like this!
 -- also required for !sb times to show users their SB Time
 local function UpdateTimes()
-	if #settings.sb_users > 0 then
-		for name, starttime in pairs(settings.sb_users) do
-			settings.sb_times[name] = settings.sb_times[name] + ((time() - starttime) / 60)
-			settings.sb_users[name] = time()
-		end
+	for name, starttime in pairs(settings.sb_users) do
+		settings.sb_times[name] = (settings.sb_times[name] or 0) + ((time() - starttime) / 60)
+		-- math.round
+		settings.sb_times[name] = math.floor(0.5 + settings.sb_times[name])
+		settings.sb_users[name] = time()
 	end
 end
 
@@ -156,29 +187,16 @@ local function RemoveStandbyMember(name, quiet)
 	if not amIactive() then quite = true end
 
 	if settings.sb_users[name] == nil then
-		-- user issn't standby
-		if not quiet then
-			--SendChatMessage("<DBM> "..L.NotStandby, "WHISPER", nil, name)
-		end
 		return false
 	else
 		-- remove user
 		local sbtime = setStandby(name, false)
-		if not sbtime then 
-			DBM:AddMsg( "ERROR while removing player !!! " ) 
-		end
-
 		if not quiet then
 			DBM:AddMsg( L.Local_RemovedPlayer:format(name) )
-		end
 
-		local hours = math.floor(sbtime/60)
-		local minutes = math.floor((sbtime-(hours*60))/60)
-
-		if not quiet then
+			local minutes, hours = raidtime(sbtime)
 			SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours, minutes), "WHISPER", nil, name)
 		end
-
 		return true
 	end
 end
@@ -186,13 +204,15 @@ end
 do
 	function SaveTimeHistory()
 		UpdateTimes()
-		if #settings.sb_times > 0 then
-			local key = date(L.DateTimeFormat)
+		if not table_empty(settings.sb_times) then
 			table.wipe(settings.sb_users)
-			settings.history[key] = settings.sb_times
+			table.insert(settings.history, {
+				["date"] = date(L.DateTimeFormat),
+				["member"] = settings.sb_times
+			})
 			settings.sb_times = {}
 
-			DBM:AddMsg( L.SB_History_Saved:format(key) )
+			DBM:AddMsg( L.SB_History_Saved:format(#settings.history) )
 		else
 			DBM:AddMsg( L.SB_History_NotSaved )
 		end
@@ -256,12 +276,16 @@ do
 		elseif settings.enabled and event == "CHAT_MSG_ADDON" then
 			local prefix, msg, channel, sender = select(1, ...)
 			if prefix ~= "DBM_SbBot" then return end
+			if sender == UnitName("player") then return end
 
 			if msg == "Hi!" then
 				sbbot_clients[sender] = true
 				if channel == "RAID" then
 					SendAddonMessage("DBM_SbBot", "Hi!", "WHISPER", sender)				
 				end
+
+			elseif msg == "bye!" then
+				sbbot_clients[sender] = nil
 
 			elseif msg:find("^!sb add") then
 				local name = strtrim(msg:sub(8))
@@ -289,15 +313,45 @@ do
 				SendChatMessage("<DBM> "..L.PostStandybyList.." "..output, "WHISPER", nil, author)
 
 			elseif msg == "!sb time" or msg == "!sb times" then
-				if #settings.sb_times then
+				UpdateTimes()
+				if not table_empty(settings.sb_times) then
 					SendChatMessage(L.Current_StandbyTime:format(date(L.DateTimeFormat)), "GUILD")
-					local users
+					local users = ""
 					local count = 0
-					UpdateTimes()
+					
 					for k,v in pairs(settings.sb_times) do
 						count = count + 1 
-						local hours = math.floor(settings.sb_times[k]/60)
-						local minutes = math.floor((settings.sb_times[k]-(hours*60))/60)
+						local minutes, hours = raidtime(v)
+						users = users..k.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes).."), "
+
+						if count >= 3 then
+							count = 0
+							SendChatMessage(users:sub(0, -2), "GUILD")
+							users = ""
+						end
+					end
+					if count > 0 then
+						SendChatMessage(users:sub(0, -2), "GUILD")
+					end
+				end
+			elseif msg == "!sb history" then
+				for i=#settings.history, 1, -1 do
+					local raid = settings.history[i]
+					SendChatMessage(L.SB_History_Line:format(i, raid.date, table_count(raid.member)), "GUILD")
+					if #settings.history - i > 3 then return end
+				end
+
+			elseif msg:find("^!sb history") then
+				local id = tonumber(strtrim(msg:sub(11)))
+				if id > 0 and settings.history[id] then
+					local raid = settings.history[id]
+					SendChatMessage(L.Current_StandbyTime:format(raid.date), "GUILD")
+					local users = ""
+					local count = 0
+					
+					for k,v in pairs(raid.member) do
+						count = count + 1 
+						local minutes, hours = raidtime(v)
 						users = users..k.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes).."), "
 
 						if count >= 3 then
@@ -329,6 +383,11 @@ do
 
 			elseif msg == "!sb save" and author == UnitName("player") then
 				SaveTimeHistory()
+
+			elseif msg == "!sb clients" then -- debuging 
+				for k,v in pairs(sbbot_clients) do
+					DBM:AddMsg(k)
+				end
 			end
 
 		end
@@ -337,14 +396,13 @@ do
 	-- lets register the Events
 	RegisterEvents("ADDON_LOADED")
 
-	DBM:RegisterCallback("raidJoin", function(name) 
-		if name == UnitName("player") then 
-			SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+	DBM:RegisterCallback("raidJoin", function(name)
+		if settings.enabled then
+			if name == UnitName("player") then 
+				SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+			end
 		end 
 	end)
 end
-
-
-
 
 

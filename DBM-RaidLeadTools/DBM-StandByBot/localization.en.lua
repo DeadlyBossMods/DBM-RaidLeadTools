@@ -12,7 +12,7 @@ L.PostStandybyList	= "Currently Standby:"
 
 L.Local_AddedPlayer	= "[SB]: %s is now Standby."
 L.Local_RemovedPlayer	= "[SB]: %s is no longer Standby."
-L.Local_CantRemove	= "Sorry, can't add player."
+L.Local_CantRemove	= "Sorry, can't remove player."
 
 L.Current_StandbyTime	= "StandbyTimes from %s:"
 L.DateTimeFormat	= "%c"
@@ -22,6 +22,7 @@ L.History_OnLeave	= "[%s]: %s leaves SB after %s min"
 L.SB_History_Saved	= "The Standbylist where saved as %s"
 L.SB_History_NotSaved	= "No player where Standby, no History where saved"
 
+L.SB_History_Line	= "[ID=%d] Raid at %s with %d members"
 
 -- GUI
 L.TabCategory_Standby	= "StandbyBot"
