@@ -158,7 +158,7 @@ local function RemoveStandbyMember(name, quiet)
 	if settings.sb_users[name] == nil then
 		-- user issn't standby
 		if not quiet then
-			SendChatMessage("<DBM> "..L.NotStandby, "WHISPER", nil, name)
+			--SendChatMessage("<DBM> "..L.NotStandby, "WHISPER", nil, name)
 		end
 		return false
 	else
