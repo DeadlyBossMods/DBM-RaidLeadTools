@@ -105,7 +105,7 @@ end
 
 local function raidtime(minutes)
 	local hours = math.floor(minutes/60)
-	local minutes = (v-(hours*60))
+	local minutes = (minutes-(hours*60))
 	return minutes, hours
 end
 
@@ -300,10 +300,10 @@ do
 		end
 		
 		if settings.enabled and event:sub(0, 9) == "CHAT_MSG_" and event ~= "CHAT_MSG_WHISPER" and event ~= "CHAT_MSG_ADDON" then
-			if not amIactive() then return end
+			local active = amIactive()
 
 			local msg, author = select(1, ...)
-			if msg == "!sb" then
+			if active and msg == "!sb" then
 				local output = ""
 				for k,v in pairs(settings.sb_users) do
 					output = output..", "..k
@@ -342,7 +342,7 @@ do
 				end
 
 			elseif msg:find("^!sb history") then
-				local id = tonumber(strtrim(msg:sub(11)))
+				local id = tonumber(strtrim(msg:sub(13))) or 0
 				if id > 0 and settings.history[id] then
 					local raid = settings.history[id]
 					SendChatMessage(L.Current_StandbyTime:format(raid.date), "GUILD")
@@ -365,12 +365,12 @@ do
 					end
 				end
 
-			elseif msg:find("^!sb add") then
+			elseif active and msg:find("^!sb add") then
 				local name = strtrim(msg:sub(8))
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				AddStandbyMember(name)
 
-			elseif msg:find("^!sb del") then
+			elseif active and msg:find("^!sb del") then
 				local name = strtrim(msg:sub(8))
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				if not RemoveStandbyMember(name) then
