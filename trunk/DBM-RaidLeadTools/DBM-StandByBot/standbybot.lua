@@ -73,8 +73,10 @@ do
 		do	
 			local area = panel:CreateArea(L.AreaStandbyHistory, nil, 260, true)
 
-			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220)
-			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220, nil, nil, GameFontHighlightSmall)
+			history:ClearAllPoints()
+			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
+			history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
 
 			history:SetScript("OnShow", function(self)
 				self:SetMaxLines(#settings.log+1)
