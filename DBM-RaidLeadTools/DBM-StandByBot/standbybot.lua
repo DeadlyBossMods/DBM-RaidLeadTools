@@ -265,6 +265,7 @@ do
 			local msg, author = select(1, ...)
 			if msg == "!sb" then
 				if DBM:GetRaidUnitId(author) == "none" then
+					author = DBM_Tools:StringCodeFormating( author )
 					AddStandbyMember(author)
 				else
 					SendChatMessage("<DBM> "..L.InRaidGroup, "WHISPER", nil, author)
@@ -288,12 +289,12 @@ do
 				sbbot_clients[sender] = nil
 
 			elseif msg:find("^!sb add") then
-				local name = strtrim(msg:sub(8))
+				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				AddStandbyMember(name, true)
 
 			elseif msg:find("^!sb del") then
-				local name = strtrim(msg:sub(8))
+				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				RemoveStandbyMember(name, true)
 			end
@@ -366,12 +367,12 @@ do
 				end
 
 			elseif active and msg:find("^!sb add") then
-				local name = strtrim(msg:sub(8))
+				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				AddStandbyMember(name)
 
 			elseif active and msg:find("^!sb del") then
-				local name = strtrim(msg:sub(8))
+				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
 				name = name:sub(0,1):upper()..name:sub(2):lower()
 				if not RemoveStandbyMember(name) then
 					DBM:AddMsg(L.Local_CantRemove)
