@@ -101,12 +101,14 @@ do
 		do	
 			local area = panel:CreateArea(L.AreaItemHistory, nil, 260, true)
 
-			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220)
-			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 220, nil, nil, GameFontHighlightSmall)
+			history:ClearAllPoints()
+			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
+			history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
 
 			history:SetScript("OnShow", function(self)
 				if #DBM_BidBot_ItemHistory > 0 then
-					self:SetMaxLines((#DBM_BidBot_ItemHistory*3)+1)
+					self:SetMaxLines((#DBM_BidBot_ItemHistory*4)+1)
 					for k,itembid in pairs(DBM_BidBot_ItemHistory) do
 						if #itembid.bids > 0 then
 							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP ")
