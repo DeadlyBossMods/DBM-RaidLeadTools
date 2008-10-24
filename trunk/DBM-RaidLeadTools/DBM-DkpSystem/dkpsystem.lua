@@ -52,6 +52,7 @@ local settings = default_settings
 
 local L = DBM_DKP_System_Translations
 
+local lastevent = 0
 local timespend = 0
 local start_time = 0
 
@@ -139,7 +140,7 @@ do
 			end)
 		end
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 290, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 300, true)
 
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
@@ -171,7 +172,7 @@ do
 			local bossdescr 	= area:CreateEditBox(L.BossDescription, settings.boss_desc, 250)
 			bossevent:SetScript("OnShow", function(self) self:SetChecked(settings.boss_event) end)
 			bossevent:SetScript("OnClick", function(self) settings.boss_event = not not self:GetChecked() end)
-			bossevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -35)
+			bossevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -40)
 			bosspoints:SetNumeric()
 			bosspoints:SetMaxLetters(5)
 			bosspoints:SetPoint("TOPLEFT", bossevent, "BOTTOMLEFT", 15, -10)
@@ -189,7 +190,7 @@ do
 			local timedescr 	= area:CreateEditBox(L.TimeDescription, settings.time_desc, 250)
 			timeevent:SetScript("OnShow", function(self) self:SetChecked(settings.time_event) end)
 			timeevent:SetScript("OnClick", function(self) settings.time_event = not not self:GetChecked() end)
-			timeevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -95)
+			timeevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -100)
 			timepoints:SetNumeric()
 			timepoints:SetMaxLetters(5)
 			timepoints:SetPoint("TOPLEFT", timeevent, "BOTTOMLEFT", 15, -10)
@@ -210,7 +211,7 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
 end
 
--- EXPORT (event based) for EQDKP - RaidTracker Addon  (thanks to my old guild Intensity@Azshara for this litte syntax info)
+-- EXPORT (event based) for EQDKP - RaidTracker Addon
 function CreateExportString(raid_id, event_id)
 	local raid = settings.history[raid_id or #settings.history]
 	local event = raid.events[event_id or #raid.events]
@@ -302,6 +303,7 @@ function GetRaidList()
 end
 
 function CreateEvent(event)
+	lastevent = time()
 	if type(settings.events) ~= "table" then settings.events = {} end
 	if #settings.events == 0 then
 		if type(settings.items) == "table" and #settings.items > 0 then
@@ -343,6 +345,7 @@ DBM:RegisterCallback("kill", DBM_DKP_BossKill)
 
 
 function RaidStart()
+	lastevent = time()
 	start_time = time()
 	if settings.start_event then
 		CreateEvent({
@@ -372,6 +375,7 @@ function RaidEnd()
 	end
 	table.insert(settings.history, history)
 	DBM:AddMsg(L.Local_RaidSaved)
+	lastevent = 0
 end
 
 function addDefaultOptions(t1, t2)
@@ -393,7 +397,21 @@ do
 			addDefaultOptions(settings, default_settings)
 		end
 	end)
-	mainframe:SetScript("OnUpdate", function(self, e)	
+	mainframe:SetScript("OnUpdate", function(self, e)
+		if lastevent == 0 then return end
+
+		if time() - lastevent > (settings.time_to_count*60) then
+			DBM:AddMsg(L.Local_TimeReached)
+			CreateEvent({
+				event_type = "",
+				zone = GetRealZoneText(),
+				description = settings.time_desc,
+				points = settings.time_points,
+				timestamp = time(),
+				members = GetRaidList()
+			})
+		end
+		--[[
 		if start_time == 0 or not settings.time_event or settings.time_to_count < 5 then return end
 		timespend = timespend + e
 		if timespend/60 >= settings.time_to_count then
@@ -408,6 +426,7 @@ do
 			})
 			timespend = e
 		end
+		--]]
 	end)
 	mainframe:RegisterEvent("ADDON_LOADED")
 end
