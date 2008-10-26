@@ -73,14 +73,14 @@ do
 			local button = area:CreateButton(L.Button_StartDKPTracking, 200, 25)
 			button:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -20)
 			button:SetScript("OnShow", function(self) 
-				if start_time > 0 then
+				if start_time > 0 or #settings.events > 0 then
 					self:SetText(L.Button_StopDKPTracking)
 				else 
 					self:SetText(L.Button_StartDKPTracking)
 				end
 			end)
 			button:SetScript("OnClick", function(self)
-				if start_time > 0 then
+				if start_time > 0 or #settings.events > 0 then
 					DBM:AddMsg(start_time)
 					RaidEnd()
 				else
@@ -123,6 +123,7 @@ do
 				else
 					local event = {
 						event_type = "custom",
+						zone = GetRealZoneText(),
 						description = neweventdescr:GetText(),
 						points = neweventpoints:GetNumber(),
 						timestamp = time()
@@ -207,9 +208,9 @@ do
 			timedescr:SetScript("OnTextChanged", function(self) settings.time_desc = self:GetText() end)
 		end
 		do
-			local area = panel:CreateArea(L.AreaHistory, nil, 150, true)
+			local area = panel:CreateArea(L.AreaHistory, nil, 200, true)
 
-			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 150, nil, nil, GameFontHighlightSmall)
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 150, nil, nil, GameFontNormalSmall)
 			history:ClearAllPoints()
 			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
 			history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
