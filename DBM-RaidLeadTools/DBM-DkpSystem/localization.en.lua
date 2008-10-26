@@ -8,6 +8,9 @@ L.Local_RaidSaved		= "Successfully closed the current Raid"
 
 L.AcceptDKPValue		= "DKP"
 
+L.AreaHistory			= "Event History"
+L.History_Line			= "[%s][%s]: %s (%d)" 		-- [date][zone] Hogger (playercount)
+
 -- GUI
 L.TabCategory_DKPSystem		= "DKP System"
 L.AreaGeneral			= "General DKP System Settings"

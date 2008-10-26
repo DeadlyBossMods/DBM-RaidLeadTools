@@ -206,6 +206,39 @@ do
 			timedescr:SetScript("OnShow", function(self) self:SetText(settings.time_desc) end)
 			timedescr:SetScript("OnTextChanged", function(self) settings.time_desc = self:GetText() end)
 		end
+		do
+			local area = panel:CreateArea(L.AreaHistory, nil, 150, true)
+
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 150, nil, nil, GameFontHighlightSmall)
+			history:ClearAllPoints()
+			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
+			history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
+
+			history:SetScript("OnShow", function(self)
+				if #settings.history > 0 then
+					for i=1, #settings.history, 1 do
+						local raid = settings.history[i]
+						if #raid.events > 0 then
+							self:SetMaxLines(#raid.events+1)
+							for k,event in pairs(raid.events) do
+								local link = "|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h"
+								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, #event.members)  )
+							end
+						end
+					end
+				end
+			end)
+			history:SetScript("OnHyperlinkClick", function(self, link, string, button, ...)
+				local linkType, arg1, history, event = strsplit(":", link)
+				if linkType == "DBM" and arg1 == "showdkp" and history and event then
+					history = tonumber(history)
+					event = tonumber(event)
+					DBM:AddMsg("Opening DKP String for Event: "..event.." from Raid "..history)
+					ShowExportString(history, event) 
+				end
+			end)
+
+		end
 		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
@@ -213,16 +246,19 @@ end
 
 -- EXPORT (event based) for EQDKP - RaidTracker Addon
 function CreateExportString(raid_id, event_id)
-	local raid = settings.history[raid_id or #settings.history]
+	if not raid_id or type(raid_id) ~= "number" then return "raid_id failed", 0, 0 end
+	if not event_id or type(event_id) ~= "number" then return "event_id failed", 0, 0 end
+
+	local raid = settings.history[raid_id or #settings.events]
 	local event = raid.events[event_id or #raid.events]
-	if not raid or not event then return "failed" end
+	if not raid or not event then return "failed to find event" end
 	local text
 	local players = ""
-	local raid_start = date("%c", raid.time_start)
-	local raid_end = date("%c", raid.time_end)
+	local raid_start = date("%c", event.timestamp)
+	local raid_end = date("%c", event.timestamp)
 
 	-- Creating RaidEvent 
-	text = "<RaidInfo><key>"..raid_start.."</key><start>"..raid_start.."</start><end>"..raid_end.."</end><zone>"..(event.zone or "").."</zone><PlayerInfos>"
+	text = "<RaidInfo><key>"..raid_start.."</key><start>"..raid_start.."</start><end>"..raid_end.."</end><zone>"..(event.zone or "").."</zone><note>"..(event.points or "").."</note><PlayerInfos>"
 
 	-- Adding Players to this Event
 	for i,name in ipairs(event.members) do
@@ -235,12 +271,12 @@ function CreateExportString(raid_id, event_id)
 	text = text.."<BossKills><key1><name>"..event.description.."</name><time>"..date("%c", event.timestamp).."</time><attendees/></key1></BossKills>"
 
 	-- Adding the CTRaid Stuff for their Player Leave/Join Events
-	text = text.."<note><![CDATA["..(event.zone or "").." - "..(event.bossname or "").." - "..(event.points or "").."]]></note>"
+	text = text.."<note><![CDATA["..(event.zone or "").." - "..(event.description or "").."]]></note>"
 	text = text.."<Join>"..players.."</Join><Leave>"..players.."</Leave>"
 
 	-- Adding loot to the textblock
 	text = text.."<Loot>"
-	for k, item in pairs(event.loot or {}) do
+	for k, item in pairs(event.items or {}) do
 		local ItemName = GetItemInfo(item.item)
 		local ItemID = select(2, strsplit(":", item.item))
 		local color = string.sub(item.item:match("^|(%x+)|"), 2)
@@ -248,8 +284,8 @@ function CreateExportString(raid_id, event_id)
 		text = text.."<key"..k.."><ItemName>"..(ItemName or "?").."</ItemName><ItemID>"..ItemID.."</ItemID>"
 		text = text.."<Icon></Icon><Class></Class><SubClass></SubClass><Color>"..color.."</Color><Count>1</Count>"
 		text = text.."<Player>"..item.player.."</Player><Costs>"..item.points.."</Costs><Time>"..date("%c", event.timestamp).."</Time>"
-		text = text.."<Zone></Zone><Boss>"..item.from.."</Boss>"--<Note></Note>"
-		--text = text.."<Note><![CDATA[ - Zone: "..event.description.. " "..event.points.." DKP]]></Note>"
+		text = text.."<Zone></Zone><Boss>"..event.description.."</Boss>"
+		text = text.."<Note><![CDATA[ - Zone: "..(event.zone or "unknown").." - Boss: "..(event.description or "unknown").." - "..(item.points or 0).." DKP]]></Note>"
 		--text = text.."<Note>"..event.description.."</Note>"
 		text = text.."</key"..k..">"
 	end
@@ -392,6 +428,9 @@ do
 	local mainframe = CreateFrame("frame", "DBM_DKP_System", UIParent)
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+
+			mainframe:RegisterEvent("PLAYER_QUITING")
+
 			-- Update settings of this Addon
 			settings = DBM_DKP_System_Settings
 			addDefaultOptions(settings, default_settings)

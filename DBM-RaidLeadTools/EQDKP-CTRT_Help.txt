@@ -1,0 +1,107 @@
+Hello DeadlyBossMods User,
+
+first of all we want to thank you for using DeadlyBossMods and we hope you enjoy playing World of Warcraft with our Mod. You can allways find the newest Versions, Informations and Help on our Website on www.deadlybossmods.com.
+
+Please feel free to support us by joining our community forum and leave us some informations about your wishes. We allways search for new opinions to improof our BossMod. If you also want to support us private feel free to make a donation or visit our Sponsors by clicking the links on our Webside.
+
+We build our DKP System to work with CT RaidTracker Import of EQDKP. It might be inperfect but it runs on our tests.
+
+To Automatical set Raid Event and Note you have to Import the CTRT Settings in the EQDKP Plus Administration Panel.
+To do that, you simply have to login as an Administrator and use the "CTRT Import" -> "Settings" Menu.
+
+Event Import:
+-------------
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<EventTriggers>
+	<EventTrigger>
+		<trigger>Black Temple</trigger>
+		<result>Black Temple</result>
+	</EventTrigger>
+	<EventTrigger>
+		<trigger>Raid Start</trigger>
+		<result>Raid Start</result>
+	</EventTrigger>
+	<EventTrigger>
+		<trigger>Sunwell Plateau</trigger>
+		<result>Sunwell Plateau</result>
+	</EventTrigger>
+</EventTriggers>
+
+
+Note Import:
+------------
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<RaidNoteTriggers>
+	<RaidNoteTrigger>
+		<trigger>Akama</trigger>
+		<result>Akama</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Brutallus</trigger>
+		<result>Brutallus</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Entropius</trigger>
+		<result>M'uru</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Essence of Souls</trigger>
+		<result>Essence of Souls</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Felmyst</trigger>
+		<result>Felmyst</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Grand Warlock Alythess</trigger>
+		<result>Eredar Twins</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Gurtogg Bloodboil</trigger>
+		<result>Gurtogg Bloodboil</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>High Warlord Naj'entus</trigger>
+		<result>High Warlord Naj'entus</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Illidan</trigger>
+		<result>Illidan Stormrage</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Illidari Council</trigger>
+		<result>Illidari Council</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Kalecgos</trigger>
+		<result>Kalecgos</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Kil'jaeden</trigger>
+		<result>Kil'jaeden</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Lady Sacrolash</trigger>
+		<result>Eredar Twins</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>M'uru</trigger>
+		<result>M'uru</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Mother Shahraz</trigger>
+		<result>Mother Shahraz</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Supremus</trigger>
+		<result>Supremus</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Teron Gorefiend</trigger>
+		<result>Teron Gorefiend</result>
+	</RaidNoteTrigger>
+</RaidNoteTriggers>
+
+
