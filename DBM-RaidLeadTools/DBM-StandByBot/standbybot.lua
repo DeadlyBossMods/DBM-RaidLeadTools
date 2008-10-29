@@ -90,6 +90,16 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
 end
 
+local function FormatPlayerName(name)
+	-- check for UTF start
+	if bit.band(name:sub(0, 1):byte(), 128) == 128 then
+		name = name:sub(0, 2):upper()..name:sub(3):lower()
+	else
+		name = name:sub(0, 1):upper()..name:sub(2):lower()
+	end
+	return name
+end
+
 local function table_empty(table)
 	for _,v in pairs(table) do
 		return false
@@ -267,13 +277,12 @@ do
 			local msg, author = select(1, ...)
 			if msg == "!sb" then
 				if DBM:GetRaidUnitId(author) == "none" then
-					author = DBM_Tools:StringCodeFormating( author )
-					AddStandbyMember(author)
+					AddStandbyMember( author )
 				else
 					SendChatMessage("<DBM> "..L.InRaidGroup, "WHISPER", nil, author)
 				end
 			elseif msg == "!sb off" then
-				RemoveStandbyMember(author)
+				RemoveStandbyMember( author )
 			end
 
 		elseif settings.enabled and event == "CHAT_MSG_ADDON" then
@@ -287,18 +296,39 @@ do
 					SendAddonMessage("DBM_SbBot", "Hi!", "WHISPER", sender)				
 				end
 
+			elseif msg == "refresh!" and sbbot_clients[sender] and amIactive() then
+				UpdateTimes()
+				SendAddonMessage("DBM_SbBot", "cleanup!", "WHISPER", sender)
+
+				for k,v in pairs(settings.sb_times) do
+					SendAddonMessage("DBM_SbBot", "TIMES:"..v..":"..k, "WHISPER", sender)
+				end
+				for k,v in pairs(settings.sb_users) do
+					SendAddonMessage("DBM_SbBot", "SBUSER:"..v..":"..k, "WHISPER", sender)
+				end
+
+			elseif msg == "cleanup!" then
+				DBM:AddMsg( L.Local_CleanList:format(sender) )
+				table.wipe(settings.sb_times)
+				table.wipe(settings.sb_users)
+
+			elseif strsplit(":",msg) == 3 and select(1, strsplit(":",msg)) == "TIMES" then
+				local value, key = select(2, strsplit(":",msg))
+				settings.sb_times[key] = tonumber(value)
+
+			elseif strsplit(":",msg) == 3 and select(1, strsplit(":",msg)) == "SBUSER" then
+				local value, key = select(2, strsplit(":",msg))
+				settings.sb_users[key] = tonumber(value)
+
+
 			elseif msg == "bye!" then
 				sbbot_clients[sender] = nil
 
 			elseif msg:find("^!sb add") then
-				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
-				name = name:sub(0,1):upper()..name:sub(2):lower()
-				AddStandbyMember(name, true)
+				AddStandbyMember(FormatPlayerName( strtrim(msg:sub(8)) ), true)
 
 			elseif msg:find("^!sb del") then
-				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
-				name = name:sub(0,1):upper()..name:sub(2):lower()
-				RemoveStandbyMember(name, true)
+				RemoveStandbyMember(FormatPlayerName( strtrim(msg:sub(8)) ), true)
 			end
 		end
 		
@@ -369,13 +399,11 @@ do
 				end
 
 			elseif active and msg:find("^!sb add") then
-				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
-				name = name:sub(0,1):upper()..name:sub(2):lower()
+				local name = FormatPlayerName( strtrim(msg:sub(8)) )
 				AddStandbyMember(name)
 
 			elseif active and msg:find("^!sb del") then
-				local name = DBM_Tools:StringCodeFormating( strtrim(msg:sub(8)) )
-				name = name:sub(0,1):upper()..name:sub(2):lower()
+				local name = FormatPlayerName( strtrim(msg:sub(8)) )
 				if not RemoveStandbyMember(name) then
 					DBM:AddMsg(L.Local_CantRemove)
 				end
