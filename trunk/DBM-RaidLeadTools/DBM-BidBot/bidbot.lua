@@ -26,7 +26,7 @@
 --
 
 local default_settings = {	
-	enabled = true,			-- BidBot ein/aus
+	enabled = false,		-- BidBot ein/aus
 	chatchannel = "GUILD",		-- Ausgabe channel
 	minGebot = 10,			-- Mindest Gebot
 	duration = 30,			-- Laufzeit einer auction
