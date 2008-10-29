@@ -26,7 +26,7 @@
 --
 
 local default_settings = {
-	enabled = true,
+	enabled = false,
 	sb_as_raid = true,		-- count Standby Players as Raid Members
 
 	time_event = false,		-- count raid attendance by time and bosskills
