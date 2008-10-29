@@ -191,7 +191,7 @@ do
 			local timedescr 	= area:CreateEditBox(L.TimeDescription, settings.time_desc, 250)
 			timeevent:SetScript("OnShow", function(self) self:SetChecked(settings.time_event) end)
 			timeevent:SetScript("OnClick", function(self) settings.time_event = not not self:GetChecked() end)
-			timeevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -100)
+			timeevent:SetPoint("TOPLEFT", startevent, "BOTTOMLEFT", 0, -105)
 			timepoints:SetNumeric()
 			timepoints:SetMaxLetters(5)
 			timepoints:SetPoint("TOPLEFT", timeevent, "BOTTOMLEFT", 15, -10)
@@ -217,10 +217,10 @@ do
 
 			history:SetScript("OnShow", function(self)
 				if #settings.history > 0 then
+					self:SetMaxLines(50)
 					for i=1, #settings.history, 1 do
 						local raid = settings.history[i]
 						if #raid.events > 0 then
-							self:SetMaxLines(#raid.events+1)
 							for k,event in pairs(raid.events) do
 								local link = "|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h"
 								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, #event.members)  )
@@ -331,7 +331,7 @@ function GetRaidList()
 		end
 	end
 
-	if settings.sb_as_raid and #DBM_Standby_Settings.sb_users > 0 then
+	if settings.sb_as_raid then
 		for k,v in pairs(DBM_Standby_Settings.sb_users) do
 			table.insert(raidusers, k)
 		end
@@ -359,6 +359,7 @@ function CreateEvent(event)
 			table.wipe(settings.items)
 		end
 	end
+	if not event.members then event.members = GetRaidList() end
 	table.insert(settings.events, event)
 end
 
@@ -373,8 +374,7 @@ function DBM_DKP_BossKill(bossmod)
 			zone = GetRealZoneText(),
 			description = settings.boss_desc:format(bossname),
 			points = settings.boss_points,
-			timestamp = time(),
-			members = GetRaidList()
+			timestamp = time()
 		})		
 	end
 end
@@ -391,7 +391,6 @@ function RaidStart()
 			description = settings.start_desc,
 			points = settings.start_points,
 			timestamp = time(),
-			members = GetRaidList(),
 		})
 	end
 	DBM:AddMsg(L.Local_StartRaid)
@@ -448,7 +447,6 @@ do
 				description = settings.time_desc,
 				points = settings.time_points,
 				timestamp = time(),
-				members = GetRaidList()
 			})
 		end
 		--[[
