@@ -27,7 +27,7 @@
 local mainframe = CreateFrame("frame", "DBM_StandyByBot", UIParent)
 
 local default_settings = {
-	enabled = true,
+	enabled = false,
 	sb_users = {},		-- currently standby
 	sb_times = {},		-- times since last reset
 	history = {},		-- save history on raidleave
