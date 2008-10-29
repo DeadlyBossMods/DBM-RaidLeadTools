@@ -63,6 +63,7 @@ local GetRaidList
 local CreateEvent
 local AddItemForEvent
 local addDefaultOptions
+local ShowExportString
 
 do
 	local function creategui()
@@ -83,6 +84,7 @@ do
 				if start_time > 0 or #settings.events > 0 then
 					DBM:AddMsg(start_time)
 					RaidEnd()
+					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 				else
 					if GetNumRaidMembers() == 0 then
 						DBM:AddMsg(L.Local_NoRaidPresent)
@@ -234,7 +236,7 @@ do
 				if linkType == "DBM" and arg1 == "showdkp" and history and event then
 					history = tonumber(history)
 					event = tonumber(event)
-					DBM:AddMsg("Opening DKP String for Event: "..event.." from Raid "..history)
+					--DBM:AddMsg("Opening DKP String for Event: "..event.." from Raid "..history)
 					ShowExportString(history, event) 
 				end
 			end)
