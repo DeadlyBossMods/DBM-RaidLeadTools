@@ -334,7 +334,7 @@ do
 		
 		if settings.enabled and event:sub(0, 9) == "CHAT_MSG_" and event ~= "CHAT_MSG_WHISPER" and event ~= "CHAT_MSG_ADDON" then
 			local active = amIactive()
-
+			
 			local msg, author = select(1, ...)
 			if active and msg == "!sb" then
 				local output = ""
