@@ -32,7 +32,7 @@ local default_settings = {
 	guildmates = true,
 	friends = true,
 	other = false,
-	lastaoerank = "",
+	lastaoerank = 0,
 
 	promote_all = false,
 	promote_rank = 0,
@@ -40,7 +40,7 @@ local default_settings = {
 }
 
 
-DBM_AutoInvite_Options = {}
+DBM_AutoInvite_Settings = {}
 local settings = default_settings
 
 
@@ -56,6 +56,7 @@ local UpdateFriendList
 local IsFriend
 local DoInvite
 local slashfunction
+local FormatPlayerName
 
 
 function slashfunction()
@@ -77,13 +78,25 @@ do
 
 	-- some functions required to filter out some bad input from the user
 	local function donameformat(part)
-		part = strtrim(part:lower())
-		part = part:sub(1,1):upper()..part:sub(2)
+		part = FormatPlayerName( strtrim(part:lower()) )
 		if part:len() > 0 then
 			return part
 		else 
 			return nil
 		end
+	end
+	local function concat(mytable, split, bykey)
+		if not split then split = " " end
+		if type(mytable) ~= "table" then return "" end
+		local text = split
+		for k,v in pairs(mytable) do
+			if bykey then
+				text = text..k..split
+			else
+				text = text..v..split
+			end
+		end
+		return strtrim(text)
 	end
 	local function explode(div,str)
 		if not div or div=='' then return false end
@@ -123,7 +136,10 @@ do
 			keyword:SetPoint('TOPLEFT', other, "BOTTOMLEFT", 15, -15)
 
 			local Ranks = {}
-			local AOEbyGuildRank = area:CreateDropdown(L.AOEbyGuildRank, Ranks, settings.lastaoerank, function(value) settings.lastaoerank = value end, 200)
+			for i=1, GuildControlGetNumRanks(), 1 do
+				table.insert(Ranks, { text=i..". "..GuildControlGetRankName(i),value=i })
+			end
+			local AOEbyGuildRank = area:CreateDropdown(L.AOEbyGuildRank, Ranks, settings.lastaoerank, function(value) settings.lastaoerank = tonumber(value) end, 200)
 			AOEbyGuildRank:SetScript("OnShow", function(self) 
 				table.wipe(Ranks)
 				for i=1, GuildControlGetNumRanks(), 1 do
@@ -156,6 +172,11 @@ do
 			PromoteEveryone:SetScript("OnClick", function(self) settings.promote_all = not not self:GetChecked() end)
 			
 			local Ranks = {}
+			table.insert(Ranks, { text=L.DontPromoteAnyRank, value=0 })
+			for i=1, GuildControlGetNumRanks(), 1 do
+				table.insert(Ranks, { text=i..". "..GuildControlGetRankName(i), value=i })
+			end			
+
 			local PromoteGuildRank = area:CreateDropdown(L.PromoteGuildRank, Ranks, settings.promote_rank, function(value) settings.promote_rank = value end, 200)
 			PromoteGuildRank:SetScript("OnShow", function(self) 
 				table.wipe(Ranks)
@@ -173,23 +194,37 @@ do
 					settings.promote_names[v] = true
 				end
 			end)
-			PromoteByNameList:SetScript("OnShow", 		function(self) self:SetText( table.concat(settings.promote_names, " ") ) end)
+			PromoteByNameList:SetScript("OnShow", function(self) self:SetText( concat(settings.promote_names, " ", true) ) end)
 			PromoteByNameList:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 27, -90)
 		end
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 15)
 end
 
+function FormatPlayerName(name)
+	if name:len() > 0 then 
+		-- check for UTF start
+		if bit.band(name:sub(0, 1):byte(), 128) == 128 then
+			name = name:sub(0, 2):upper()..name:sub(3):lower()
+		else
+			name = name:sub(0, 1):upper()..name:sub(2):lower()
+		end
+		return name
+	else 
+		return ""
+	end
+end
+
 do
-	local GuildMates = {}
-	local GuildRank = {}
+	GuildMates = {}
+	GuildRank = {}
 	function UpdateGuildList()
 		table.wipe(GuildMates)
 		table.wipe(GuildRank)
 		for i=1, GetNumGuildMembers(), 1 do
 			local name, _, rankIndex = GetGuildRosterInfo(i)
 			table.insert(GuildMates, name)
-			GuildRank[name] = rankIndex
+			GuildRank[name] = rankIndex + 1
 		end
 	end
 	function IsGuildMember(name)
@@ -200,28 +235,16 @@ do
 		end
 		return false
 	end
-	function GetGuildRank(name, numeric)	
-		if GuildRank[name] then
-			if numeric then
-				return GuildRank[name]
-			else
-				return GuildControlGetRankName(GuildRank[name])
-			end
-		else 
-			return 0
-		end
+	function GetGuildRank(name)	
+		return GuildRank and GuildRank[name] or 0
 	end
 	function AOE_Ginvite()
 		for _,v in pairs(GuildMates) do
-			DoInvite(v)
-		end
-		--[[
-		for _,v in pairs(GuildMates) do
-			if not settings.lastaoerank or GuildRank[v] == settings.lastaoerank then
+			if settings.lastaoerank > 0 and GuildRank[v] <= settings.lastaoerank then 
 				DoInvite(v)
 			end
 		end
-		--]]
+		
 	end
 end
 
@@ -236,38 +259,12 @@ do
 		return false
 	end
 
-	local UpdateRaidRights
-	do 
-		local onetimepromoted = {}	-- if the player is demoted, we don't remote him each time a roster update is send (missing player join / leave event,.. thanks blizzard...)
-		local raidmember = {}
-		local function RaidGrp()
-			table.wipe(raidmember)
-			for i=1, GetNumRaidMembers(), 1 do
-				local name = UnitName("raid"..i)
-				raidmember[name] = true
-			end
+	DBM:RegisterCallback("raidJoin", function(name)
+		if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank)
+				 or settings.promote_names[name] or settings.promote_all then
+			PromoteToAssistant(name)
 		end
-		function UpdateRaidRights()	-- autopromote players
-			RaidGrp()
-			for i=1, GetNumRaidMembers(), 1 do
-				local name, rank = GetRaidRosterInfo(i)
-				-- GuildRank Based invite
-				if type(rank) == "number" and rank == 0 then
-					if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank and not onetimepromoted[name])
-					 or settings.promote_names[name] or settings.promote_all then
-
-						PromoteToAssistant(name)
-						onetimepromoted[name] = true
-					end
-				end
-			end
-			for k,v in pairs(onetimepromoted) do	-- remove entrys to get reinvited when he rejoins a raid
-				if not raidmember[k] then
-					onetimepromoted[k] = nil
-				end
-			end
-		end
-	end
+	end)
 
 	function DoInvite(name)
 		pplcount = GetNumRaidMembers();
@@ -285,12 +282,15 @@ do
 					InviteUnit(name)
 				end
 			end
+
 		elseif (IsRaidLeader() or IsRaidOfficer()) and pplcount < 40 then 
 			InviteUnit(name)
+
 		elseif not (IsRaidLeader() or IsRaidOfficer()) then
-			SendChatMessage("<DBM>"..L.WhisperMsg_NotLeader, "WHISPER", nil, name)
+			SendChatMessage("<DBM> "..L.WhisperMsg_NotLeader, "WHISPER", nil, name)
+
 		elseif pplcount >=40 then
-			SendChatMessage("<DBM>"..L.WhisperMsg_RaidIsFull, "WHISPER", nil, name)
+			SendChatMessage("<DBM> "..L.WhisperMsg_RaidIsFull, "WHISPER", nil, name)
 		end
 	end
 
@@ -298,8 +298,12 @@ do
 		if settings.enabled and msg:lower() == settings.keyword then
 			local doautoinvite = false
 	
-			if settings.friends and IsFriend(name) then		doautoinvite = true
-			elseif settings.other then				doautoinvite = true
+			if settings.friends and IsFriend(name) then
+				doautoinvite = true
+
+			elseif settings.other then
+				doautoinvite = true
+
 			elseif settings.guildmates then	
 				table.insert(waitinginvites, name)
 				GuildRoster()
@@ -321,12 +325,11 @@ do
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon
-			settings = DBM_DKP_System_Settings
+			settings = DBM_AutoInvite_Settings
 			addDefaultOptions(settings, default_settings)
 
 			self:RegisterEvent("CHAT_MSG_WHISPER")
 			self:RegisterEvent("GUILD_ROSTER_UPDATE")
-			self:RegisterEvent("RAID_ROSTER_UPDATE")
 
 			-- on addon loaded, we call the guildroster to get all required informations
 			GuildRoster()
@@ -342,9 +345,6 @@ do
 				end
 				waitinginvites[i] = nil
 			end
-
-		elseif event == "RAID_ROSTER_UPDATE" and settings.promote_rank then
-			UpdateRaidRights()
 		end
 	end)
 	
