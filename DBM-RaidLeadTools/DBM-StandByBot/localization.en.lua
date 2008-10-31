@@ -35,15 +35,21 @@ L.NoHistoryAvailable	= "Sorry, no saved Raids with Standby Players"
 
 L.SB_Documentation	= [[This Standby module allows a Raidleader to manage players who currently can't raid because of a full raid or something like this. All listed commands are for Guildchat use. 
 
-!sb            - shows a list of standby players
-!sb times      - shows the current standby times
-!sb add <nick> - add a player to standby
-!sb del <nick> - remove a player from stanbdy
-!sb save       - save the current state to history
-!sb reset      - clears all (just a failsave function)
+!sb               - shows a list of standby players
+!sb times         - shows the current standby times
+!sb add <nick>    - add a player to standby
+!sb del <nick>    - remove a player from stanbdy
+!sb save          - save the current state to history
+!sb reset         - clears all (just a failsave function)
+!sb history [id]  - show standby History
 
 Players who want to get standby have to whisper '!sb' to the Player with the Standby response from GuildChat commands. A confirmation will be send to the player. Otherwise to leave the standby they have to whisper '!sb off'.
 ]]
+
+L.Button_ShowClients		= "Show Clients"
+L.Local_NoRaid			= "You have to be in a Raidgroup in order to use this Function"
+L.Local_Version			= "%s: %s"	-- Lacrosa: r123
+
 
 
 

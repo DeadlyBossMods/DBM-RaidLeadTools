@@ -66,7 +66,20 @@ do
 		do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 260, true)
 	
+			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
+			checkclients:SetPoint('TOPRIGHT', area.frame, "TOPRIGHT", -10, -10)
+			checkclients:SetNormalFontObject(GameFontNormalSmall)
+			checkclients:SetHighlightFontObject(GameFontNormalSmall)
+			checkclients:SetScript("OnClick", function(self) 
+				if DBM:IsInRaid() then
+					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
+				else
+					DBM:AddMsg(L.Local_NoRaid)
+				end
+			end)
+
 			local enabled 		= area:CreateCheckButton(L.Enable, true)
+			enabled:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) 
 				if DBM:IsInRaid() then
@@ -79,18 +92,6 @@ do
 				settings.enabled = toboolean(self:GetChecked())
 			end)
 		
-			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
-			checkclients:SetPoint('TOPRIGHT', area, "TOPRIGHT", -10, -10)
-			checkclients:SetNormalFontObject(GameFontNormalSmall)
-			checkclients:SetHighlightFontObject(GameFontNormalSmall)
-			checkclients:SetScript("OnClick", function(self) 
-				if DBM:IsInRaid() then
-					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
-				else
-					DBM:AddMsg(L.Local_NoRaid)
-				end
-			end)
-
 			local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
 			local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
 			local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
@@ -122,8 +123,11 @@ do
 			output:SetScript("OnTextChanged", 	function(self) settings.output = self:GetNumber() end)
 			output:SetScript("OnShow", 		function(self) self:SetText(settings.output) end)
 		end
+		panel:SetMyOwnHeight()
+
+		local historypanel = panel:CreateNewPanel(L.TabCategory_History, "option")
 		do	
-			local area = panel:CreateArea(L.AreaItemHistory, nil, 260, true)
+			local area = historypanel:CreateArea(L.AreaItemHistory, nil, 360, true)
 
 			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 220, nil, nil, GameFontHighlightSmall)
 			history:ClearAllPoints()
@@ -149,7 +153,8 @@ do
 				end
 			end)
 		end
-		panel:SetMyOwnHeight()
+		historypanel:SetMyOwnHeight()
+		
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 11)
 end
@@ -456,6 +461,7 @@ do
 					if channel == "RAID" then
 						SendAddonMessage("DBM_BidBot", "version: r"..tostring(revision), "WHISPER", sender)
 					end
+
 				elseif msg:sub(0, 9) == "version: " then
 					DBM:AddMsg( L.Local_Version:format(sender, msg:sub(9)) )
 

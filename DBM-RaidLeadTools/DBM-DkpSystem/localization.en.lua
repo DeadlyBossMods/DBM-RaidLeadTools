@@ -44,3 +44,7 @@ L.Local_StartRaid		= "Started a new Raid"
 
 L.AllPlayers			= "all players"
 
+L.TabCategory_History		= "Raid History"
+
+
+
