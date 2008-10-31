@@ -49,7 +49,7 @@ do
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 200, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 220, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) 
@@ -62,6 +62,18 @@ do
 				end
 				settings.enabled = not not self:GetChecked() 
 				
+			end)
+
+			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
+			checkclients:SetPoint('TOPRIGHT', area.frame, "TOPRIGHT", -10, -10)
+			checkclients:SetNormalFontObject(GameFontNormalSmall)
+			checkclients:SetHighlightFontObject(GameFontNormalSmall)
+			checkclients:SetScript("OnClick", function(self) 
+				if DBM:IsInRaid() then
+					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
+				else
+					DBM:AddMsg(L.Local_NoRaid)
+				end
 			end)
 
 			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
@@ -295,6 +307,14 @@ do
 				if channel == "RAID" then
 					SendAddonMessage("DBM_SbBot", "Hi!", "WHISPER", sender)				
 				end
+
+			elseif msg == "showversion!" then
+				if channel == "RAID" then
+					SendAddonMessage("DBM_BidBot", "version: r"..tostring(revision), "WHISPER", sender)
+				end
+
+			elseif msg:sub(0, 9) == "version: " then
+				DBM:AddMsg( L.Local_Version:format(sender, msg:sub(9)) )
 
 			elseif msg == "refresh!" and sbbot_clients[sender] and amIactive() then
 				UpdateTimes()

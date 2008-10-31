@@ -20,6 +20,7 @@ L.PopUpAcceptDKP		= "Save Bid for %s. For disenchant please type in 0 DKP."
 
 -- GUI
 L.TabCategory_BidBot	 	= "BidBot (DKP)"
+L.TabCategory_History	 	= "Item History"
 L.AreaGeneral 			= "Gerneal BidBot Options"
 L.AreaItemHistory		= "ItemHistory of BidBot"
 L.Enable			= "Enable Bidbot (!bid [item])"

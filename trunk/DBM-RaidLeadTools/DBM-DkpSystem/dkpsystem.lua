@@ -209,8 +209,11 @@ do
 			timedescr:SetScript("OnShow", function(self) self:SetText(settings.time_desc) end)
 			timedescr:SetScript("OnTextChanged", function(self) settings.time_desc = self:GetText() end)
 		end
+		panel:SetMyOwnHeight()
+
+		local historypanel = panel:CreateNewPanel(L.TabCategory_History, "option")
 		do
-			local area = panel:CreateArea(L.AreaHistory, nil, 200, true)
+			local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
 
 			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 150, nil, nil, GameFontNormalSmall)
 			history:ClearAllPoints()
@@ -219,13 +222,18 @@ do
 
 			history:SetScript("OnShow", function(self)
 				if #settings.history > 0 then
+					local lastzone = ""
 					self:SetMaxLines(50)
 					for i=1, #settings.history, 1 do
 						local raid = settings.history[i]
 						if #raid.events > 0 then
 							for k,event in pairs(raid.events) do
+								if event.zone ~= lastzone then
+									self:AddMessage(" ")
+								end
 								local link = "|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h"
 								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, #event.members)  )
+								lastzone = event.zone
 							end
 						end
 					end
@@ -242,7 +250,7 @@ do
 			end)
 
 		end
-		panel:SetMyOwnHeight()
+		historypanel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
 end
