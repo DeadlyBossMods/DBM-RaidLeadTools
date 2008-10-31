@@ -42,6 +42,8 @@ local settings = default_settings
 
 local L = DBM_BidBot_Translations
 
+local revision = ("$Revision: 22 $"):sub(12, -3)
+
 local BidBot_Queue = {}			-- items pending
 local BidBot_Biddings = {}		-- current bids
 local BidBot_InProgress = false		-- true when an auction is running
@@ -65,6 +67,30 @@ do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 260, true)
 	
 			local enabled 		= area:CreateCheckButton(L.Enable, true)
+			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
+			enabled:SetScript("OnClick", function(self) 
+				if DBM:IsInRaid() then
+					if settings.enabled then
+						SendAddonMessage("DBM_BidBot", "bye!", "RAID")
+					else
+						SendAddonMessage("DBM_BidBot", "Hi!", "RAID")
+					end
+				end
+				settings.enabled = toboolean(self:GetChecked())
+			end)
+		
+			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
+			checkclients:SetPoint('TOPRIGHT', area, "TOPRIGHT", -10, -10)
+			checkclients:SetNormalFontObject(GameFontNormalSmall)
+			checkclients:SetHighlightFontObject(GameFontNormalSmall)
+			checkclients:SetScript("OnClick", function(self) 
+				if DBM:IsInRaid() then
+					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
+				else
+					DBM:AddMsg(L.Local_NoRaid)
+				end
+			end)
+
 			local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
 			local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
 			local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
@@ -85,8 +111,6 @@ do
 			duration:SetNumeric()
 			output:SetNumeric()
 	
-			enabled:SetScript("OnClick", 		function(self) settings.enabled = toboolean(self:GetChecked()) end)
-			enabled:SetScript("OnShow", 		function(self) self:SetChecked(settings.enabled) end)
 			bidtyp_open:SetScript("OnClick", 	function(self) settings.bidtyp_open = toboolean(self:GetChecked()) end)
 			bidtyp_open:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_open) end)
 			bidtyp_payall:SetScript("OnClick",	function(self) settings.bidtyp_payall = toboolean(self:GetChecked()) end)
@@ -117,7 +141,7 @@ do
 									self:AddMessage("               -> "..i..". "..itembid.bids[i].name.."("..itembid.bids[i].points..")")
 								end
 							end
-							self:AddMessage("")
+							self:AddMessage(" ")
 						else
 							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..L.Disenchant)
 						end
@@ -290,7 +314,6 @@ do
 			hiddenedit:SetPoint("TOPRIGHT", self.editBox, "TOPLEFT", -10, -6)
 			hiddenedit:SetText(hiddenedit.itemtable.points)
 			hiddenedit:Show()
-			self.editBox:SetFocus()
 			self.editBox:SetText(hiddenedit.itemtable.player)
 		end,
 		OnAccept = function(self)
@@ -330,10 +353,9 @@ do
 end
 
 do 
-	local inRaid = false
-	local bidbot_clients = {}
+	bidbot_clients = {}
 	local function OnMsgRecived(msg, name, nocheck)
-		if settings.enabled and inRaid and msg and string.find(string.lower(msg), "^!bid ") then
+		if settings.enabled and DBM:IsInRaid() and msg and string.find(string.lower(msg), "^!bid ") then
 			if not nocheck and GetNumRaidMembers() > 0 then
 				for i=1, GetNumRaidMembers(), 1 do
 					if bidbot_clients[UnitName("raid"..i)] and UnitIsConnected("raid"..i) and UnitName("raid"..i) < UnitName("player") then
@@ -411,19 +433,32 @@ do
 			if DBM_BidBot_Translations[GetLocale()] then 
 				L = DBM_BidBot_Translations[GetLocale()]
 			end
-		elseif event == "CHAT_MSG_WHISPER" and BidBot_InProgress then
+
+		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and BidBot_InProgress then
 			if arg1:find("^%d+$") then
 				-- here is a bid
 				AddBid(arg2, tonumber(arg1))
 			end
-		elseif event == "CHAT_MSG_ADDON" then
+
+		elseif settings.enabled and event == "CHAT_MSG_ADDON" then
 			local prefix, msg, channel, sender = select(1, ...)
 			if prefix == "DBM_BidBot" then
 				if msg == "Hi!" then
 					bidbot_clients[sender] = true
-					if channel == "RAID" then
+					if settings.enabled and channel == "RAID" then
 						SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)				
 					end
+
+				elseif msg == "bye!" then
+					bidbot_clients[sender] = nil
+
+				elseif msg == "showversion!" then
+					if channel == "RAID" then
+						SendAddonMessage("DBM_BidBot", "version: r"..tostring(revision), "WHISPER", sender)
+					end
+				elseif msg:sub(0, 9) == "version: " then
+					DBM:AddMsg( L.Local_Version:format(sender, msg:sub(9)) )
+
 				elseif msg:sub(0, 5) == "ITEM:" and sender ~= UnitName("player") then
 					if DBM:GetRaidUnitId(sender) ~= "none" and not channel == "RAID" then return end
 					if DBM:GetRaidUnitId(sender) == "none" and not channel == "GUILD" then return end
@@ -445,19 +480,18 @@ do
 				end
 			end
 		end
-			
-		if event == "RAID_ROSTER_UPDATE" or event == "ADDON_LOADED" then
-			if GetNumRaidMembers() >= 1 and not inRaid then
-				inRaid = true
-				SendAddonMessage("DBM_BidBot", "Hi!", "RAID")
-			elseif GetNumRaidMembers() == 0 and inRaid then
-				inRaid = false
-			end
-		end
-
+		
 		if event:sub(0, 9) == "CHAT_MSG_" then
 			OnMsgRecived(select(1, ...), select(2, ...), (event=="CHAT_MSG_WHISPER"))
 		end
+	end)
+
+	DBM:RegisterCallback("raidJoin", function(name)
+		if settings.enabled then
+			if name == UnitName("player") then 
+				SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)
+			end
+		end 
 	end)
 	
 	-- lets register the Events
