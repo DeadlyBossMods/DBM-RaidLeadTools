@@ -42,7 +42,7 @@ local settings = default_settings
 
 local L = DBM_BidBot_Translations
 
-local revision = ("$Revision: 22 $"):sub(12, -3)
+local revision = ("$Revision$"):sub(12, -3)
 
 local BidBot_Queue = {}			-- items pending
 local BidBot_Biddings = {}		-- current bids
