@@ -35,3 +35,7 @@ L.PayWhatYouBid			= "Pay Price of bid, (otherwise second bid + 1)"
 L.NoHistoryAvailable		= "No History available"
 L.DateFormat			= "%c"
 
+L.Button_ShowClients		= "Show Clients"
+L.Local_NoRaid			= "You have to be in a Raidgroup in order to use this Function"
+L.Local_Version			= "%s: %s"	-- Lacrosa: r123
+
