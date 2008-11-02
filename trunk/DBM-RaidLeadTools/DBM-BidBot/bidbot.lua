@@ -358,9 +358,44 @@ do
 end
 
 do 
-	bidbot_clients = {}
+	local bidbot_clients = {}
+
+	local function amIactive()
+		if not DBM:IsInRaid() then return false end
+	
+		local myname = UnitName("player")
+	
+		for k,v in pairs(bidbot_clients) do
+			if DBM:GetRaidRank(k) >= 2 then	-- raidleader gefunden
+				if k == myname then
+					-- uhm jeha i'm the raidlead, so i'm the one who shall do the stuff!
+					return true
+				else
+					-- we found a player with SB Bot and RaidLead Flag
+					return false
+				end
+			end
+		end
+		for k,v in pairs(bidbot_clients) do
+			if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < myname then
+				-- we don't need to start, the player with hightest name is used
+				return false
+			end
+		end
+		return true
+	end
+
 	local function OnMsgRecived(msg, name, nocheck)
 		if settings.enabled and DBM:IsInRaid() and msg and string.find(string.lower(msg), "^!bid ") then
+			if not nocheck and not amIactive() then
+				return false
+			end
+			if DBM:GetRaidUnitId(name) == "none" then
+				-- users from outside can't start a Bid round. (like spaming GuildMates ^^)
+				return false
+			end
+
+			--[[
 			if not nocheck and GetNumRaidMembers() > 0 then
 				for i=1, GetNumRaidMembers(), 1 do
 					if bidbot_clients[UnitName("raid"..i)] and UnitIsConnected("raid"..i) and UnitName("raid"..i) < UnitName("player") then
@@ -381,6 +416,7 @@ do
 				-- users from outside can't start a Bid round. (like spaming GuildMates ^^)
 				return
 			end
+			--]]
 
 			local ItemLink = string.gsub(msg, "^!(%w+) ", "")
 			if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then

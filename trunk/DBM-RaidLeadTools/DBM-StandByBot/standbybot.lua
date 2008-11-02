@@ -176,8 +176,22 @@ end
 
 function amIactive()
 	if not DBM:IsInRaid() then return false end
+
+	local myname = UnitName("player")
+
 	for k,v in pairs(sbbot_clients) do
-		if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < UnitName("player") then
+		if DBM:GetRaidRank(k) >= 2 then	-- raidleader gefunden
+			if k == myname then
+				-- uhm jeha i'm the raidlead, so i'm the one who shall do the stuff!
+				return true
+			else
+				-- we found a player with SB Bot and RaidLead Flag
+				return false
+			end
+		end
+	end
+	for k,v in pairs(sbbot_clients) do
+		if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < myname then
 			-- we don't need to start, the player with hightest name is used
 			return false
 		end
