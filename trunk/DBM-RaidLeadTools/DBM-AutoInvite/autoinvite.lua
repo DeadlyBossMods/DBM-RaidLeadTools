@@ -216,8 +216,8 @@ function FormatPlayerName(name)
 end
 
 do
-	GuildMates = {}
-	GuildRank = {}
+	local GuildMates = {}
+	local GuildRank = {}
 	function UpdateGuildList()
 		table.wipe(GuildMates)
 		table.wipe(GuildRank)
@@ -236,15 +236,14 @@ do
 		return false
 	end
 	function GetGuildRank(name)	
-		return GuildRank and GuildRank[name] or 0
+		return GuildRank and GuildRank[name] or 99		-- high value because we don't want to invite errors (we invite Rank or highter)
 	end
 	function AOE_Ginvite()
 		for _,v in pairs(GuildMates) do
 			if settings.lastaoerank > 0 and GuildRank[v] <= settings.lastaoerank then 
 				DoInvite(v)
 			end
-		end
-		
+		end		
 	end
 end
 
@@ -260,9 +259,11 @@ do
 	end
 
 	DBM:RegisterCallback("raidJoin", function(name)
-		if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank)
-				 or settings.promote_names[name] or settings.promote_all then
-			PromoteToAssistant(name)
+		if settings.enabled and name and DBM:GetRaidRank() > 0 then
+			if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank)
+			or settings.promote_names[name] or settings.promote_all then
+				PromoteToAssistant(name)
+			end
 		end
 	end)
 
@@ -283,10 +284,10 @@ do
 				end
 			end
 
-		elseif (IsRaidLeader() or IsRaidOfficer()) and pplcount < 40 then 
+		elseif DBM:GetRaidRank() > 0 and pplcount < 40 then 
 			InviteUnit(name)
 
-		elseif not (IsRaidLeader() or IsRaidOfficer()) then
+		elseif DBM:GetRaidRank() == 0 then
 			SendChatMessage("<DBM> "..L.WhisperMsg_NotLeader, "WHISPER", nil, name)
 
 		elseif pplcount >=40 then
