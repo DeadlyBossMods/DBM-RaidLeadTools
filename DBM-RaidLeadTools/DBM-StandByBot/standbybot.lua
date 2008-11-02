@@ -206,8 +206,9 @@ local function AddStandbyMember(name, quiet)
 end
 
 local function RemoveStandbyMember(name, quiet)
-	if not settings.enabled then return end
+	if not settings.enabled then return false end
 	if not name then return false end
+
 	if not amIactive() then quite = true end
 
 	if settings.sb_users[name] == nil then
@@ -241,15 +242,17 @@ do
 			DBM:AddMsg( L.SB_History_NotSaved )
 		end
 	end
-	DBM:RegisterCallback("raidLeave", function(name) if DBM:IsInRaid() and name == UnitName("player") then SaveTimeHistory() end end)
+	DBM:RegisterCallback("raidLeave", function(name) 
+		if settings.enabled and name and name == UnitName("player") then 
+			SaveTimeHistory() 
+		end
+	end)
 
-	local function send_leave_whisper(name)
-		if not settings.enabled then return end
-		if not amIactive() then return end
-		SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
-	end
-
-	DBM:RegisterCallback("raidLeave", send_leave_whisper)
+	DBM:RegisterCallback("raidLeave", function(name)
+		if settings.enabled and name and amIactive() then
+			SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
+		end
+	end)
 	DBM:RegisterCallback("raidJoin", RemoveStandbyMember)
 end
 
@@ -274,6 +277,12 @@ do
 			-- Update settings of this Addon
 			settings = DBM_Standby_Settings
 			addDefaultOptions(settings, default_settings)
+
+			DBM:RegisterCallback("raidJoin", function(name)
+				if settings.enabled and name and name == UnitName("player") then 
+					SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+				end 
+			end)
 
 			RegisterEvents(
 				"CHAT_MSG_GUILD",
@@ -447,13 +456,6 @@ do
 	-- lets register the Events
 	RegisterEvents("ADDON_LOADED")
 
-	DBM:RegisterCallback("raidJoin", function(name)
-		if settings.enabled then
-			if name == UnitName("player") then 
-				SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
-			end
-		end 
-	end)
 end
 
 
