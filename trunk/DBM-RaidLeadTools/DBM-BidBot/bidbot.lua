@@ -195,6 +195,13 @@ function AuctionEnd()
 		points = 0, 
 		bids = {} 
 	}
+	
+	-- rebuild BidBot_Biddings
+	local tmp = {}
+	for k,v in pairs(BidBot_Biddings) do
+		table.insert(tmp, v)
+	end
+	BidBot_Biddings = tmp
 
 	if (BidBot_Biddings[1] and BidBot_Biddings[2]) then
 		table.sort(BidBot_Biddings, function(a,b) return a.Bid > b.Bid end)
@@ -461,7 +468,7 @@ do
 
 			DBM:RegisterCallback("raidJoin", function(name)
 				if settings.enabled and name and name == UnitName("player") then 
-					SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)
+					SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", name)
 				end 
 			end)
 
