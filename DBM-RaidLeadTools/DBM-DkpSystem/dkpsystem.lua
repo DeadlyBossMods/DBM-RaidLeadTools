@@ -316,6 +316,7 @@ do
 		button2 = CANCEL,
 		hasEditBox = 1,
 		OnShow = function(self)
+			self.editBox:SetMaxLetters( content:len() + 10 )
 			self.editBox:SetText(content)
 			self.editBox:SetFocus()
 			self.editBox:HighlightText()

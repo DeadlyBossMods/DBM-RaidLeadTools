@@ -223,8 +223,10 @@ do
 		table.wipe(GuildRank)
 		for i=1, GetNumGuildMembers(), 1 do
 			local name, _, rankIndex = GetGuildRosterInfo(i)
-			table.insert(GuildMates, name)
-			GuildRank[name] = rankIndex + 1
+			if name then
+				table.insert(GuildMates, name)
+				GuildRank[name] = rankIndex + 1
+			end
 		end
 	end
 	function IsGuildMember(name)
