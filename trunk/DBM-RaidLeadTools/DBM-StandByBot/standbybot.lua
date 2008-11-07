@@ -256,15 +256,15 @@ do
 			DBM:AddMsg( L.SB_History_NotSaved )
 		end
 	end
-	DBM:RegisterCallback("raidLeave", function(name) 
-		if settings.enabled and name and name == UnitName("player") then 
-			SaveTimeHistory() 
-		end
-	end)
 
 	DBM:RegisterCallback("raidLeave", function(name)
-		if settings.enabled and name and amIactive() then
-			SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
+		if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
+			if name == UnitName("player") then 
+				SaveTimeHistory() 
+
+			elseif amIactive()then
+				SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
+			end
 		end
 	end)
 	DBM:RegisterCallback("raidJoin", RemoveStandbyMember)
@@ -293,9 +293,11 @@ do
 			addDefaultOptions(settings, default_settings)
 
 			DBM:RegisterCallback("raidJoin", function(name)
-				if settings.enabled and name and name == UnitName("player") then 
-					SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
-				end 
+				if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
+					if name == UnitName("player") then 
+						SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
+					end 
+				end
 			end)
 
 			RegisterEvents(
