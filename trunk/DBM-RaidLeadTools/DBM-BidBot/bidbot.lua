@@ -55,6 +55,7 @@ local AddBid
 local AuctionEnd
 local StartBidding
 local DoInjectToDKPSystem
+local sendchatmsg
 
 do 
 	local function toboolean(var) 
@@ -94,11 +95,28 @@ do
 		
 			local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
 			local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
-			local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
-				{{text=L.Guild,value="GUILD"},{text=L.Raid,value="RAID"},{text=L.Party,value="PARTY"}}, 
-				settings.chatchannel,
-				function(value) settings.chatchannel = value end
-			)
+
+			local chatchannel
+			do
+				local channels = {
+					{text=L.Local,	value="LOCAL"},
+					{text=L.Officer,value="OFFICER"},
+					{text=L.Guild,	value="GUILD"},
+					{text=L.Raid,	value="RAID"},
+					{text=L.Party,	value="PARTY"}
+				}
+				for i=1, select("#", GetChannelList()), 2 do		
+					local chanid, channame = select(i, GetChannelList())
+					if chanid > 4 then
+						table.insert(channels, {
+							text = channame,
+							value = channame
+						})
+					end
+				end
+				chatchannel 	= area:CreateDropdown(L.ChatChannel, channels, settings.chatchannel, function(value) settings.chatchannel = value end)
+			end
+
 			local minGebot	 	= area:CreateEditBox(L.MinBid, settings.keyword, 100)
 			local duration		= area:CreateEditBox(L.Duration, settings.keyword, 100)
 			local output 		= area:CreateEditBox(L.OutputBids, settings.keyword, 100)
@@ -159,6 +177,23 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 11)
 end
 
+function sendchatmsg(msg)
+	if settings.chatchannel == "LOCAL" then
+		DBM:AddMsg(msg)
+
+	elseif settings.chatchannel == "GUILD" or settings.chatchannel == "RAID" or settings.chatchannel == "PARTY" or settings.chatchannel == "OFFICER" then
+		SendChatMessage(msg, settings.chatchannel)
+		
+	else
+		local chanid = GetChannelName(settings.chatchannel)
+		if chanid > 4 then
+			SendChatMessage(msg, "CHANNEL", nil, chanid)
+		else
+			DBM:AddMsg(L.Error_ChanNotFound:format(msg))
+		end
+	end
+end
+
 
 function AddItem(ItemLink)
 	local newID = select(4, string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r"))
@@ -181,7 +216,7 @@ function AddBid(bidder, bid)
 		["Bid"] = bid
 	})
 	if settings.bidtyp_open then
-		SendChatMessage(L.Prefix..L.Message_BidPubMessage:format(bidder, bid), settings.chatchannel)
+		sendchatmsg(L.Prefix..L.Message_BidPubMessage:format(bidder, bid))
 	else
 		SendChatMessage("<DBM> "..L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
 	end
@@ -210,7 +245,7 @@ function AuctionEnd()
 		else
 			Itembid.points = BidBot_Biddings[2]["Bid"] + 1
 		end
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points), settings.chatchannel)
+		sendchatmsg(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points))
 
 	elseif (BidBot_Biddings[1]) then
 		if settings.bidtyp_payall then
@@ -218,9 +253,9 @@ function AuctionEnd()
 		else
 			Itembid.points = settings.minGebot
 		end
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points), settings.chatchannel);
+		sendchatmsg(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points))
 	else
-		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), settings.chatchannel);
+		sendchatmsg(L.Prefix..L.Message_NoBidMade:format(Itembid.item))
 	end
 
 	local counter = 0
@@ -237,7 +272,7 @@ function AuctionEnd()
 	   msg = msg..werte.Name.."("..werte.Bid..")"
 
 	   if posi <= settings.output then
-		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.Name, werte.Bid), settings.chatchannel)
+		sendchatmsg(L.Prefix..L.Message_Biddings:format(posi, werte.Name, werte.Bid))
 	   elseif not max then
 		max = true
 	   end
@@ -253,14 +288,14 @@ function AuctionEnd()
 	--SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "GUILD")
 
 	if max then
-		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(counter), settings.chatchannel)
+		sendchatmsg(L.Prefix..L.Message_BiddingsVisible:format(counter))
 	end
 
 	BidBot_CurrentItem = ""
 	table.wipe(BidBot_Biddings)
 	if #BidBot_Queue then
 		-- Shedule next Item
-		SendChatMessage("--- --- --- --- ---", settings.chatchannel)
+		sendchatmsg("--- --- --- --- ---")
 		DBM:Schedule(1.5, StartBidding)
 	end
 end	
@@ -282,14 +317,14 @@ function StartBidding()
 		BidBot_CurrentItem = ItemLink
 		for i=select("#", BidBot_Biddings), 1, -1 do BidBot_Biddings[i] = nil end
 
-		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot), settings.chatchannel);
-		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.duration), settings.chatchannel);
+		sendchatmsg(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot))
+		sendchatmsg(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.duration))
 		
 		DBM:Schedule((settings.duration / 6) * 5, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 6)), settings.chatchannel)
+			sendchatmsg(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 6)))
 			end)
 		DBM:Schedule(settings.duration / 2, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 2)), settings.chatchannel)
+			sendchatmsg(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 2)))
 			end)
 		DBM:Schedule(settings.duration, AuctionEnd)
 	end
@@ -397,33 +432,10 @@ do
 			if not nocheck and not amIactive() then
 				return false
 			end
-			if DBM:GetRaidUnitId(name) == "none" then
+			if name ~= UnitName("player") and DBM:GetRaidUnitId(name) == "none" then
 				-- users from outside can't start a Bid round. (like spaming GuildMates ^^)
 				return false
 			end
-
-			--[[
-			if not nocheck and GetNumRaidMembers() > 0 then
-				for i=1, GetNumRaidMembers(), 1 do
-					if bidbot_clients[UnitName("raid"..i)] and UnitIsConnected("raid"..i) and UnitName("raid"..i) < UnitName("player") then
-						-- we don't need to start, the player with hightest name is used
-						return
-					end
-				end
-			end
-			local ingroup = false
-			if GetNumRaidMembers() > 0 then
-				for i=1, GetNumRaidMembers(), 1 do
-					if UnitName("raid"..i) == name then
-						ingroup = true
-					end
-				end
-			end
-			if not ingroup then
-				-- users from outside can't start a Bid round. (like spaming GuildMates ^^)
-				return
-			end
-			--]]
 
 			local ItemLink = string.gsub(msg, "^!(%w+) ", "")
 			if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
