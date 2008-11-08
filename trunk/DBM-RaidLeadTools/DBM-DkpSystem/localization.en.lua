@@ -2,9 +2,9 @@ DBM_DKP_System_Translations = {}
 
 local L = DBM_DKP_System_Translations
 
-L.Local_TimeReached 		= "A new Time based RaidEvent was created"
-L.Local_NoRaidPresent		= "Please join a Raidgroup before starting DKP Tracker"
-L.Local_RaidSaved		= "Successfully closed the current Raid"
+L.Local_TimeReached 		= "A new time-based raid event was created"
+L.Local_NoRaidPresent		= "Please join a raid group before starting tje DKP tracker"
+L.Local_RaidSaved		= "Successfully closed the current raid"
 
 L.AcceptDKPValue		= "DKP"
 
@@ -14,33 +14,33 @@ L.History_Line			= "[%s][%s]: %s (%d)" 		-- [date][zone] Hogger (playercount)
 -- GUI
 L.TabCategory_DKPSystem		= "DKP System"
 L.AreaGeneral			= "General DKP System Settings"
-L.Enable			= "Enable DKP System to Track RaidEvents"
-L.Enable_StarEvent		= "Create Event on Raid Start"
-L.Enable_TimeEvents		= "Create Events on RaidTime (like 1 event per hour)"
-L.Enable_BossEvents		= "Create Events on Boss Kills"
-L.Enable_SB_Users		= "Count Standby Users as Raid Members"
+L.Enable			= "Enable DKP system to track raid events"
+L.Enable_StarEvent		= "Create event on raid start"
+L.Enable_TimeEvents		= "Create events based on time (e.g. 1 event per hour)"
+L.Enable_BossEvents		= "Create events on boss kills"
+L.Enable_SB_Users		= "Count players on standby as raid members"
 
-L.BossPoints			= "Points per BossKill"
-L.TimePoints			= "Points per TimeEvent (like 10 DKP per hour)"
-L.StartPoints			= "Points on Raidstart"
+L.BossPoints			= "Points per boss kill"
+L.TimePoints			= "Points per time event (e.g. 10 DKP per hour)"
+L.StartPoints			= "Points on raid start"
 
-L.BossDescription		= "Description for BossKills (%s is BossName)"
-L.TimeDescription		= "Description for Time Events"
-L.StartDescription		= "Description for RaidStart"
+L.BossDescription		= "Description for boss kills (%s is name of the boss)"
+L.TimeDescription		= "Description for time events"
+L.StartDescription		= "Description for raid start"
 
-L.TimeToCount			= "each X Min"
+L.TimeToCount			= "every X min"
 
-L.AreaManageRaid		= "Start a new Raid or Event"
-L.Button_StartDKPTracking	= "Start DKP Tracking"
-L.Button_StopDKPTracking	= "Stop DKP Tracking"
+L.AreaManageRaid		= "Start a new raid or event"
+L.Button_StartDKPTracking	= "Start DKP tracking"
+L.Button_StopDKPTracking	= "Stop DKP tracking"
 
-L.CustomPoint			= "Points to give"
-L.CustomDescription		= "Description for this Event"
-L.CustomDefault			= "good play, fast run, extra dkp"
-L.Button_CreateEvent		= "create special event"
-L.Local_NoInformation		= "Please specify the Points and the Name for the Event"
-L.Local_EventCreated		= "Your Event were successfully created"
-L.Local_StartRaid		= "Started a new Raid"
+L.CustomPoint			= "Points to award"
+L.CustomDescription		= "Description for this event"
+L.CustomDefault			= "well played, fast run, extra dkp"
+L.Button_CreateEvent		= "Create special event"
+L.Local_NoInformation		= "Please specify the points and the name for this event"
+L.Local_EventCreated		= "Your event was successfully created"
+L.Local_StartRaid		= "Started a new raid"
 
 L.AllPlayers			= "all players"
 

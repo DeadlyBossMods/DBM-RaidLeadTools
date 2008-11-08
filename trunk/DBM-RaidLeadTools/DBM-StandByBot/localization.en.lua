@@ -2,52 +2,52 @@ DBM_StandbyBot_Translations = {}
 
 local L = DBM_StandbyBot_Translations
 
-L.InRaidGroup		= "Sorry, but you have to leave the RaidGroup before going StandBy."
-L.LeftRaidGroup 	= "You have left our RaidGroup. Please don't forget to whisper me !sb if you wan't to be StandBy."
-L.AddedSBUser		= "You are now Standby. Please stay available until required or removed from the SB List."
-L.UserIsAllreadySB	= "Sorry, but you are already Standby. To remove yourself from the List please type '!sb off' in reply."
-L.NotStandby		= "Sorry, you are currently not registerd as a Standby Member. Please type '!sb' in reply."
-L.NoLongerStandby	= "You are no longer Standby. Your were Standby for %d Hour(s) and %02d Minutes."
-L.PostStandybyList	= "Currently Standby:"
+L.InRaidGroup		= "Sorry, but you have to leave the raid group before going standny."
+L.LeftRaidGroup 	= "You have left our raidG. Please don't forget to whisper me \"!sb\" if you wan't to be standby."
+L.AddedSBUser		= "You are now standby. Please stay available until we need you or removed from the SB-list."
+L.UserIsAllreadySB	= "Sorry, you are already standby. To remove yourself from the list please whisper me \"!sb off\"."
+L.NotStandby		= "Sorry, you are currently not registerd as a standby member. Please whisper me \"!sb\"."
+L.NoLongerStandby	= "You are no longer standby. Your were standby for %d |4hour:hours; and %02d |4minute:minutes;."
+L.PostStandybyList	= "Currently on standby:"
 
-L.Local_AddedPlayer	= "[SB]: %s is now Standby."
-L.Local_RemovedPlayer	= "[SB]: %s is no longer Standby."
+L.Local_AddedPlayer	= "[SB]: %s is now standby."
+L.Local_RemovedPlayer	= "[SB]: %s is no longer standby."
 L.Local_CantRemove	= "Sorry, can't remove player."
-L.Local_CleanList	= "SB List cleaned because of %s request"
+L.Local_CleanList	= "SB list cleaned because (requested by %s)"
 
-L.Current_StandbyTime	= "StandbyTimes from %s:"
+L.Current_StandbyTime	= "Standby times from %s:"
 L.DateTimeFormat	= "%c"
 
 L.History_OnJoin	= "[%s]: %s is now SB"
 L.History_OnLeave	= "[%s]: %s leaves SB after %s min"
-L.SB_History_Saved	= "The Standbylist where saved as %s"
-L.SB_History_NotSaved	= "No player where Standby, no History where saved"
+L.SB_History_Saved	= "The standby-list was saved as %s"
+L.SB_History_NotSaved	= "No player was standby --> no history was saved"
 
 L.SB_History_Line	= "[ID=%d] Raid at %s with %d members"
 
 
 -- GUI
-L.TabCategory_Standby	= "StandbyBot"
-L.AreaGeneral		= "Gernal StandbyBot Settings"
-L.Enable		= "Enable StandbyBot (!sb)"
-L.AreaStandbyHistory	= "Standby History"
-L.NoHistoryAvailable	= "Sorry, no saved Raids with Standby Players"
+L.TabCategory_Standby	= "Standby-Bot"
+L.AreaGeneral		= "General Standby-Bot Settings"
+L.Enable		= "Enable standby-bot (!sb)"
+L.AreaStandbyHistory	= "Standby history"
+L.NoHistoryAvailable	= "There are no saved raids with standby players"
 
-L.SB_Documentation	= [[This Standby module allows a Raidleader to manage players who currently can't raid because of a full raid or something like this. All listed commands are for Guildchat use. 
+L.SB_Documentation	= [[This standby module allows raid leaders to manage players who currently can't raid because of a full raid or something like this. All listed commands can be used in the guildchat. 
 
 !sb               - shows a list of standby players
 !sb times         - shows the current standby times
-!sb add <nick>    - add a player to standby
-!sb del <nick>    - remove a player from stanbdy
-!sb save          - save the current state to history
-!sb reset         - clears all (just a failsave function)
-!sb history [id]  - show standby History
+!sb add <nick>    - adds a player to standby
+!sb del <nick>    - removes a player from standby
+!sb save          - saves the current status
+!sb reset         - clears the standby list
+!sb history [id]  - shows the standby history
 
-Players who want to get standby have to whisper '!sb' to the Player with the Standby response from GuildChat commands. A confirmation will be send to the player. Otherwise to leave the standby they have to whisper '!sb off'.
+Players who want to be standby have to whisper '!sb' to the player who is running this mod. A confirmation will be send to that player. To get off the standby-list they have to whisper '!sb off'.
 ]]
 
-L.Button_ShowClients		= "Show Clients"
-L.Local_NoRaid			= "You have to be in a Raidgroup in order to use this Function"
+L.Button_ShowClients		= "Show clients"
+L.Local_NoRaid			= "You have to be in a raid group to use this function"
 L.Local_Version			= "%s: %s"	-- Lacrosa: r123
 
 
