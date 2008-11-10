@@ -1,13 +1,21 @@
-Hello DeadlyBossMods User,
+Hello Deadly Boss Mods User,
 
-first of all we want to thank you for using DeadlyBossMods and we hope you enjoy playing World of Warcraft with our Mod. You can allways find the newest Versions, Informations and Help on our Website on www.deadlybossmods.com.
+first of all we want to thank you for using Deadly Boss Mods and we hope you enjoy playing World of 
 
-Please feel free to support us by joining our community forum and leave us some informations about your wishes. We allways search for new opinions to improof our BossMod. If you also want to support us private feel free to make a donation or visit our Sponsors by clicking the links on our Webside.
+Warcraft with our mod. You can always find the lteat versions, informations and help on our website 
 
-We build our DKP System to work with CT RaidTracker Import of EQDKP. It might be inperfect but it runs on our tests.
+www.deadlybossmods.com.
 
-To Automatical set Raid Event and Note you have to Import the CTRT Settings in the EQDKP Plus Administration Panel.
-To do that, you simply have to login as an Administrator and use the "CTRT Import" -> "Settings" Menu.
+Please feel free to support us by joining our community forum and leave us feedback and suggestions.
+
+We built our DKP system to work with the CT RaidTracker import of EQDKP. It might not be perfect but it 
+
+worked with our DKP systems ;)
+
+To automatically create raid event and notes you have to import the CTRT settings in the EQDKP Plus 
+
+administration panel.
+To do that, you simply have to login as an administrator and use the "CTRT Import" -> "Settings" menu.
 
 Event Import:
 -------------
@@ -103,5 +111,3 @@ Note Import:
 		<result>Teron Gorefiend</result>
 	</RaidNoteTrigger>
 </RaidNoteTriggers>
-
-
