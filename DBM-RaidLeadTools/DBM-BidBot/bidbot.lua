@@ -368,12 +368,11 @@ do
 			hiddenedit.itemtable.player = self.editBox:GetText()
 			if hiddenedit.itemtable.points and hiddenedit.itemtable.points > 0 then
 				-- don't save item when DKP are zero
-				table.insert(DBM_DKP_System_Settings.items, hiddenedit.itemtable)
+				DBM_AddItemToDKP(hiddenedit.itemtable)
 			end
 			hiddenedit.itemtable = nil
 		end,
 		OnHide = function(self)
-			--self:GetScript("OnAccept")(self)
 			hiddenedit:SetParent(UIParent)
 			hiddenedit:Hide()
 			hiddenedit:SetText("")
@@ -387,7 +386,6 @@ do
 	
 	function DoInjectToDKPSystem(itemtable)
 		if DBM_DKP_System_Settings and DBM_DKP_System_Settings.enabled then
-			if not DBM_DKP_System_Settings.items then DBM_DKP_System_Settings.items = {} end
 			hiddenedit.itemtable = {
 				item = itemtable.item,
 				points = itemtable.points,
@@ -504,7 +502,10 @@ do
 		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and BidBot_InProgress then
 			if arg1:find("^%d+$") then
 				-- here is a bid
-				AddBid(arg2, tonumber(arg1))
+				local biddkp = tonumber(arg1)
+				if biddkp > 0 and biddkp < 50000 then	-- don't think there are any guild with dkp scale > 50.000 *g*
+					AddBid(arg2, biddkp)
+				end
 			end
 
 		elseif settings.enabled and event == "CHAT_MSG_ADDON" then

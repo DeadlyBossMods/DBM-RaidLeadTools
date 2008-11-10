@@ -11,6 +11,8 @@ L.AcceptDKPValue		= "DKP"
 L.AreaHistory			= "Event History"
 L.History_Line			= "[%s][%s]: %s (%d)" 		-- [date][zone] Hogger (playercount)
 
+L.LocalError_AddItemNoRaid	= "There is no raid running to save this Item"
+
 -- GUI
 L.TabCategory_DKPSystem		= "DKP System"
 L.AreaGeneral			= "General DKP System Settings"
