@@ -8,8 +8,8 @@
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn)
 -- 
 -- The localizations are written by:
---    * deDE: Nitram/Tandanu
---    * enGB: Nitram/Tandanu
+--    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com		
+--    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
 --    * (add your names here!)
 --
 -- 
