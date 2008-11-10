@@ -41,9 +41,9 @@ local default_settings = {
 	start_event = true,		-- create a RaidStart Event
 	start_points = 10,		-- points to get for Raidstart
 	start_desc = "Raid Start",	-- name of the Event for EQDKP
-	
+
+	working_in = 0,			-- ID of actual History (for direct export to History)
 	items = {},			-- items wating for event
-	events = {},			-- current raid events
 	history = {}			-- history of raids
 }
 
@@ -61,7 +61,6 @@ local RaidStart
 local RaidEnd
 local GetRaidList
 local CreateEvent
-local AddItemForEvent
 local addDefaultOptions
 local ShowExportString
 
@@ -74,16 +73,16 @@ do
 			local button = area:CreateButton(L.Button_StartDKPTracking, 200, 25)
 			button:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -20)
 			button:SetScript("OnShow", function(self) 
-				if start_time > 0 or #settings.events > 0 then
+				if settings.working_in > 0 then
 					self:SetText(L.Button_StopDKPTracking)
 				else 
 					self:SetText(L.Button_StartDKPTracking)
 				end
 			end)
 			button:SetScript("OnClick", function(self)
-				if start_time > 0 or #settings.events > 0 then
-					DBM:AddMsg(start_time)
+				if settings.working_in > 0 then
 					RaidEnd()
+					settings.working_in = 0 
 					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 				else
 					if GetNumRaidMembers() == 0 then
@@ -260,8 +259,8 @@ function CreateExportString(raid_id, event_id)
 	if not raid_id or type(raid_id) ~= "number" then return "raid_id failed", 0, 0 end
 	if not event_id or type(event_id) ~= "number" then return "event_id failed", 0, 0 end
 
-	local raid = settings.history[raid_id or #settings.events]
-	local event = raid.events[event_id or #raid.events]
+	local raid = settings.history[raid_id]
+	local event = raid.events[event_id]
 	if not raid or not event then return "failed to find event" end
 	local text
 	local players = ""
@@ -350,40 +349,57 @@ function GetRaidList()
 	return raidusers
 end
 
-function CreateEvent(event)
-	lastevent = time()
-	if type(settings.events) ~= "table" then settings.events = {} end
-	if #settings.events == 0 then
-		if type(settings.items) == "table" and #settings.items > 0 then
-			-- first event, adding pending loots (like epic drops before the first boss)
-			event.items = {}
-			addDefaultOptions(event.items, settings.items)
-			table.wipe(settings.items)
-		end
-	else
-		if type(settings.items) == "table" and #settings.items > 0 then
-			local mevent = settings.events[#settings.events]
-			if not mevent.items or type(mevent.items) ~= "table" then mevent.items = {} end
-			for k,v in pairs(settings.items) do
-				table.insert(mevent.items, v)
-			end
-			table.wipe(settings.items)
-		end
+function DBM_AddItemToDKP(itemtable)
+	if not itemtable or type(itemtable) ~= "table" then
+		DBM:AddMsg("Function DBM_AddItemToDKP(itemtable) call failed. Debugstack: "..debugstack())
+		return false
+
+	elseif settings.working_in == 0 then
+		DBM:AddMsg(L.LocalError_AddItemNoRaid)
+		return false
 	end
-	if not event.members then event.members = GetRaidList() end
-	table.insert(settings.events, event)
+
+	if settings.working_in > 0 and settings.history[working_in] and #settings.history[settings.working_in].events > 0 then
+		local events = settings.history[settings.working_in].events
+		local event = events[#events]
+
+		if not event.items or type(event.items) ~= "table" then event.items = {} end
+		table.insert(event.items, itemtable)
+	else 
+		-- Item is queued to get added at the first event in this raid!
+		table.insert(settings.items, itemtable)
+	end
 end
 
-function AddItemForEvent(item)
+function CreateEvent(event)
+	if settings.working_in == 0 or not settings.history[settings.working_in] then
+		local history = {
+			time_start = start_time,
+			time_end = time(),
+			events = {}
+		}
+		table.insert(settings.history, history)
+		settings.working_in = #settings.history
+	end
+	lastevent = time()
+
+	if not event.items or type(event.items) ~= "table" then event.items = {} end
+	if type(settings.items) == "table" and #settings.items > 0 then
+		-- first event, adding pending loots (like epic drops before the first boss (and without start event))
+		addDefaultOptions(event.items, settings.items)
+		table.wipe(settings.items)
+	end
+
+	if not event.members then event.members = GetRaidList() end
+	table.insert(settings.history[settings.working_in].events, event)
 end
 
 function DBM_DKP_BossKill(bossmod)
-	local bossname = bossmod.localization.general.name
 	if settings.boss_event then
 		CreateEvent({
 			event_type = "bosskill",
 			zone = GetRealZoneText(),
-			description = settings.boss_desc:format(bossname),
+			description = settings.boss_desc:format(bossmod.localization.general.name),
 			points = settings.boss_points,
 			timestamp = time()
 		})		
@@ -395,6 +411,17 @@ DBM:RegisterCallback("kill", DBM_DKP_BossKill)
 function RaidStart()
 	lastevent = time()
 	start_time = time()
+
+	if settings.working_in == 0 or not settings.history[settings.working_in] then
+		local history = {
+			time_start = start_time,
+			time_end = time(),
+			events = {}
+		}
+		table.insert(settings.history, history)
+		settings.working_in = #settings.history
+	end
+
 	if settings.start_event then
 		CreateEvent({
 			event_type = "raidstart",
@@ -408,20 +435,13 @@ function RaidStart()
 end
 
 function RaidEnd()
-	local s_time = start_time
+	if settings.working_in == 0 or not settings.history[settings.working_in] then return end
+	
+	local raid = settings.history[settings.working_in]
+	raid.time_end = time()
+
+	DBM:AddMsg(L.Local_RaidClosed)
 	start_time = 0
-	if not #settings.events then return end
-	local history = {
-		time_start = s_time,
-		time_end = time(),
-		events = {}
-	}
-	for k,v in pairs(settings.events) do
-		table.insert(history.events, v)
-		settings.events[k] = nil
-	end
-	table.insert(settings.history, history)
-	DBM:AddMsg(L.Local_RaidSaved)
 	lastevent = 0
 end
 
@@ -460,22 +480,6 @@ do
 				timestamp = time(),
 			})
 		end
-		--[[
-		if start_time == 0 or not settings.time_event or settings.time_to_count < 5 then return end
-		timespend = timespend + e
-		if timespend/60 >= settings.time_to_count then
-			DBM:AddMsg(L.Local_TimeReached)
-			CreateEvent({
-				event_type = "",
-				zone = GetRealZoneText(),
-				description = settings.time_desc,
-				points = settings.time_points,
-				timestamp = time(),
-				members = GetRaidList()
-			})
-			timespend = e
-		end
-		--]]
 	end)
 	mainframe:RegisterEvent("ADDON_LOADED")
 end
