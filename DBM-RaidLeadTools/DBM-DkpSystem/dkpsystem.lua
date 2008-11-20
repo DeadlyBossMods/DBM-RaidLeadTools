@@ -231,7 +231,7 @@ do
 									self:AddMessage(" ")
 								end
 								local link = "|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h"
-								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, #event.members)  )
+								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, #event.members or 0)  )
 								lastzone = event.zone
 							end
 						end
