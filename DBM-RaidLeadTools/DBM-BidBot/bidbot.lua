@@ -57,6 +57,16 @@ local StartBidding
 local DoInjectToDKPSystem
 local sendchatmsg
 
+local function addDefaultOptions(t1, t2)
+	for i, v in pairs(t2) do
+		if t1[i] == nil then
+			t1[i] = v
+		elseif type(v) == "table" then
+			addDefaultOptions(v, t2[i])
+		end
+	end
+end
+
 do 
 	local function toboolean(var) 
 		if var then return true else return false end
@@ -77,6 +87,19 @@ do
 				else
 					DBM:AddMsg(L.Local_NoRaid)
 				end
+			end)
+
+			local resetbidbot = area:CreateButton(L.Button_ShowClients, 100, 16)
+			resetbidbot:SetPoint('BOTTOMRIGHT', area.frame, "BOTTOMRIGHT", -10, 10)
+			resetbidbot:SetNormalFontObject(GameFontNormalSmall)
+			resetbidbot:SetHighlightFontObject(GameFontNormalSmall)
+			resetbidbot:SetScript("OnClick", function(self) 
+				table.wipe(DBM_BidBot_ItemHistory)
+				table.wipe(DBM_BidBot_Settings)
+				addDefaultOptions(settings, default_settings)
+
+				DBM_GUI_OptionsFrame:Hide()
+				DBM_GUI_OptionsFrame:Show()				
 			end)
 
 			local enabled 		= area:CreateCheckButton(L.Enable, true)
@@ -459,16 +482,6 @@ do
 	end
 
  	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(msg) return (BidBot_InProgress and msg:find("^%d+$")) end)
-
-	local function addDefaultOptions(t1, t2)
-		for i, v in pairs(t2) do
-			if t1[i] == nil then
-				t1[i] = v
-			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
-			end
-		end
-	end
 
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
