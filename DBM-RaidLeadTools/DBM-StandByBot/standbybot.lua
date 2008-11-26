@@ -28,6 +28,7 @@ local mainframe = CreateFrame("frame", "DBM_StandyByBot", UIParent)
 
 local default_settings = {
 	enabled = false,
+	send_whisper = false,
 	sb_users = {},		-- currently standby
 	sb_times = {},		-- times since last reset
 	history = {},		-- save history on raidleave
@@ -49,7 +50,7 @@ do
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 220, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 240, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) 
@@ -64,13 +65,17 @@ do
 				
 			end)
 
+			local sendwhisper = area:CreateCheckButton(L.SendWhispers, true)
+			sendwhisper:SetScript("OnShow", function(self) self:SetChecked(settings.send_whisper) end)
+			sendwhisper:SetScript("OnClick", function(self) settings.send_whisper = not not self:GetChecked() end)
+
 			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
 			checkclients:SetPoint('TOPRIGHT', area.frame, "TOPRIGHT", -10, -10)
 			checkclients:SetNormalFontObject(GameFontNormalSmall)
 			checkclients:SetHighlightFontObject(GameFontNormalSmall)
 			checkclients:SetScript("OnClick", function(self) 
 				if DBM:IsInRaid() then
-					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
+					SendAddonMessage("DBM_SbBot", "showversion!", "RAID")
 				else
 					DBM:AddMsg(L.Local_NoRaid)
 				end
@@ -78,7 +83,7 @@ do
 
 			local ptext = panel:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
 			ptext:ClearAllPoints()
-			ptext:SetPoint('TOPLEFT', area.frame, "TOPLEFT", 20, -40)
+			ptext:SetPoint('TOPLEFT', area.frame, "TOPLEFT", 20, -60)
 			ptext:SetPoint('BOTTOMRIGHT', area.frame, "BOTTOMRIGHT", -20, 10)
 			
 		end
@@ -262,7 +267,7 @@ do
 			if name == UnitName("player") then 
 				SaveTimeHistory() 
 
-			elseif amIactive()then
+			elseif amIactive() and settings.send_whisper then
 				SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
 			end
 		end
@@ -335,7 +340,7 @@ do
 
 			elseif msg == "showversion!" then
 				if channel == "RAID" then
-					SendAddonMessage("DBM_BidBot", "version: r"..tostring(revision), "WHISPER", sender)
+					SendAddonMessage("DBM_SbBot", "version: r"..tostring(revision), "WHISPER", sender)
 				end
 
 			elseif msg:sub(0, 9) == "version: " then
