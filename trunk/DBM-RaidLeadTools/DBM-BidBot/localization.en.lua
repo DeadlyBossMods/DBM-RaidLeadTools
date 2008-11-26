@@ -41,6 +41,7 @@ L.NoHistoryAvailable		= "No History available"
 L.DateFormat			= "%c"
 
 L.Button_ShowClients		= "Show clients"
+L.Button_ResetClient		= "reset bidbot"
 L.Local_NoRaid			= "You have to be in a raid group to use this function"
-L.Local_Version			= "%s: %s"	-- Lacrosa: r123
+L.Local_Version			= "%s: %s"	-- Lacrosa: r123	(no translation required ^^)
 
