@@ -325,7 +325,7 @@ end
 
 function StartBidding()
 	if BidBot_InProgress then
-		DBM:AddMsg(L.Prefix..L.Whisper_InUse:format(CurrentItem)  )
+		DBM:AddMsg(L.Prefix..L.Whisper_InUse:format(CurrentItem))
 	else
 		local ItemLink = false
 		if BidBot_Queue[1] then
