@@ -43,6 +43,7 @@ L.Button_CreateEvent		= "Erzeuge Sonder-Event"
 L.Local_NoInformation		= "Bitte gebe die Punkte sowie den Namen für das Event an."
 L.Local_EventCreated		= "Das Event wurde erfolgreich erzeugt."
 L.Local_StartRaid		= "Neuer Raid gestartet."
+L.Local_Debug_NoRaid		= "Kein Spieler gefunden, event NICHT gespeichert!!! Bitte Event von Hand anlegen."
 
 L.AllPlayers			= "alle Spieler"
 
