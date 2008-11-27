@@ -360,7 +360,7 @@ function DBM_AddItemToDKP(itemtable)
 		return false
 	end
 
-	if settings.working_in > 0 and settings.history[working_in] and #settings.history[settings.working_in].events > 0 then
+	if settings.working_in > 0 and settings.history[settings.working_in] and #settings.history[settings.working_in].events > 0 then
 		local events = settings.history[settings.working_in].events
 		local event = events[#events]
 
@@ -392,7 +392,11 @@ function CreateEvent(event)
 	end
 
 	if not event.members then event.members = GetRaidList() end
-	table.insert(settings.history[settings.working_in].events, event)
+	if #event.members then
+		table.insert(settings.history[settings.working_in].events, event)
+	else
+		DBM:AddMsg(L.Local_Debug_NoRaid)
+	end
 end
 
 function DBM_DKP_BossKill(bossmod)
