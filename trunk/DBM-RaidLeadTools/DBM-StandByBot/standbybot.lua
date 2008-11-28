@@ -239,7 +239,7 @@ local function RemoveStandbyMember(name, quiet)
 			DBM:AddMsg( L.Local_RemovedPlayer:format(name) )
 
 			local minutes, hours = raidtime(sbtime)
-			SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours, minutes), "WHISPER", nil, name)
+			SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours or 0, minutes or 0), "WHISPER", nil, name)
 		end
 		return true
 	end

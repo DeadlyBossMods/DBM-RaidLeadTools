@@ -8,7 +8,7 @@ L.LeftRaidGroup 	= "Du hast die Schlachtgruppe verlassen. Bitte vergiss nicht di
 L.AddedSBUser		= "Du bist nun Standby. Bitte sei Verfügbar bis du benötigt wirst oder von der Liste entfernt wurdest."
 L.UserIsAllreadySB	= "Entschuldigung, aber du bist schon Standby. Wenn du dich von der SB Liste löschen willst verwende \"!sb off\"."
 L.NotStandby		= "Entschuldigung, du bist nicht Standby, um dich SB zu melden bitte \"!sb\" an mich flüstern."
-L.NoLongerStandby	= "Du bist nun nichtmehr Standby. Du warst für %02d Stunden und %02d Minuten Standby."
+L.NoLongerStandby	= "Du bist nun nichtmehr Standby. Du warst für %d Stunden und %d Minuten Standby."
 L.PostStandybyList	= "Aktuell Standby:"
 
 L.Local_AddedPlayer	= "[SB]: %s nun auf Standby."
