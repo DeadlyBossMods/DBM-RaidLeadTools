@@ -3,7 +3,7 @@ DBM_DKP_System_Translations = {}
 local L = DBM_DKP_System_Translations
 
 L.Local_TimeReached 		= "A new time-based raid event was created"
-L.Local_NoRaidPresent		= "Please join a raid group before starting tje DKP tracker"
+L.Local_NoRaidPresent		= "Please join a raid group before starting the DKP tracker"
 L.Local_RaidSaved		= "Successfully closed the current raid"
 
 L.AcceptDKPValue		= "DKP"
@@ -43,7 +43,7 @@ L.Button_CreateEvent		= "Create special event"
 L.Local_NoInformation		= "Please specify the points and the name for this event"
 L.Local_EventCreated		= "Your event was successfully created"
 L.Local_StartRaid		= "Started a new raid"
-L.Local_Debug_NoRaid		= "There is no player, event NOT created!!! please save this raidevent by yourself"
+L.Local_Debug_NoRaid		= "There are no players, event NOT created! Please create the event manually!"
 
 L.AllPlayers			= "all players"
 

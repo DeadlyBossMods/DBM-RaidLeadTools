@@ -3,11 +3,12 @@ DBM_StandbyBot_Translations = {}
 local L = DBM_StandbyBot_Translations
 
 L.InRaidGroup		= "Sorry, but you have to leave the raid group before going standby."
-L.LeftRaidGroup 	= "You have left our raidgroup. Please don't forget to whisper me \"!sb\" if you wan't to be standby."
+L.LeftRaidGroup 	= "You have left our raid group. Please don't forget to whisper me \"!sb\" if you wan't to be standby."
 L.AddedSBUser		= "You are now standby. Please stay available until we need you or removed from the SB-list."
 L.UserIsAllreadySB	= "Sorry, you are already standby. To remove yourself from the list please whisper me \"!sb off\"."
 L.NotStandby		= "Sorry, you are currently not registerd as a standby member. Please whisper me \"!sb\"."
-L.NoLongerStandby	= "You are no longer standby. Your were standby for %d hours and %02d minutes." -- |4hour:hours; and %02d |4minute:minutes;."
+L.NoLongerStandby	= "You are no longer standby. Your were standby for %d |4hour:hours; and %d |4minute:minutes;."
+
 L.PostStandybyList	= "Currently on standby:"
 
 L.Local_AddedPlayer	= "[SB]: %s is now standby."
