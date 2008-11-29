@@ -392,6 +392,7 @@ function CreateEvent(event)
 	end
 
 	if not event.members then event.members = GetRaidList() end
+	if type(event.members) ~= "table" then event.members = {} end
 	if #event.members then
 		table.insert(settings.history[settings.working_in].events, event)
 	else

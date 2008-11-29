@@ -216,8 +216,8 @@ function FormatPlayerName(name)
 end
 
 do
-	local GuildMates = {}
-	local GuildRank = {}
+	GuildMates = {}
+	GuildRank = {}
 	function UpdateGuildList()
 		table.wipe(GuildMates)
 		table.wipe(GuildRank)
