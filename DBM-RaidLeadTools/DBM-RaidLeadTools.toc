@@ -1,5 +1,6 @@
 ## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFRaid Lead Tools|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF團隊隊長工具|r
 ## Notes: Raidlead tools for Deadly Boss Mods (BidBot, StandByBot, ...)
 ## LoadOnDemand: 0
 ## RequiredDeps: DBM-Core
