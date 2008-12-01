@@ -1,4 +1,4 @@
--- **********************************************************
+﻿-- **********************************************************
 -- **                Deadly Boss Mods - GUI                **
 -- **             http://www.deadlybossmods.com            **
 -- **********************************************************
@@ -26,7 +26,11 @@
 --
 
 local function createpanel()
-	DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools", "option")
+	if GetLocale() ~= "zhTW" then
+		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools", "option")
+	else
+		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("團隊隊長工具", "option")
+	end
 end
 
 DBM:RegisterOnGuiLoadCallback(createpanel, 10)
