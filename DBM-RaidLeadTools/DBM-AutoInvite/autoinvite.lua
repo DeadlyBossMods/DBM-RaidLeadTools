@@ -10,6 +10,8 @@
 -- The localizations are written by:
 --    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com		
 --    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
+--    * zhCN: yleaf(yaroot@gmail.com)
+--    * zhTW: readjust by yleaf(yaroot@gmail.com)/Juha
 --    * (add your names here!)
 --
 -- 

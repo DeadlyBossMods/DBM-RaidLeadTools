@@ -1,7 +1,5 @@
-﻿if GetLocale() ~= "zhTW" then return end
-
-DBM_DKP_System_Translations = {}
-
+-- readjust by yleaf(yaroot@gmail.com)/Juha
+if GetLocale() ~= "zhTW" then return end
 local L = DBM_DKP_System_Translations
 
 L.Local_TimeReached 		= "新增了一個時間性團隊事件"
@@ -40,7 +38,7 @@ L.Button_StopDKPTracking	= "停止DKP追蹤"
 
 L.CustomPoint			= "給予的點數"
 L.CustomDescription		= "此次事件的敘述"
-L.CustomDefault			= "操作佳,快速,額外的DKP"
+L.CustomDefault			= "漂亮! 額外獎勵!"
 L.Button_CreateEvent		= "創造一個特殊的事件"
 L.Local_NoInformation		= "請註明點數以及該次事件的名稱"
 L.Local_EventCreated		= "你的事件已經成功的創造"
@@ -50,6 +48,3 @@ L.Local_Debug_NoRaid		= "沒有玩家,事件沒有成功創造!請手動創造�
 L.AllPlayers			= "所有玩家"
 
 L.TabCategory_History		= "團隊記錄"
-
-
-
