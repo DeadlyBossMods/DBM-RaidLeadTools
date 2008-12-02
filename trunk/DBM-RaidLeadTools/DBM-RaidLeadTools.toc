@@ -1,7 +1,10 @@
 ## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFRaid Lead Tools|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF�ζ������u��|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF团长工具箱|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF團長工具箱|r
 ## Notes: Raidlead tools for Deadly Boss Mods (BidBot, StandByBot, ...)
+## Notes-zhCN: DBM团长工具箱 (竞拍助手, DKP助手, 待命助手, 邀请助手)
+## Notes-zhTW: DBM團長工具箱 (競拍助手, DKP助手, 候補助手, 邀請助手)
 ## LoadOnDemand: 0
 ## RequiredDeps: DBM-Core
 ## DefaultState: enabled
