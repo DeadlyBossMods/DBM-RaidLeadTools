@@ -7,7 +7,7 @@ L.LeftRaidGroup 	= "You have left our raid group. Please don't forget to whisper
 L.AddedSBUser		= "You are now standby. Please stay available until we need you or removed from the SB-list."
 L.UserIsAllreadySB	= "Sorry, you are already standby. To remove yourself from the list please whisper me \"!sb off\"."
 L.NotStandby		= "Sorry, you are currently not registerd as a standby member. Please whisper me \"!sb\"."
-L.NoLongerStandby	= "You are no longer standby. Your were standby for %d |4hour:hours; and %d |4minute:minutes;."
+L.NoLongerStandby	= "You are no longer standby. Your were standby for %d hours and %d minutes."
 
 L.PostStandybyList	= "Currently on standby:"
 
