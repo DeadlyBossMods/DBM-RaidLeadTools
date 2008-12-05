@@ -26,3 +26,7 @@ L.PromoteGuildRank		= "按公会等级提升"
 L.PromoteByNameList		= "自动提升以下玩家为助理 (以空格隔开)"
 
 L.DontPromoteAnyRank		= "不自动提升所有公会等级"
+
+L.Button_ResetSettings		= "重置设置"
+
+

@@ -7,7 +7,7 @@ L.LeftRaidGroup 	= "你已經離開了團隊. 如果你不想候補請密語我\
 L.AddedSBUser		= "你現在在候補清單內. 請保持在線上直到我們需要你或者將你從候補清單中移除."
 L.UserIsAllreadySB	= "對不起, 你已在候補清單內. 密語我\"!sb off\"."
 L.NotStandby		= "對不起, 你不在候補清單中. 請密語與我聯繫."
-L.NoLongerStandby	= "你已經不在候補清單中了. 你候補了 %d |4hour:小時; and %02d |4minute:分鐘."
+L.NoLongerStandby	= "你已經不在候補清單中了. 你候補了 %d 小時 %d 分鐘."
 
 L.PostStandybyList	= "目前候補:"
 

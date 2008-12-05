@@ -26,3 +26,7 @@ L.PromoteGuildRank		= "根據公會階級提升"
 L.PromoteByNameList		= "自動提升以下玩家 (用空格分開)"
 
 L.DontPromoteAnyRank		= "不根據公會階級提升"
+
+L.Button_ResetSettings		= "重置設置"
+
+

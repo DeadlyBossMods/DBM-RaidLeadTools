@@ -7,7 +7,7 @@ L.LeftRaidGroup 	= "你已经离开了团队. 如果你不想待命请密语我\
 L.AddedSBUser		= "你现在在待命列表内. 请一直在线直到我们需要你或者将你从待命列表中移除."
 L.UserIsAllreadySB	= "对不起, 你已在待命列表内. 密语我\"!sb off\"."
 L.NotStandby		= "对不起, 你不在待命列表中. 请密语联系我."
-L.NoLongerStandby	= "你已经不在待命列表中了. 你待命了 %d |4hour:小时; and %02d |4minute:分钟."
+L.NoLongerStandby	= "你已经不在待命列表中了. 你待命了 %d 小时 %d 分钟."
 
 L.PostStandybyList	= "当前待命:"
 
