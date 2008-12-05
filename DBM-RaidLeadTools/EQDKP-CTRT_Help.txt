@@ -23,91 +23,107 @@ Event Import:
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <EventTriggers>
 	<EventTrigger>
-		<trigger>Black Temple</trigger>
-		<result>Black Temple</result>
+		<trigger>Malygos</trigger>
+		<result>Malygos</result>
+	</EventTrigger>
+	<EventTrigger>
+		<trigger>Naxxramas</trigger>
+		<result>Naxxramas</result>
 	</EventTrigger>
 	<EventTrigger>
 		<trigger>Raid Start</trigger>
 		<result>Raid Start</result>
 	</EventTrigger>
 	<EventTrigger>
-		<trigger>Sunwell Plateau</trigger>
-		<result>Sunwell Plateau</result>
+		<trigger>Sartharion</trigger>
+		<result>Sartharion</result>
 	</EventTrigger>
 </EventTriggers>
 
 
 Note Import:
 ------------
-
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <RaidNoteTriggers>
 	<RaidNoteTrigger>
-		<trigger>Akama</trigger>
-		<result>Akama</result>
+		<trigger>Anub'Rekhan</trigger>
+		<result>Anub'Rekhan</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Brutallus</trigger>
-		<result>Brutallus</result>
+		<trigger>Flickwerk</trigger>
+		<result>Patchwerk</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Entropius</trigger>
-		<result>M'uru</result>
+		<trigger>Four Horsemen</trigger>
+		<result>Four Horsemen</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Essence of Souls</trigger>
-		<result>Essence of Souls</result>
+		<trigger>Gluth</trigger>
+		<result>Gluth</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Felmyst</trigger>
-		<result>Felmyst</result>
+		<trigger>Gothik</trigger>
+		<result>Gothik</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Grand Warlock Alythess</trigger>
-		<result>Eredar Twins</result>
+		<trigger>Grand Widow Faerlina</trigger>
+		<result>Grand Widow Faerlina</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Gurtogg Bloodboil</trigger>
-		<result>Gurtogg Bloodboil</result>
+		<trigger>Grobbulus</trigger>
+		<result>Grobbulus</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>High Warlord Naj'entus</trigger>
-		<result>High Warlord Naj'entus</result>
+		<trigger>Großwitwe Faerlina</trigger>
+		<result>Grand Widow Faerlina</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Illidan</trigger>
-		<result>Illidan Stormrage</result>
+		<trigger>Heigan der Unreine</trigger>
+		<result>Heigan the Unclean</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Illidari Council</trigger>
-		<result>Illidari Council</result>
+		<trigger>Heigan the Unclean</trigger>
+		<result>Heigan the Unclean</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Kalecgos</trigger>
-		<result>Kalecgos</result>
+		<trigger>Kel'Thuzad</trigger>
+		<result>Kel'Thuzad</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Kil'jaeden</trigger>
-		<result>Kil'jaeden</result>
+		<trigger>Loatheb</trigger>
+		<result>Loatheb</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Lady Sacrolash</trigger>
-		<result>Eredar Twins</result>
+		<trigger>Maexxna</trigger>
+		<result>Maexxna</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>M'uru</trigger>
-		<result>M'uru</result>
+		<trigger>Noth der Seuchenbringer</trigger>
+		<result>Noth the Plaguebringer</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Mother Shahraz</trigger>
-		<result>Mother Shahraz</result>
+		<trigger>Noth the Plaguebringer</trigger>
+		<result>Noth the Plaguebringer</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Supremus</trigger>
-		<result>Supremus</result>
+		<trigger>Patchwerk</trigger>
+		<result>Patchwerk</result>
 	</RaidNoteTrigger>
 	<RaidNoteTrigger>
-		<trigger>Teron Gorefiend</trigger>
-		<result>Teron Gorefiend</result>
+		<trigger>Razuvious</trigger>
+		<result>Razuvious</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Sapphiron</trigger>
+		<result>Sapphiron</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Sartharion</trigger>
+		<result>Sartharion</result>
+	</RaidNoteTrigger>
+	<RaidNoteTrigger>
+		<trigger>Thaddius</trigger>
+		<result>Thaddius</result>
 	</RaidNoteTrigger>
 </RaidNoteTriggers>
+

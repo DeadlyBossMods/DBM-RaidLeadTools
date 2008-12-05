@@ -29,6 +29,7 @@
 
 local default_settings = {
 	enabled = false,
+	grpandraid = false,		-- track 5ppl inis also!
 	sb_as_raid = true,		-- count Standby Players as Raid Members
 
 	time_event = false,		-- count raid attendance by time and bosskills
@@ -144,12 +145,16 @@ do
 			end)
 		end
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 300, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 320, true)
 
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
 			
+			local in5pplinis = area:CreateCheckButton(L.Enable_5ppl_tracking, true)
+			in5pplinis:SetScript("OnShow", function(self) self:SetChecked(settings.grpandraid) end)
+			in5pplinis:SetScript("OnClick", function(self) settings.grpandraid = not not self:GetChecked() end)
+
 			local sbusers = area:CreateCheckButton(L.Enable_SB_Users, true)
 			sbusers:SetScript("OnShow", function(self) self:SetChecked(settings.sb_as_raid) end)
 			sbusers:SetScript("OnClick", function(self) settings.sb_as_raid = not not self:GetChecked() end)
@@ -341,6 +346,15 @@ function GetRaidList()
 	for i=1, GetNumRaidMembers(), 1 do
 		if UnitName("raid"..i) then
 			table.insert(raidusers, (UnitName("raid"..i)))
+		end
+	end
+
+	if settings.grpandraid then
+		table.insert(raidusers, (UnitName("player")) )
+		for i=1, GetNumPartyMembers(), 1 do
+			if UnitName("party"..i) then
+				table.insert(raidusers, (UnitName("party"..i)))
+			end
 		end
 	end
 

@@ -8,7 +8,7 @@ L.AreaGeneral 			= "Allgemeine Einladungs-Einstellungen"
 L.AllowGuildMates 		= "Erlaube Auto-Einladungen durch Gildenmitglieder"
 L.AllowFriends 			= "Erlaube Auto-Einladungen durch Freunde"
 L.AllowOthers 			= "Erlaube Auto-Einladungen durch jeden"
-L.Activate 			= "Aktivieren Auto-Einladungen durch Schlüsselwort"
+L.Activate 			= "Aktiviere Einladungen durch Schlüsselwort"
 L.KeyWord 			= "Schlüsselwort zum flüstern für automatische Einladung"
 L.InviteFailed 			= "Kann Spieler %s nicht einladen"
 L.ConvertRaid 			= "Wandle Gruppe zu Schlachtzug um"
@@ -26,8 +26,8 @@ L.PromoteEveryone		= "Setze alle neuen Spieler als Assistent (nicht empfohlen)"
 L.PromoteGuildRank		= "Befördere anhand des Gildenrangs"
 L.PromoteByNameList		= "Automatische Beförderung der Spieler (getrennt durch Leerzeichen)"
 
-L.DontPromoteAnyRank		= "Keine automatische Beförderung durch Gildenrang"
+L.DontPromoteAnyRank		= "Keine Beförderung durch Gildenrang"
 
-
+L.Button_ResetSettings		= "Einstellungen zurücksetzen"
 
 
