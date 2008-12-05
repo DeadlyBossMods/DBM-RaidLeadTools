@@ -14,7 +14,7 @@ L.Message_ItemGoesTo		= "%s geht an %s für %d Punkte. Gratz!"
 L.Message_NoBidMade		= "Keiner hat auf %s geboten."
 
 L.Message_Biddings		= "%d. %s hat %d DKP geboten."
-L.Message_BiddingsVisible	= "%d von ingesamt %d sichtbar."
+L.Message_BiddingsVisible	= "es wurden nur %d Gebote angezeigt."
 L.Message_BidPubMessage		= "Neues Gebot: %s hat %d DKP geboten."
 
 L.Disenchant			= "Disenchant"
@@ -39,7 +39,6 @@ L.OutputBids			= "Zeige Top X gebote (standard Top 3)"
 L.PublicBids			= "Zeige Gebote öffentlich im Chat"
 L.PayWhatYouBid			= "Bezahlt wird was geboten wird (ansonsten zweites gebot +1)"
 L.NoHistoryAvailable		= "Es ist keine Historie verfügbar"
-L.DateFormat			= "%c"
 
 L.Button_ShowClients		= "Zeige BidBot Versionen"
 L.Button_ResetClient		= "Einstellungen zurücksetzen"

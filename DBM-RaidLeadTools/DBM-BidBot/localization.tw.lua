@@ -38,9 +38,9 @@ L.OutputBids			= "輸出多少個最高出價者 (預設 3)"
 L.PublicBids			= "發表公開競標到頻道"
 L.PayWhatYouBid			= "支付的競標價格 (否則第二次出價+1)"
 L.NoHistoryAvailable		= "沒有有效記錄"
-L.DateFormat			= "%c"
 
 L.Button_ShowClients		= "顯示插件版本"
 L.Button_ResetClient		= "重設競拍助手"
 L.Local_NoRaid			= "仕你必需在一個團隊才能使用這個功能"
-L.Local_Version			= "%s: %s"	-- Lacrosa: r123	(no translation required ^^)
+
+

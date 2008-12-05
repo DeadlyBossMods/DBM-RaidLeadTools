@@ -38,10 +38,12 @@ L.OutputBids			= "How many top biddings to output (default top 3)"
 L.PublicBids			= "Post bids to chat for public bidding"
 L.PayWhatYouBid			= "Pay price of bid, (otherwise second bid + 1)"
 L.NoHistoryAvailable		= "No history available"
-L.DateFormat			= "%c"
 
 L.Button_ShowClients		= "Show clients"
 L.Button_ResetClient		= "reset bidbot"
 L.Local_NoRaid			= "You have to be in a raid group to use this function"
-L.Local_Version			= "%s: %s"	-- Lacrosa: r123	(no translation required ^^)
+
+-- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
+L.DateFormat			= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
+L.Local_Version			= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
 
