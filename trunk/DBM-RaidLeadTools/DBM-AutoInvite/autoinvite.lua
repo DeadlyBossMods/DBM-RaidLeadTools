@@ -59,7 +59,7 @@ local IsFriend
 local DoInvite
 local slashfunction
 local FormatPlayerName
-
+local addDefaultOptions
 
 function slashfunction()
 	if GetNumRaidMembers() == 0 then
@@ -165,6 +165,7 @@ do
 			other:SetScript("OnShow", 		function(self) self:SetChecked(settings.other) end)
 			keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
 			keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
+
 		end
 		do
 			local area = panel:CreateArea(L.AreaRaidOptions, nil, 130, true)
@@ -198,6 +199,20 @@ do
 			end)
 			PromoteByNameList:SetScript("OnShow", function(self) self:SetText( concat(settings.promote_names, " ", true) ) end)
 			PromoteByNameList:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 27, -90)
+
+
+			local resettool = area:CreateButton(L.Button_ResetSettings, 100, 16)
+			resettool:SetPoint('BOTTOMRIGHT', area.frame, "TOPRIGHT", 0, 0)
+			resettool:SetNormalFontObject(GameFontNormalSmall)
+			resettool:SetHighlightFontObject(GameFontNormalSmall)
+			resettool:SetScript("OnClick", function(self) 
+				table.wipe(DBM_AutoInvite_Settings)
+				addDefaultOptions(settings, default_settings)
+
+				DBM_GUI_OptionsFrame:Hide()
+				DBM_GUI_OptionsFrame:Show()				
+			end)
+			
 		end
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 15)
@@ -214,6 +229,16 @@ function FormatPlayerName(name)
 		return name
 	else 
 		return ""
+	end
+end
+
+function addDefaultOptions(t1, t2)
+	for i, v in pairs(t2) do
+		if t1[i] == nil then
+			t1[i] = v
+		elseif type(v) == "table" then
+			addDefaultOptions(v, t2[i])
+		end
 	end
 end
 
@@ -314,16 +339,6 @@ do
 				GuildRoster()
 			end
 			if doautoinvite then DoInvite(name) end
-		end
-	end
-
-	local function addDefaultOptions(t1, t2)
-		for i, v in pairs(t2) do
-			if t1[i] == nil then
-				t1[i] = v
-			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
-			end
 		end
 	end
 

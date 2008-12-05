@@ -21,10 +21,11 @@ L.Enable_StarEvent		= "Erzeuge Event bei Raidstart"
 L.Enable_TimeEvents		= "Erzeuge Event nach Zeit (z.B. 1x pro Stunde)"
 L.Enable_BossEvents		= "Erzeuge Event bei Bosskills"
 L.Enable_SB_Users		= "Werte Standby-Spieler als Member"
+L.Enable_5ppl_tracking		= "Aktiviere DKP für 5 Spieler Instanzen"
 
 L.BossPoints			= "Punkte je Bosskill"
 L.TimePoints			= "Punkte je Zeitevent (z.B. 10 DKP pro Stunde)"
-L.StartPoints			= "Punkte bei Schlachtzug-Start"
+L.StartPoints			= "Punkte bei Start"
 
 L.BossDescription		= "Beschreibung für BossKills (%s für Bossnamen)"
 L.TimeDescription		= "Beschreibung für Zeit Events"

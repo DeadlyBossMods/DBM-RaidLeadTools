@@ -21,6 +21,7 @@ L.Enable_StarEvent		= "Create event on raid start"
 L.Enable_TimeEvents		= "Create events based on time (e.g. 1 event per hour)"
 L.Enable_BossEvents		= "Create events on boss kills"
 L.Enable_SB_Users		= "Count players on standby as raid members"
+L.Enable_5ppl_tracking		= "Enable DKP Tracking in 5ppl Instances"
 
 L.BossPoints			= "Points per boss kill"
 L.TimePoints			= "Points per time event (e.g. 10 DKP per hour)"

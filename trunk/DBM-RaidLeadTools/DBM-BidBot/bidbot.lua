@@ -91,7 +91,7 @@ do
 				end
 			end)
 
-			local resetbidbot = area:CreateButton(L.Button_ShowClients, 100, 16)
+			local resetbidbot = area:CreateButton(L.Button_ResetClient, 100, 16)
 			resetbidbot:SetPoint('BOTTOMRIGHT', area.frame, "BOTTOMRIGHT", -10, 10)
 			resetbidbot:SetNormalFontObject(GameFontNormalSmall)
 			resetbidbot:SetHighlightFontObject(GameFontNormalSmall)

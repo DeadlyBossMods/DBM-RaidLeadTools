@@ -27,4 +27,6 @@ L.PromoteByNameList		= "Auto-promote the following players (separate by space)"
 
 L.DontPromoteAnyRank		= "No auto-promote by guild rank"
 
+L.Button_ResetSettings		= "reset settings"
+
 
