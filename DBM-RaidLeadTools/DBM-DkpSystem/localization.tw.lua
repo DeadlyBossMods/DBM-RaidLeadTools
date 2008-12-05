@@ -21,6 +21,7 @@ L.Enable_StarEvent		= "在團隊開始時創造事件"
 L.Enable_TimeEvents		= "根據時間創造事件(例如:1小時1事件)"
 L.Enable_BossEvents		= "根據BOSS擊殺創造事件"
 L.Enable_SB_Users		= "計算就位的團隊成員"
+L.Enable_5ppl_tracking		= "5人小隊副本中開啟DKP追蹤"
 
 L.BossPoints			= "每一首領擊殺的點數"
 L.TimePoints			= "每一時段的點數(例如:1小時10DKP)"
@@ -48,3 +49,6 @@ L.Local_Debug_NoRaid		= "沒有玩家,事件沒有成功創造!請手動創造�
 L.AllPlayers			= "所有玩家"
 
 L.TabCategory_History		= "團隊記錄"
+
+
+

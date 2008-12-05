@@ -21,6 +21,7 @@ L.Enable_StarEvent		= "RAID开始时创建事件"
 L.Enable_TimeEvents		= "定时创建记录 (例如每小时创建一次记录)"
 L.Enable_BossEvents		= "BOSS击杀时创建记录"
 L.Enable_SB_Users		= "将待命列表中的玩家也保存到记录中"
+L.Enable_5ppl_tracking		= "5人小队副本中启用DKP追踪"
 
 L.BossPoints			= "击杀分"
 L.TimePoints			= "时间分 (例如每小时10分)"
@@ -48,3 +49,6 @@ L.Local_Debug_NoRaid		= "沒有玩家, 记录创建失败! 请手动创建!"
 L.AllPlayers			= "所有玩家"
 
 L.TabCategory_History		= "RAID历史"
+
+
+
