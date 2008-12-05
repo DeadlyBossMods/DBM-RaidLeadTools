@@ -38,9 +38,8 @@ L.OutputBids			= "通告最高出价者数量 (默认前三位)"
 L.PublicBids			= "发布明拍出价到聊天频道"
 L.PayWhatYouBid			= "输入你出的价格, (否则为比第二位多1)"
 L.NoHistoryAvailable		= "没有物品历史"
-L.DateFormat			= "%c"
 
 L.Button_ShowClients		= "显示插件版本"
 L.Button_ResetClient		= "重设竞拍助手"
 L.Local_NoRaid			= "在团队中才能使用此功能"
-L.Local_Version			= "%s: %s"	-- Lacrosa: r123
+
