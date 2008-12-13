@@ -239,7 +239,7 @@ do
 								end
 								local link = "|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h"
 								if type(event.members) ~= "table" then event.members = {} end
-								self:AddMessage( link..L.History_Line:format(date("%c", event.timestamp), event.zone, event.description, (#event.members or 0))  )
+								self:AddMessage( link..L.History_Line:format(date(L.DateFormat, event.timestamp), event.zone, event.description, (#event.members or 0))  )
 								lastzone = event.zone
 							end
 						end
@@ -272,8 +272,8 @@ function CreateExportString(raid_id, event_id)
 	if not raid or not event then return "failed to find event" end
 	local text
 	local players = ""
-	local raid_start = date("%c", event.timestamp)
-	local raid_end = date("%c", event.timestamp)
+	local raid_start = date(L.DateFormat, event.timestamp)
+	local raid_end = date(L.DateFormat, event.timestamp)
 
 	-- Creating RaidEvent 
 	text = "<RaidInfo><key>"..raid_start.."</key><start>"..raid_start.."</start><end>"..raid_end.."</end><zone>"..(event.zone or "").."</zone><note>"..(event.points or "").."</note><PlayerInfos>"
@@ -286,7 +286,7 @@ function CreateExportString(raid_id, event_id)
 	text = text.."</PlayerInfos>"
 
 	-- Adding BossKill
-	text = text.."<BossKills><key1><name>"..event.description.."</name><time>"..date("%c", event.timestamp).."</time><attendees/></key1></BossKills>"
+	text = text.."<BossKills><key1><name>"..event.description.."</name><time>"..date(L.DateFormat, event.timestamp).."</time><attendees/></key1></BossKills>"
 
 	-- Adding the CTRaid Stuff for their Player Leave/Join Events
 	text = text.."<note><![CDATA["..(event.zone or "").." - "..(event.description or "").."]]></note>"
@@ -301,7 +301,7 @@ function CreateExportString(raid_id, event_id)
 
 		text = text.."<key"..k.."><ItemName>"..(ItemName or "?").."</ItemName><ItemID>"..ItemID.."</ItemID>"
 		text = text.."<Icon></Icon><Class></Class><SubClass></SubClass><Color>"..color.."</Color><Count>1</Count>"
-		text = text.."<Player>"..item.player.."</Player><Costs>"..item.points.."</Costs><Time>"..date("%c", event.timestamp).."</Time>"
+		text = text.."<Player>"..item.player.."</Player><Costs>"..item.points.."</Costs><Time>"..date(L.DateFormat, event.timestamp).."</Time>"
 		text = text.."<Zone></Zone><Boss>"..event.description.."</Boss>"
 		text = text.."<Note><![CDATA[ - Zone: "..(event.zone or "unknown").." - Boss: "..(event.description or "unknown").." - "..(item.points or 0).." DKP]]></Note>"
 		--text = text.."<Note>"..event.description.."</Note>"
