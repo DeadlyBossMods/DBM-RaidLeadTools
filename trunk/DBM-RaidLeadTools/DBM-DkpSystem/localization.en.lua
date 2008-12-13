@@ -50,5 +50,7 @@ L.AllPlayers			= "all players"
 
 L.TabCategory_History		= "Raid History"
 
-
+-- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
+L.DateFormat			= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
+L.Local_Version			= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!
 
