@@ -293,6 +293,8 @@ do
 		end
 	end
 
+ 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(msg) return msg:find("^!sb") end)
+
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon

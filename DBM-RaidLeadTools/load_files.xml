@@ -29,4 +29,9 @@
 <Script file="DBM-DkpSystem\localization.tw.lua"/>
 <Script file="DBM-DkpSystem\dkpsystem.lua"/>
 
+<!-- Buff checking System -->
+<!--
+<Script file="DBM-Buffs\localization.en.lua"/>
+<Script file="DBM-Buffs\buffs.lua"/>
+-->
 </Ui>

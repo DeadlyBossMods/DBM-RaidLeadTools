@@ -214,6 +214,20 @@ do
 			timedescr:SetPoint("TOPLEFT", timecount, "TOPRIGHT", 40, 0)
 			timedescr:SetScript("OnShow", function(self) self:SetText(settings.time_desc) end)
 			timedescr:SetScript("OnTextChanged", function(self) settings.time_desc = self:GetText() end)
+
+			local resetdkphistory = area:CreateButton(L.Button_ResetHistory, 100, 16)
+			resetdkphistory:SetPoint('BOTTOMRIGHT', area.frame, "TOPRIGHT", 0, 0)
+			resetdkphistory:SetNormalFontObject(GameFontNormalSmall)
+			resetdkphistory:SetHighlightFontObject(GameFontNormalSmall)
+			resetdkphistory:SetScript("OnClick", function(self) 
+				table.wipe(settings.items)
+				table.wipe(settings.history)
+				addDefaultOptions(settings, default_settings)
+
+				DBM_GUI_OptionsFrame:Hide()
+				DBM_GUI_OptionsFrame:Show()				
+			end)
+
 		end
 		panel:SetMyOwnHeight()
 
@@ -244,6 +258,8 @@ do
 							end
 						end
 					end
+				else
+					self:SetMaxLines(2)
 				end
 			end)
 			history:SetScript("OnHyperlinkClick", function(self, link, string, button, ...)
