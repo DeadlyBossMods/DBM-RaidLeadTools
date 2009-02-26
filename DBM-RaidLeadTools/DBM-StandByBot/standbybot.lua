@@ -293,7 +293,12 @@ do
 		end
 	end
 
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(self, event, msg, ...) return msg:find("^!sb"), ... end)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", 
+		function(self, event, ...) 
+			local msg = ...
+			return msg:find("^!sb"), ... 
+		end
+	)
 
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
