@@ -483,7 +483,7 @@ do
 		end
 	end
 
- 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(msg) return (BidBot_InProgress and msg:find("^%d+$")) end)
+ 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(self, event, msg, ...) return (BidBot_InProgress and msg:find("^%d+$")), ... end)
 
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
