@@ -243,8 +243,8 @@ function addDefaultOptions(t1, t2)
 end
 
 do
-	GuildMates = {}
-	GuildRank = {}
+	local GuildMates = {}
+	local GuildRank = {}
 	function UpdateGuildList()
 		table.wipe(GuildMates)
 		table.wipe(GuildRank)
