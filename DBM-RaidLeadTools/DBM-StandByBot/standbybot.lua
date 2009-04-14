@@ -296,7 +296,11 @@ do
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", 
 		function(self, event, ...) 
 			local msg = ...
-			return msg:find("^!sb"), ... 
+			if not msg then -- old style pre ulduar patch
+				return self:find("^!sb")
+			else
+				return msg:find("^!sb"), ... 
+			end
 		end
 	)
 
