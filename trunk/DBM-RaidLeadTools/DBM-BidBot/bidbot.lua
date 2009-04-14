@@ -486,7 +486,11 @@ do
  	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", 
 		function(self, event, ...) 
 			local msg = ...
-			return (BidBot_InProgress and msg:find("^%d+$")), ... 
+			if not msg then
+				return (BidBot_InProgress and self:find("^%d+$"))
+			else
+				return (BidBot_InProgress and msg:find("^%d+$")), ... 
+			end
 		end
 	)
 
