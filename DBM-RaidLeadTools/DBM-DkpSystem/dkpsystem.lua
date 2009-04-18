@@ -47,7 +47,9 @@ local default_settings = {
 
 	working_in = 0,			-- ID of actual History (for direct export to History)
 	items = {},			-- items wating for event
-	history = {}			-- history of raids
+	history = {},			-- history of raids
+
+	lastevent = 0			-- we want to save our lastevnet
 }
 
 DBM_DKP_System_Settings = {}
@@ -55,7 +57,7 @@ local settings = default_settings
 
 local L = DBM_DKP_System_Translations
 
-local lastevent = 0
+--local lastevent = 0
 local timespend = 0
 local start_time = 0
 
@@ -414,7 +416,7 @@ function CreateEvent(event)
 		table.insert(settings.history, history)
 		settings.working_in = #settings.history
 	end
-	lastevent = time()
+	settings.lastevent = time()
 
 	if not event.items or type(event.items) ~= "table" then event.items = {} end
 	if type(settings.items) == "table" and #settings.items > 0 then
@@ -447,7 +449,7 @@ DBM:RegisterCallback("kill", DBM_DKP_BossKill)
 
 
 function RaidStart()
-	lastevent = time()
+	settings.lastevent = time()
 	start_time = time()
 
 	if settings.working_in == 0 or not settings.history[settings.working_in] then
@@ -480,7 +482,7 @@ function RaidEnd()
 
 	DBM:AddMsg(L.Local_RaidSaved)
 	start_time = 0
-	lastevent = 0
+	settings.lastevent = 0
 end
 
 function addDefaultOptions(t1, t2)
@@ -506,9 +508,9 @@ do
 		end
 	end)
 	mainframe:SetScript("OnUpdate", function(self, e)
-		if lastevent == 0 then return end
+		if settings.lastevent == 0 then return end
 
-		if time() - lastevent > (settings.time_to_count*60) then
+		if time() - settings.lastevent > (settings.time_to_count*60) then
 			DBM:AddMsg(L.Local_TimeReached)
 			CreateEvent({
 				event_type = "",
