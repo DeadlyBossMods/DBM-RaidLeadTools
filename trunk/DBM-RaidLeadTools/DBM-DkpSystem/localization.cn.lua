@@ -41,6 +41,7 @@ L.CustomPoint			= "额外奖励"
 L.CustomDescription		= "说明"
 L.CustomDefault			= "漂亮! 额外奖励!"
 L.Button_CreateEvent		= "创建特殊记录"
+L.Button_ResetHistory		= "清除历史记录"
 L.Local_NoInformation		= "请指定分数和记录名字"
 L.Local_EventCreated		= "记录成功创建"
 L.Local_StartRaid		= "开始一个新的RAID"
@@ -49,6 +50,4 @@ L.Local_Debug_NoRaid		= "沒有玩家, 记录创建失败! 请手动创建!"
 L.AllPlayers			= "所有玩家"
 
 L.TabCategory_History		= "RAID历史"
-
-
 
