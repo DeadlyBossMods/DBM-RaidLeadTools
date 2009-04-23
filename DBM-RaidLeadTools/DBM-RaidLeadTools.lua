@@ -26,10 +26,11 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 --
+local Revision = ("$Revision$"):sub(12, -3)
 
 local function createpanel()
 	if GetLocale() ~= "zhTW" then
-		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools", "option")
+		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools "..Revision, "option")
 	else
 		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("團隊隊長工具", "option")
 	end
