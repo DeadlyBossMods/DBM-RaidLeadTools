@@ -48,6 +48,9 @@ local revision = ("$Revision$"):sub(12, -3)
 local SaveTimeHistory
 local amIactive
 
+local addDefaultOptions
+
+
 do 
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
@@ -92,6 +95,20 @@ do
 		do	
 			local area = panel:CreateArea(L.AreaStandbyHistory, nil, 260, true)
 
+			local resetdkphistory = area:CreateButton(L.Button_ResetHistory, 100, 16)
+			resetdkphistory:SetPoint('BOTTOMRIGHT', area.frame, "TOPRIGHT", 0, 0)
+			resetdkphistory:SetNormalFontObject(GameFontNormalSmall)
+			resetdkphistory:SetHighlightFontObject(GameFontNormalSmall)
+			resetdkphistory:SetScript("OnClick", function(self) 
+				table.wipe(settings.log)
+				table.wipe(settings.history)
+				table.wipe(settings.sb_users)
+				table.wipe(settings.sb_times)
+
+				DBM_GUI_OptionsFrame:Hide()
+				DBM_GUI_OptionsFrame:Show()				
+			end)
+
 			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220, nil, nil, GameFontHighlightSmall)
 			history:ClearAllPoints()
 			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
@@ -107,6 +124,16 @@ do
 		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
+end
+
+function addDefaultOptions(t1, t2)
+	for i, v in pairs(t2) do
+		if t1[i] == nil then
+			t1[i] = v
+		elseif type(v) == "table" then
+			addDefaultOptions(v, t2[i])
+		end
+	end
 end
 
 local function FormatPlayerName(name)
@@ -277,16 +304,7 @@ do
 	DBM:RegisterCallback("raidJoin", RemoveStandbyMember)
 end
 
-do
-	local function addDefaultOptions(t1, t2)
-		for i, v in pairs(t2) do
-			if t1[i] == nil then
-				t1[i] = v
-			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
-			end
-		end
-	end
+do	
 	local function RegisterEvents(...)
 		for i = 1, select("#", ...) do
 			mainframe:RegisterEvent(select(i, ...))
