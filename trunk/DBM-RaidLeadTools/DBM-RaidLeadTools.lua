@@ -30,9 +30,9 @@ local Revision = ("$Revision$"):sub(12, -3)
 
 local function createpanel()
 	if GetLocale() ~= "zhTW" then
-		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools "..Revision, "option")
+		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools - r"..Revision, "option")
 	else
-		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("團隊隊長工具", "option")
+		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("團隊隊長工具 - r"..Revision, "option")
 	end
 end
 
