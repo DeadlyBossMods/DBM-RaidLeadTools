@@ -35,6 +35,7 @@ L.SendWhispers		= "Send information whisper on Raidleave to players"
 L.AreaStandbyHistory	= "Standby history"
 L.NoHistoryAvailable	= "There are no saved raids with standby players"
 
+L.Button_ResetHistory	= "reset"
 L.SB_Documentation	= [[This standby module allows raid leaders to manage players who currently can't raid because of a full raid or something like this. All listed commands can be used in the guildchat. 
 
 !sb               - shows a list of standby players
