@@ -5,6 +5,7 @@ local L = DBM_BidBot_Translations
 
 L.Whisper_Queue 		= "Zur Zeit wird noch geboten. Item(s) landen in der Warteschlange."
 L.Whisper_Bid_OK 		= "Dein Gebot von %d DKP wurde akzeptiert."
+L.Whisper_Bid_DEL		= "Dein Gebot wurde gelöscht!"
 L.Whisper_InUse 		= "Zur Zeit wird noch auf %s geboten."
 
 L.Message_StartBidding		= "Jetzt für %s bei %s bieten! Mindestgebot: %d"

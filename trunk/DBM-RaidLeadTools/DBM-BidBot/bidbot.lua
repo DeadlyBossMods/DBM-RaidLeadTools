@@ -54,6 +54,7 @@ local BidBot_CurrentItem		-- item that currently run
 -- Functions
 local AddItem
 local AddBid
+local DelBid
 local AuctionEnd
 local StartBidding
 local DoInjectToDKPSystem
@@ -247,6 +248,19 @@ function AddBid(bidder, bid)
 	end
 end
 
+function DelBid(bidder)
+	if settings.bidtyp_open then
+		sendchatmsg(L.Prefix..L.Whisper_Bid_DEL_failed)
+		return
+	end
+	for k,v in pairs(BidBot_Biddings) do
+		if v.Name == bidder then
+			BidBot_Biddings[k] = nil
+		end
+	end
+	SendChatMessage("<DBM> "..L.Prefix..L.Whisper_Bid_DEL, "WHISPER", nil, bidder)
+end
+
 function AuctionEnd()
 	BidBot_InProgress = false
 	local Itembid = {
@@ -268,7 +282,11 @@ function AuctionEnd()
 		if settings.bidtyp_payall then
 			Itembid.points = BidBot_Biddings[1]["Bid"]
 		else
-			Itembid.points = BidBot_Biddings[2]["Bid"] + 1
+			if  BidBot_Biddings[1]["Bid"] ==  BidBot_Biddings[2]["Bid"] then
+				Itembid.points = BidBot_Biddings[1]["Bid"]
+			else
+				Itembid.points = BidBot_Biddings[2]["Bid"] + 1
+			end
 		end
 		sendchatmsg(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points))
 
@@ -529,6 +547,8 @@ do
 				local biddkp = tonumber(arg1)
 				if biddkp > 0 and biddkp < 50000 then	-- don't think there are any guild with dkp scale > 50.000 *g*
 					AddBid(arg2, biddkp)
+				elseif biddkp == 0 then
+					DelBid(arg2)
 				end
 			end
 
