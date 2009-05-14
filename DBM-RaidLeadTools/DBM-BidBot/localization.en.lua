@@ -6,6 +6,8 @@ L.Prefix = "[BidBot]: "
 
 L.Whisper_Queue 		= "Another auction is currently running. Your Item has been queued."
 L.Whisper_Bid_OK 		= "Your bid of %d DKP was accepted."
+L.Whisper_Bid_DEL		= "Your bid has been removed!"
+L.Whisper_Bid_DEL_failed	= "You can't delete bids in open bidding mode"
 L.Whisper_InUse 		= "<remove me>"
 L.Message_StartBidding		= "Please bid on %s now by whispering to [%s]! Lowest possible bid: %d"
 L.Message_DoBidding		= "Time remaining for %s: %d seconds."
