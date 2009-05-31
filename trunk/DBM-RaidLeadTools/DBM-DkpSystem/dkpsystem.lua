@@ -246,7 +246,7 @@ do
 			history:SetScript("OnShow", function(self)
 				if #settings.history > 0 then
 					local lastzone = ""
-					self:SetMaxLines(50)
+					self:SetMaxLines(100)
 					for i=1, #settings.history, 1 do
 						local raid = settings.history[i]
 						if #raid.events > 0 then
