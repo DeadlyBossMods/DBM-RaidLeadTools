@@ -35,7 +35,8 @@ L.SendWhispers		= "离开团队时密语玩家"
 L.AreaStandbyHistory	= "待命历史"
 L.NoHistoryAvailable	= "没有记录"
 
-L.SB_Documentation	= [[这个待命助手可以让RL管理当前不能参加活动的团员. 以下所有命令都可以用在工会频道中.
+L.Button_ResetHistory	= "清空记录"
+L.SB_Documentation	= [[待命助手可以让RL管理当前不能参加活动的团员. 以下所有命令都可以用在工会频道中.
 
 !sb                   - 显示待命玩家列表
 !sb times             - 显示已待命时间
@@ -49,8 +50,8 @@ L.SB_Documentation	= [[这个待命助手可以让RL管理当前不能参加活�
 ]]
 
 L.Button_ShowClients		= "显示客户端版本"
-L.Local_NoRaid			= "在团队中才能使用此功能"
-L.Local_Version			= "%s: %s"	-- Lacrosa: r123
+L.Local_NoRaid			= "你必须在团队中才能使用此功能"
+--L.Local_Version			= "%s: %s"	-- Lacrosa: r123
 
 
 
