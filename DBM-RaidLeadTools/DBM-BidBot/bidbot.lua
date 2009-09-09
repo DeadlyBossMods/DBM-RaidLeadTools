@@ -30,6 +30,7 @@
 local default_settings = {	
 	enabled = false,		-- BidBot ein/aus
 	chatchannel = "GUILD",		-- Ausgabe channel
+	withraidwarn = false,
 	minGebot = 10,			-- Mindest Gebot
 	duration = 30,			-- Laufzeit einer auction
 	output = 4,			-- max. Menge der ausgegebenen Gebote
@@ -78,7 +79,7 @@ do
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_BidBot, "option")
 		do
-			local area = panel:CreateArea(L.AreaGeneral, nil, 260, true)
+			local area = panel:CreateArea(L.AreaGeneral, nil, 280, true)
 	
 			local checkclients = area:CreateButton(L.Button_ShowClients, 100, 16)
 			checkclients:SetPoint('TOPRIGHT', area.frame, "TOPRIGHT", -10, -10)
@@ -119,6 +120,7 @@ do
 				settings.enabled = toboolean(self:GetChecked())
 			end)
 		
+			local bid_raidwarn	= area:CreateCheckButton(L.ShowinRaidWarn, true)
 			local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
 			local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
 
@@ -155,7 +157,10 @@ do
 			minGebot:SetNumeric()
 			duration:SetNumeric()
 			output:SetNumeric()
-	
+
+			bid_raidwarn:SetScript("OnClick", 	function(self) settings.withraidwarn = toboolean(self:GetChecked()) end)
+			bid_raidwarn:SetScript("OnShow", 	function(self) self:SetChecked(settings.withraidwarn) end)
+
 			bidtyp_open:SetScript("OnClick", 	function(self) settings.bidtyp_open = toboolean(self:GetChecked()) end)
 			bidtyp_open:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_open) end)
 			bidtyp_payall:SetScript("OnClick",	function(self) settings.bidtyp_payall = toboolean(self:GetChecked()) end)
@@ -360,6 +365,10 @@ function StartBidding()
 		BidBot_CurrentItem = ItemLink
 		for i=select("#", BidBot_Biddings), 1, -1 do BidBot_Biddings[i] = nil end
 
+		
+		if settings.withraidwarn then
+				SendChatMessage(L.Prefix..L.Message_StartRaidWarn:format(ItemLink, UnitName("player")), "RAID_WARNING")
+		end
 		sendchatmsg(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot))
 		sendchatmsg(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.duration))
 		
