@@ -435,7 +435,7 @@ function CreateEvent(event)
 	end
 end
 
-function DBM_DKP_BossKill(bossmod)
+function DBM_DKP_BossKill(event, bossmod)
 	if settings.boss_event then
 		CreateEvent({
 			event_type = "bosskill",

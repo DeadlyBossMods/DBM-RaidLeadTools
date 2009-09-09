@@ -518,7 +518,7 @@ do
 			settings = DBM_BidBot_Settings
 			addDefaultOptions(settings, default_settings)
 
-			DBM:RegisterCallback("raidJoin", function(name)
+			DBM:RegisterCallback("raidJoin", function(event, name)
 				if settings.enabled and name and name == UnitName("player") then 
 					SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", name)
 				end 

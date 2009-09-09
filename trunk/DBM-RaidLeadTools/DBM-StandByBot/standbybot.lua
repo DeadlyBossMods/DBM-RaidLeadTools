@@ -291,7 +291,7 @@ do
 		end
 	end
 
-	DBM:RegisterCallback("raidLeave", function(name)
+	DBM:RegisterCallback("raidLeave", function(event, name)
 		if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
 			if name == UnitName("player") then 
 				SaveTimeHistory() 
@@ -301,7 +301,7 @@ do
 			end
 		end
 	end)
-	DBM:RegisterCallback("raidJoin", RemoveStandbyMember)
+	DBM:RegisterCallback("raidJoin", function(event, ...) return RemoveStandbyMember(...) end)
 end
 
 do	
@@ -328,7 +328,7 @@ do
 			settings = DBM_Standby_Settings
 			addDefaultOptions(settings, default_settings)
 
-			DBM:RegisterCallback("raidJoin", function(name)
+			DBM:RegisterCallback("raidJoin", function(event, name)
 				if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
 					if name == UnitName("player") then 
 						SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
