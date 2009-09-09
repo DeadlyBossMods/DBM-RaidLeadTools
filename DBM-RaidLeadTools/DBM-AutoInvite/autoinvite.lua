@@ -288,7 +288,7 @@ do
 		return false
 	end
 
-	DBM:RegisterCallback("raidJoin", function(name)
+	DBM:RegisterCallback("raidJoin", function(event, name)
 		if settings.enabled and name and DBM:GetRaidRank() > 0 then
 			if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank)
 			or settings.promote_names[name] or settings.promote_all then
