@@ -39,4 +39,3 @@ end
 
 DBM:RegisterOnGuiLoadCallback(createpanel, 10)
 
-
