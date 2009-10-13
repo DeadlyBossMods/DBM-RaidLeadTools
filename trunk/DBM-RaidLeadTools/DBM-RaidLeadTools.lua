@@ -29,13 +29,63 @@
 --
 local Revision = ("$Revision$"):sub(12, -3)
 
+local L = DBM_Raidlead_Translation
+
+DBM_RaidLead_Settings = {}
+local default_settings = {
+	WarnWhenNoLootmaster = false
+}
+local settings = default_settings
+
+local mainframe = CreateFrame("Frame", "DBM_Raidleadtool", UIParent)
+
 local function createpanel()
 	if GetLocale() ~= "zhTW" then
 		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools - r"..Revision, "option")
 	else
 		DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("團隊隊長工具 - r"..Revision, "option")
 	end
+
+	local area = DBM_RaidLeadPanel:CreateArea(L.Area_Raidleadtool, nil, 180, true)
+
+	local enabled = area:CreateCheckButton(L.ShowWarningForLootMaster, true)
+	enabled:SetScript("OnShow", function(self) self:SetChecked(settings.WarnWhenNoLootmaster) end)
+	enabled:SetScript("OnClick", function(self)
+		settings.WarnWhenNoLootmaster = not not self:GetChecked()
+	end)
 end
 
+	
 DBM:RegisterOnGuiLoadCallback(createpanel, 10)
+
+do
+	local function addDefaultOptions(t1, t2)
+		for i, v in pairs(t2) do
+			if t1[i] == nil then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaultOptions(v, t2[i])
+			end
+		end
+	end
+	mainframe:SetScript("OnEvent", function(self, event, ...)
+		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			-- Update settings of this Addon
+			settings = DBM_RaidLead_Settings
+			addDefaultOptions(settings, default_settings)
+
+			DBM:RegisterCallback("pull", function()
+				if GetLootMethod() ~= "master" and DBM_BidBot_Translations.WarnWhenNoLootmaster then
+					DBM:AddMsg(L.Warning_NoLootMaster)
+				end
+			end)			
+		end
+	end)
+	mainframe:RegisterEvent("ADDON_LOADED")
+end
+
+
+
+
+
 
