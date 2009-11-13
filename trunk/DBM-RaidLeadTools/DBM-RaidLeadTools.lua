@@ -33,7 +33,9 @@ local L = DBM_Raidlead_Translation
 
 DBM_RaidLead_Settings = {}
 local default_settings = {
-	WarnWhenNoLootmaster = false
+	WarnWhenNoLootmaster = false,
+	StickyIcons = false,
+	IconUpdateTime = 2
 }
 local settings = default_settings
 
@@ -48,17 +50,69 @@ local function createpanel()
 
 	local area = DBM_RaidLeadPanel:CreateArea(L.Area_Raidleadtool, nil, 180, true)
 
-	local enabled = area:CreateCheckButton(L.ShowWarningForLootMaster, true)
-	enabled:SetScript("OnShow", function(self) self:SetChecked(settings.WarnWhenNoLootmaster) end)
-	enabled:SetScript("OnClick", function(self)
+	local warnLootMaster = area:CreateCheckButton(L.ShowWarningForLootMaster, true)
+	warnLootMaster:SetScript("OnShow", function(self) self:SetChecked(settings.WarnWhenNoLootmaster) end)
+	warnLootMaster:SetScript("OnClick", function(self)
 		settings.WarnWhenNoLootmaster = not not self:GetChecked()
+	end)
+
+	local StickyIcons = area:CreateCheckButton(L.StickyIcons, true)
+	StickyIcons:SetScript("OnShow", function(self) self:SetChecked(settings.StickyIcons) end)
+	StickyIcons:SetScript("OnClick", function(self)
+		settings.StickyIcons = not not self:GetChecked()
 	end)
 end
 
-	
-DBM:RegisterOnGuiLoadCallback(createpanel, 10)
+do 
+	-- StickyIcon Stuff
+	local is_active = false
+	local function combat_end()	is_active = false end
 
-do
+	local raidicons = {}
+	local function scanIcons()				-- create a list of Icons used when combat starts
+		table.wipe(raidicons)
+		if GetNumRaidMembers() >= 1 then
+			for i = 1, GetNumRaidMembers() do
+				local icon = GetRaidTargetIndex("raid"..i)
+				if icon then
+					raidicons[icon] = "raid"..i
+				end
+			end
+			is_active = true
+		end
+	end
+
+	local icons_used = {}
+	local function resetIcons()
+		table.wipe(icons_used)				-- create a list of currently used icons
+		if GetNumRaidMembers() >= 1 then
+			for i = 1, GetNumRaidMembers() do
+				local icon = GetRaidTargetIndex("raid"..i)
+				if icon then
+					icons_used[icon] = "raid"..i
+				end
+			end
+		end
+		for i, v in pairs(raidicons) do
+			if not icons_used[i] then		-- only reSet icon when not in use
+				SetRaidTarget(v, i)
+			end
+		end
+	end
+
+	local TimeSinceLastUpdate = 0
+	mainframe:SetScript("OnUpdate", function(self, elapsed, ...)
+		if is_active then
+			TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
+			if TimeSinceLastUpdate > IconUpdateTime then
+				TimeSinceLastUpdate = TimeSinceLastUpdate - IconUpdateTime
+	
+				resetIcons()
+			end
+		end
+	end)
+	
+
 	local function addDefaultOptions(t1, t2)
 		for i, v in pairs(t2) do
 			if t1[i] == nil then
@@ -74,8 +128,14 @@ do
 			settings = DBM_RaidLead_Settings
 			addDefaultOptions(settings, default_settings)
 
+			-- StickyIcons
+			DBM:RegisterCallback("pull", scanIcons)
+			DBM:RegisterCallback("wipe", combat_end)
+			DBM:RegisterCallback("kill", combat_end)
+
+			-- WarnforLootmaster
 			DBM:RegisterCallback("pull", function()
-				if GetLootMethod() ~= "master" and DBM_BidBot_Translations.WarnWhenNoLootmaster then
+				if DBM_BidBot_Translations.WarnWhenNoLootmaster and GetLootMethod() ~= "master" then
 					DBM:AddMsg(L.Warning_NoLootMaster)
 				end
 			end)			
@@ -85,6 +145,7 @@ do
 end
 
 
+DBM:RegisterOnGuiLoadCallback(createpanel, 10)
 
 
 
