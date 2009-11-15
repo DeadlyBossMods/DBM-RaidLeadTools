@@ -35,7 +35,7 @@ DBM_RaidLead_Settings = {}
 local default_settings = {
 	WarnWhenNoLootmaster = false,
 	StickyIcons = false,
-	IconUpdateTime = 2
+	IconUpdateTime = 1
 }
 local settings = default_settings
 
@@ -94,7 +94,7 @@ do
 			end
 		end
 		for i, v in pairs(raidicons) do
-			if not icons_used[i] then		-- only reSet icon when not in use
+			if not icons_used[i] and not GetRaidTargetIndex(v) then		-- only reSet icon when not in use and currently non present
 				SetRaidTarget(v, i)
 			end
 		end
