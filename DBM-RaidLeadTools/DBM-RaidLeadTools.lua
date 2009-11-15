@@ -100,17 +100,20 @@ do
 		end
 	end
 
-	local TimeSinceLastUpdate = 0
-	mainframe:SetScript("OnUpdate", function(self, elapsed, ...)
-		if is_active then
-			TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
-			if TimeSinceLastUpdate > IconUpdateTime then
-				TimeSinceLastUpdate = TimeSinceLastUpdate - IconUpdateTime
-	
-				resetIcons()
+	do
+		local TimeSinceLastUpdate = 0
+		local function updater(self, elapsed, ...)
+			if is_active then
+				TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
+				if TimeSinceLastUpdate > settings.IconUpdateTime then
+					TimeSinceLastUpdate = TimeSinceLastUpdate - settings.IconUpdateTime
+		
+					resetIcons()
+				end
 			end
 		end
-	end)
+		mainframe:SetScript("OnUpdate", updater)
+	end
 	
 
 	local function addDefaultOptions(t1, t2)
