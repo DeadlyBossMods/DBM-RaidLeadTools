@@ -31,7 +31,7 @@ local L = DBM_AutoInvite_Translations
 
 local default_settings = {
 	enabled = true,
-	keyword = 'invite',
+	keywords = {'invite', 'inv'},
 	guildmates = true,
 	friends = true,
 	other = false,
@@ -106,9 +106,9 @@ do
 		local	pos,arr = 0,{}
 		for st,sp in function() return string.find(str, div, pos, true) end do
 			table.insert(arr, string.sub(str,pos,st-1)) 	-- Attach chars left of current divider
-			pos = sp + 1 					-- Jump past current divider
+			pos = sp + 1 									-- Jump past current divider
 		end
-		table.insert(arr, string.sub(str,pos)) 			-- Attach chars right of last divider
+		table.insert(arr, string.sub(str,pos)) 				-- Attach chars right of last divider
 		return arr
 	end
 	local function filternames(input) 
@@ -135,7 +135,7 @@ do
 			local guildmates = area:CreateCheckButton(L.AllowGuildMates, true)		
 			local friends = area:CreateCheckButton(L.AllowFriends, true)		
 			local other = area:CreateCheckButton(L.AllowOthers, true)		
-			local keyword = area:CreateEditBox(L.KeyWord, settings.keyword, 200)		
+			local keyword = area:CreateEditBox(L.KeyWord, '', 200)		
 			keyword:SetPoint('TOPLEFT', other, "BOTTOMLEFT", 15, -15)
 
 			local Ranks = {}
@@ -162,10 +162,17 @@ do
 			guildmates:SetScript("OnShow", 		function(self) self:SetChecked(settings.guildmates) end)
 			friends:SetScript("OnClick", 		function(self) settings.friends = toboolean(self:GetChecked()) end)
 			friends:SetScript("OnShow", 		function(self) self:SetChecked(settings.friends) end)
-			other:SetScript("OnClick",		function(self) settings.other = toboolean(self:GetChecked()) end)
-			other:SetScript("OnShow", 		function(self) self:SetChecked(settings.other) end)
-			keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
-			keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
+			other:SetScript("OnClick",			function(self) settings.other = toboolean(self:GetChecked()) end)
+			other:SetScript("OnShow", 			function(self) self:SetChecked(settings.other) end)
+--			keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
+--			keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
+			keyword:SetScript("OnShow", 		function(self) self:SetText( concat(settings.keywords, " ") ) end)
+			keyword:SetScript("OnTextChanged",  function(self) 
+				table.wipe(settings.keywords)
+				for k,v in ipairs( explode(" ", self:GetText()) ) do
+					table.insert(settings.keywords, v)
+				end
+			end)
 
 		end
 		do
@@ -191,7 +198,7 @@ do
 			end)
 			PromoteGuildRank:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 0, -50)
 
-			local PromoteByNameList = area:CreateEditBox(L.PromoteByNameList, settings.keyword, 350)	
+			local PromoteByNameList = area:CreateEditBox(L.PromoteByNameList, '', 350)	
 			PromoteByNameList:SetScript("OnTextChanged", function(self) 
 				table.wipe(settings.promote_names)
 				for k,v in pairs(filternames(self:GetText())) do 
@@ -325,8 +332,16 @@ do
 		end
 	end
 
+	local function is_keyword(msg)
+		for _,v in pairs(settings.keywords) do
+			if v == msg then
+				return true
+			end
+		end
+		return false
+	end
 	local function OnMsgRecived(msg, name)
-		if settings.enabled and msg:lower() == settings.keyword then
+		if settings.enabled and is_keyword(msg:lower()) then
 			local doautoinvite = false
 	
 			if settings.friends and IsFriend(name) then
