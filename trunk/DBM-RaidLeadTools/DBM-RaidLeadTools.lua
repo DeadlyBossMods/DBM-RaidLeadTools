@@ -147,7 +147,6 @@ do
 	mainframe:RegisterEvent("ADDON_LOADED")
 end
 
-
 DBM:RegisterOnGuiLoadCallback(createpanel, 10)
 
 
