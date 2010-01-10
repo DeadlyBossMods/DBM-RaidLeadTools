@@ -187,16 +187,18 @@ do
 				if #DBM_BidBot_ItemHistory > 0 then
 					self:SetMaxLines((#DBM_BidBot_ItemHistory*4)+1)
 					for k,itembid in pairs(DBM_BidBot_ItemHistory) do
-						if #itembid.bids > 0 then
-							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP ")
-							for i=1, 3, 1 do
-								if itembid.bids[i] then
-									self:AddMessage("               -> "..i..". "..itembid.bids[i].name.."("..itembid.bids[i].points..")")
+						if itembid and itembid.item and itembid.points then
+							if #itembid.bids > 0 then
+								self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP ")
+								for i=1, 3, 1 do
+									if itembid.bids[i] then
+										self:AddMessage("               -> "..i..". "..itembid.bids[i].name.."("..itembid.bids[i].points..")")
+									end
 								end
+								self:AddMessage(" ")
+							else
+								self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..L.Disenchant)
 							end
-							self:AddMessage(" ")
-						else
-							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..L.Disenchant)
 						end
 					end
 				end
