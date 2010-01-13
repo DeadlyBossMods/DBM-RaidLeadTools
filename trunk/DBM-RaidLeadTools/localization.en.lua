@@ -8,6 +8,6 @@ L.ShowWarningForLootMaster		= "Show a warning on combatstart if Masterloot is no
 
 L.Warning_NoLootMaster			= "Lootmaster is currently disabled! - Please enable Lootmaster now!"
 
-L.StickyIcons					= "Allways set Raidicons back to as they where on Combatstart"
+L.StickyIcons					= "Always set Raidicons back to as they where on Combatstart"
 
 
