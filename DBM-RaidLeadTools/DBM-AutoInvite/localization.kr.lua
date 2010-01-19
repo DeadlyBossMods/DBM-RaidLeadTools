@@ -1,9 +1,7 @@
 --    * koKR: BlueNyx(bluenyx@gmail.com)
-
 if GetLocale() ~= "koKR" then return end
 
 local L = DBM_AutoInvite_Translations
-
 
 L.TabCategory_AutoInvite 	= "자동 초대 도구"
 L.AreaGeneral 				= "일반 초대 옵션"
@@ -31,5 +29,3 @@ L.PromoteByNameList			= "다음의 공대원은 자동으로 승급 (띄어쓰�
 L.DontPromoteAnyRank		= "길드 랭크 조건에 의해 자동 승급 정지"
 
 L.Button_ResetSettings		= "초기화"
-
-
