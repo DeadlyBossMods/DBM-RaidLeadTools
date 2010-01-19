@@ -52,5 +52,5 @@ L.AllPlayers				= "모든 플레이어"
 L.TabCategory_History		= "레이드 기록"
 
 -- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
-L.DateFormat			= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
+L.DateFormat			= "%y/%m/%d %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
 L.Local_Version			= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!
