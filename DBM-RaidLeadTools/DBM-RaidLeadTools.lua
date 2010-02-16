@@ -27,7 +27,7 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 
-local Revision = ("$Revision$"):sub(12, -3)
+local Revision = ("$Revision: 96 $"):sub(12, -3)
 
 local L = DBM_Raidlead_Translation
 
