@@ -137,6 +137,7 @@ function addDefaultOptions(t1, t2)
 end
 
 local function FormatPlayerName(name)
+	if name:len() < 2 then return name; end
 	-- check for UTF start
 	if bit.band(name:sub(0, 1):byte(), 128) == 128 then
 		name = name:sub(0, 2):upper()..name:sub(3):lower()
@@ -235,7 +236,7 @@ end
 
 local function AddStandbyMember(name, quiet)
 	if not settings.enabled then return end
-	if not name then return false end
+	if not name or name:len() < 2 then return false end
 	if not amIactive() then quite = true end
 
 	if settings.sb_users[name] == nil then
