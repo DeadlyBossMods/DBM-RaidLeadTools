@@ -388,6 +388,8 @@ do
 	local hiddenedit = CreateFrame('EditBox', "DBM_DKP_PopupExtension", UIParent)
 	hiddenedit:SetWidth(40)
 	hiddenedit:SetHeight(20)
+	hiddenedit:ClearFocus()
+	hiddenedit:SetAutoFocus(false)
 	hiddenedit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 	hiddenedit:SetFontObject('GameFontHighlightSmall')
 	hiddenedit:SetMaxLetters(5)
@@ -395,15 +397,16 @@ do
 	hiddenedit.left = hiddenedit:CreateTexture(nil, "BACKGROUND")
 	hiddenedit.left:SetPoint("LEFT", hiddenedit, "LEFT", -10, 0)
 	hiddenedit.left:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
+	hiddenedit.left:SetWidth(40)
 	hiddenedit.left:SetHorizTile(true)
-	hiddenedit.left:SetVertTile(true)
 	hiddenedit.left:SetTexCoord(0, .15, 0, 1)  
 	hiddenedit.right = hiddenedit:CreateTexture(nil, "BACKGROUND")
-	hiddenedit.right:SetPoint("RIGHT", hiddenedit, "RIGHT", 240, 0)
+	hiddenedit.right:SetPoint("RIGHT", hiddenedit, "RIGHT", 5, 0)
 	hiddenedit.right:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+	hiddenedit.right:SetWidth(20)
 	hiddenedit.right:SetHorizTile(true)
 	hiddenedit.right:SetVertTile(true)
-	hiddenedit.right:SetTexCoord(.95, 1, 0, 1)	-- last 10 pixel
+	hiddenedit.right:SetTexCoord(0.92, 1, 0, 1)
 
 	-- /script StaticPopup_Show("DBM_DKP_ACCEPT", "item")	
 	StaticPopupDialogs["DBM_DKP_ACCEPT"] = {
@@ -413,8 +416,9 @@ do
 		hasEditBox = 1,
 		maxLetters = 32,
 		OnShow = function(self)
+			hiddenedit:ClearAllPoints()
 			hiddenedit:SetParent(self)
-			hiddenedit:SetPoint("TOPRIGHT", self.editBox, "TOPLEFT", -10, -6)
+			hiddenedit:SetPoint("TOPRIGHT", self.editBox, "TOPLEFT", -20, -6)
 			hiddenedit:SetText(hiddenedit.itemtable.points)
 			hiddenedit:Show()
 			self.editBox:SetText(hiddenedit.itemtable.player)
