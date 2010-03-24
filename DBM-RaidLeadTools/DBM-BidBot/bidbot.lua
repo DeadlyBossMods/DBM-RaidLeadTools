@@ -395,12 +395,14 @@ do
 	hiddenedit.left = hiddenedit:CreateTexture(nil, "BACKGROUND")
 	hiddenedit.left:SetPoint("LEFT", hiddenedit, "LEFT", -10, 0)
 	hiddenedit.left:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
-	hiddenedit.left:SetTexCoordModifiesRect(true)
+	hiddenedit.left:SetHorizTile(true)
+	hiddenedit.left:SetVertTile(true)
 	hiddenedit.left:SetTexCoord(0, .15, 0, 1)  
 	hiddenedit.right = hiddenedit:CreateTexture(nil, "BACKGROUND")
 	hiddenedit.right:SetPoint("RIGHT", hiddenedit, "RIGHT", 240, 0)
 	hiddenedit.right:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
-	hiddenedit.right:SetTexCoordModifiesRect(true)
+	hiddenedit.right:SetHorizTile(true)
+	hiddenedit.right:SetVertTile(true)
 	hiddenedit.right:SetTexCoord(.95, 1, 0, 1)	-- last 10 pixel
 
 	-- /script StaticPopup_Show("DBM_DKP_ACCEPT", "item")	
