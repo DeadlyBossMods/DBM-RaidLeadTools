@@ -530,6 +530,7 @@ do
 	)
 
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
+		local arg1, arg2 = ...
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon
 			settings = DBM_BidBot_Settings
