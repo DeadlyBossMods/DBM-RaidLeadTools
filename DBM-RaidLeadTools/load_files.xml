@@ -3,6 +3,7 @@
 
 <!-- BidBot (!bid [item]) --> 
 <Script file="DBM-BidBot\localization.en.lua"/>
+<Script file="DBM-BidBot\localization.fr.lua"/>
 <Script file="DBM-BidBot\localization.ru.lua"/>
 <Script file="DBM-BidBot\localization.de.lua"/>
 <Script file="DBM-BidBot\localization.cn.lua"/>
@@ -12,6 +13,7 @@
 
 <!-- StandbyBot (!sb) -->
 <Script file="DBM-StandByBot\localization.en.lua"/>
+<Script file="DBM-StandByBot\localization.fr.lua"/>
 <Script file="DBM-StandByBot\localization.ru.lua"/>
 <Script file="DBM-StandByBot\localization.de.lua"/>
 <Script file="DBM-StandByBot\localization.cn.lua"/>
@@ -21,6 +23,7 @@
 
 <!-- Autoinvite (Raidinvite Guild) -->
 <Script file="DBM-AutoInvite\localization.en.lua"/>
+<Script file="DBM-AutoInvite\localization.fr.lua"/>
 <Script file="DBM-AutoInvite\localization.ru.lua"/>
 <Script file="DBM-AutoInvite\localization.de.lua"/>
 <Script file="DBM-AutoInvite\localization.cn.lua"/>
@@ -30,6 +33,7 @@
 
 <!-- DKP System (Count's Raidmember on Bosskills) -->
 <Script file="DBM-DkpSystem\localization.en.lua"/>
+<Script file="DBM-DkpSystem\localization.fr.lua"/>
 <Script file="DBM-DkpSystem\localization.ru.lua"/>
 <Script file="DBM-DkpSystem\localization.de.lua"/>
 <Script file="DBM-DkpSystem\localization.cn.lua"/>
