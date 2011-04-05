@@ -12,6 +12,7 @@
 --    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
 --    * zhCN: yleaf(yaroot@gmail.com)
 --    * zhTW: readjust by yleaf(yaroot@gmail.com)/Juha
+--    * koKR: nBlueWiz(everfinale@gmail.com)
 --    * (add your names here!)
 --
 -- 
