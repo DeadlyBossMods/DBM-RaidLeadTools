@@ -63,9 +63,9 @@ local FormatPlayerName
 local addDefaultOptions
 
 function slashfunction()
-	if GetNumRaidMembers() == 0 then
+	if GetNumGroupMembers() == 0 then
 		DBM:AddMsg(L.WarnMsg_NoRaid)
-	elseif not (IsRaidLeader() or IsRaidOfficer()) then
+	elseif not (UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) then
 		DBM:AddMsg(L.WarnMsg_NotLead)
 	else
 		SendChatMessage(L.WarnMsg_InviteIncoming, "GUILD")
@@ -305,16 +305,16 @@ do
 	end)
 
 	function DoInvite(name)
-		pplcount = GetNumRaidMembers();
-		if pplcount == 0 then
-			pplcount = GetNumPartyMembers() or 0
-			if pplcount > 0 and not IsPartyLeader() then
+		pplcount = GetNumGroupMembers();
+		if not IsInRaid() then
+			pplcount = GetNumSubgroupMembers() or 0
+			if pplcount > 0 and not UnitIsGroupLeader("player") then
 				DBM:AddMsg( L.InviteFailed:format(name) )
 			else
-				if pplcount < 5 then
+				if pplcount < 4 then
 					InviteUnit(name)
 
-				elseif pplcount == 5 then
+				elseif pplcount == 4 then
 					DBM:AddMsg( L.ConvertRaid )
 					ConvertToRaid()
 					InviteUnit(name)
