@@ -72,8 +72,8 @@ do
 	local raidicons = {}
 	local function scanIcons()				-- create a list of Icons used when combat starts
 		table.wipe(raidicons)
-		if GetNumRaidMembers() >= 1 then
-			for i = 1, GetNumRaidMembers() do
+		if GetNumGroupMembers() >= 1 and IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
 				local icon = GetRaidTargetIndex("raid"..i)
 				if icon then
 					raidicons[icon] = "raid"..i
@@ -86,8 +86,8 @@ do
 	local icons_used = {}
 	local function resetIcons()
 		table.wipe(icons_used)				-- create a list of currently used icons
-		if GetNumRaidMembers() >= 1 then
-			for i = 1, GetNumRaidMembers() do
+		if GetNumGroupMembers() >= 1 and IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
 				local icon = GetRaidTargetIndex("raid"..i)
 				if icon then
 					icons_used[icon] = "raid"..i

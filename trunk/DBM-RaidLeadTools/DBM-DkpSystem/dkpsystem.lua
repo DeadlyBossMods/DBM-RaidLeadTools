@@ -91,7 +91,7 @@ do
 					settings.working_in = 0 
 					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 				else
-					if GetNumRaidMembers() == 0 then
+					if GetNumGroupMembers() == 0 then
 						DBM:AddMsg(L.Local_NoRaidPresent)
 					else
 						RaidStart()
@@ -113,7 +113,7 @@ do
 			local dkpfor 	= area:CreateDropdown(L.ChatChannel, pltable, "RAID", function(value) DKPto = value end)
 			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", -25, -5)
 			dkpfor:SetScript("OnShow", function(self)
-				if GetNumRaidMembers() > 0 then
+				if GetNumGroupMembers() > 0 and IsInRaid() then
 					table.wipe(pltable)
 					table.insert(pltable, {text=L.AllPlayers, value="RAID"})
 					for k,v in pairs(GetRaidList()) do
@@ -360,9 +360,9 @@ end
 
 
 function GetRaidList()
-	if GetNumRaidMembers() == 0 then return false end
+	if GetNumGroupMembers() == 0 and not IsInRaid() then return false end
 	local raidusers = {}
-	for i=1, GetNumRaidMembers(), 1 do
+	for i=1, GetNumGroupMembers(), 1 do
 		if UnitName("raid"..i) then
 			table.insert(raidusers, (UnitName("raid"..i)))
 		end
@@ -370,7 +370,7 @@ function GetRaidList()
 
 	if settings.grpandraid then
 		table.insert(raidusers, (UnitName("player")) )
-		for i=1, GetNumPartyMembers(), 1 do
+		for i=1, GetNumSubgroupMembers(), 1 do
 			if UnitName("party"..i) then
 				table.insert(raidusers, (UnitName("party"..i)))
 			end
