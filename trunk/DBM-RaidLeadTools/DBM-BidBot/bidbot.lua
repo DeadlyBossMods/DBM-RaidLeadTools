@@ -87,7 +87,7 @@ do
 			checkclients:SetNormalFontObject(GameFontNormalSmall)
 			checkclients:SetHighlightFontObject(GameFontNormalSmall)
 			checkclients:SetScript("OnClick", function(self) 
-				if DBM:IsInRaid() then
+				if DBM:IsInRaid() and IsInGroup(LE_PARTY_CATEGORY_HOME) then
 					SendAddonMessage("DBM_BidBot", "showversion!", "RAID")
 				else
 					DBM:AddMsg(L.Local_NoRaid)
@@ -111,7 +111,7 @@ do
 			enabled:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) 
-				if DBM:IsInRaid() then
+				if DBM:IsInRaid() and IsInGroup(LE_PARTY_CATEGORY_HOME) then
 					if settings.enabled then
 						SendAddonMessage("DBM_BidBot", "bye!", "RAID")
 					else
@@ -462,7 +462,7 @@ do
 	local bidbot_clients = {}
 
 	local function amIactive()
-		if not DBM:IsInRaid() then return false end
+		if not DBM:IsInRaid() and IsInGroup(LE_PARTY_CATEGORY_HOME) then return false end
 	
 		local myname = UnitName("player")
 	
