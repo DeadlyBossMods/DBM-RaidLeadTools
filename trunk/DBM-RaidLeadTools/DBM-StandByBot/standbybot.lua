@@ -60,7 +60,7 @@ do
 			local enabled = area:CreateCheckButton(L.Enable, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) 
-				if DBM:IsInRaid() then
+				if IsInRaid() then
 					if settings.enabled then
 						SendAddonMessage("DBM_SbBot", "bye!", "RAID")
 					else
@@ -80,7 +80,7 @@ do
 			checkclients:SetNormalFontObject(GameFontNormalSmall)
 			checkclients:SetHighlightFontObject(GameFontNormalSmall)
 			checkclients:SetScript("OnClick", function(self) 
-				if DBM:IsInRaid() then
+				if IsInRaid() then
 					SendAddonMessage("DBM_SbBot", "showversion!", "RAID")
 				else
 					DBM:AddMsg(L.Local_NoRaid)
@@ -211,7 +211,7 @@ local function UpdateTimes()
 end
 
 function amIactive()
-	if not DBM:IsInRaid() then return false end
+	if not IsInRaid() then return false end
 
 	local myname = UnitName("player")
 
@@ -348,7 +348,7 @@ do
 				"CHAT_MSG_ADDON"
 			)
 	
-		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and DBM:IsInRaid() then
+		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and IsInRaid() then
 			local msg, author = select(1, ...)
 			if msg == "!sb" then
 				if DBM:GetRaidUnitId(author) == "none" then
