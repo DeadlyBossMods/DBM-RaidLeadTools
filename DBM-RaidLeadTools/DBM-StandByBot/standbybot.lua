@@ -50,6 +50,7 @@ local SaveTimeHistory
 local amIactive
 
 local addDefaultOptions
+local myname = UnitName("player")
 
 
 do 
@@ -213,8 +214,6 @@ end
 function amIactive()
 	if not IsInRaid() then return false end
 
-	local myname = UnitName("player")
-
 	for k,v in pairs(sbbot_clients) do
 		if DBM:GetRaidRank(k) >= 2 then	-- raidleader gefunden
 			if k == myname then
@@ -295,7 +294,7 @@ do
 
 	DBM:RegisterCallback("raidLeave", function(event, name)
 		if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
-			if name == UnitName("player") then 
+			if name == myname then 
 				SaveTimeHistory() 
 
 			elseif amIactive() and settings.send_whisper then
@@ -332,7 +331,7 @@ do
 
 			DBM:RegisterCallback("raidJoin", function(event, name)
 				if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
-					if name == UnitName("player") then 
+					if name == myname then 
 						SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
 					end 
 				end
@@ -351,7 +350,7 @@ do
 		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and IsInRaid() then
 			local msg, author = select(1, ...)
 			if msg == "!sb" then
-				if DBM:GetRaidUnitId(author) == "none" then
+				if not DBM:GetRaidUnitId(author) then
 					AddStandbyMember( author )
 				else
 					SendChatMessage("<DBM> "..L.InRaidGroup, "WHISPER", nil, author)
@@ -363,7 +362,7 @@ do
 		elseif settings.enabled and event == "CHAT_MSG_ADDON" then
 			local prefix, msg, channel, sender = select(1, ...)
 			if prefix ~= "DBM_SbBot" then return end
-			if sender == UnitName("player") then return end
+			if sender == myname then return end
 
 			if msg == "Hi!" then
 				sbbot_clients[sender] = true
@@ -491,11 +490,11 @@ do
 					DBM:AddMsg(L.Local_CantRemove)
 				end
 
-			elseif msg == "!sb reset" and author == UnitName("player") then
+			elseif msg == "!sb reset" and author == myname then
 				table.wipe(settings.sb_times)
 				table.wipe(settings.sb_users)
 
-			elseif msg == "!sb save" and author == UnitName("player") then
+			elseif msg == "!sb save" and author == myname then
 				SaveTimeHistory()
 
 			elseif msg == "!sb clients" then -- debuging 
