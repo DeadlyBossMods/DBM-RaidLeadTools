@@ -144,7 +144,7 @@ do
 						})
 					end
 				end
-				chatchannel 	= area:CreateDropdown(L.ChatChannel, channels, settings.chatchannel, function(value) settings.chatchannel = value end)
+				chatchannel 	= area:CreateDropdown(L.ChatChannel, channels, nil, settings.chatchannel, function(value) settings.chatchannel = value end)
 			end
 
 			local minGebot	 	= area:CreateEditBox(L.MinBid, settings.keyword, 100)
