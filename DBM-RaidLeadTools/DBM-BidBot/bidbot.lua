@@ -135,7 +135,7 @@ do
 					{text=L.Raid,	value="RAID"},
 					{text=L.Party,	value="PARTY"}
 				}
-				for i=1, select("#", GetChannelList()), 2 do		
+				for i=1, select("#", GetChannelList()), 3 do		
 					local chanid, channame = select(i, GetChannelList())
 					if chanid > 4 then
 						table.insert(channels, {
