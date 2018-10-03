@@ -137,7 +137,7 @@ do
 				}
 				for i=1, select("#", GetChannelList()), 3 do		
 					local chanid, channame = select(i, GetChannelList())
-					if chanid > 4 then
+					if chanid > 3 then
 						table.insert(channels, {
 							text = channame,
 							value = channame
