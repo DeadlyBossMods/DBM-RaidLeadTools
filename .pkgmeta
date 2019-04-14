@@ -1,0 +1,5 @@
+package-as: DBM-RaidLeadTools
+enable-nolib-creation: no
+
+move-folders:
+    DBM-RaidLeadTools/DBM-RaidLeadTools: DBM-RaidLeadTools
