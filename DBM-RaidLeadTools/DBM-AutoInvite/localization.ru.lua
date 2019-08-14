@@ -1,5 +1,6 @@
-if GetLocale() ~= "ruRU" then return end
-
+if GetLocale() ~= "ruRU" then
+	return
+end
 local L = DBM_AutoInvite_Translations
 
 L.TabCategory_AutoInvite 	= "Инструмент авто-приглашения"
@@ -28,5 +29,3 @@ L.PromoteByNameList		 	= "Авто-повышение следующих игр�
 L.DontPromoteAnyRank		= "Не производить авто-повышение по званию в гильдии"
 
 L.Button_ResetSettings		= "сброс настроек"
-
-

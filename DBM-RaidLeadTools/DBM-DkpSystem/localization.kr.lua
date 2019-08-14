@@ -1,5 +1,6 @@
-if GetLocale() ~= "koKR" then return end
-
+if GetLocale() ~= "koKR" then
+	return
+end
 local L = DBM_DKP_System_Translations
 
 L.Local_TimeReached 		= "새로운 시간 기반 이벤트를 만들었습니다."
@@ -9,7 +10,7 @@ L.Local_RaidSaved			= "현재 레이드를 정상적으로 종료하였습니다
 L.AcceptDKPValue			= "DKP"
 
 L.AreaHistory				= "이벤트 기록"
-L.History_Line				= "[%s][%s]: %s (%d)" 		-- [date][zone] Hogger (playercount)
+L.History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 
 L.LocalError_AddItemNoRaid	= "레이드가 진행중이지 않으므로, 이 아이템을 저장할 수가 없습니다."
 

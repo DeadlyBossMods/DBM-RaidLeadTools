@@ -1,5 +1,6 @@
-if GetLocale() ~= "ruRU" then return end
-
+if GetLocale() ~= "ruRU" then
+	return
+end
 local L = DBM_DKP_System_Translations
 
 L.Local_TimeReached 		= "Создано новое событие рейда основанное по времени"
@@ -9,7 +10,7 @@ L.Local_RaidSaved			= "Текущий рейд успешно закрыт"
 L.AcceptDKPValue			= "DKP"
 
 L.AreaHistory				= "История событий"
-L.History_Line				= "[%s][%s]: %s (%d)" 		-- [date][zone] Hogger (playercount)
+L.History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 
 L.LocalError_AddItemNoRaid	= "Нет запущенного рейда для сохранения данного предмета"
 
@@ -50,8 +51,3 @@ L.Local_Debug_NoRaid		= "Событие НЕ создано, нету игрок
 L.AllPlayers				= "все игроки"
 
 L.TabCategory_History		= "История рейда"
-
--- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
-L.DateFormat				= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
-L.Local_Version				= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!
-

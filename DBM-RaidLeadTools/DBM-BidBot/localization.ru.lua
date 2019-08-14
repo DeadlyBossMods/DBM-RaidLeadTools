@@ -1,5 +1,6 @@
-if GetLocale() ~= "ruRU" then return end
-
+if GetLocale() ~= "ruRU" then
+	return
+end
 local L = DBM_BidBot_Translations
 
 L.Prefix = "[BidBot]: "
@@ -20,7 +21,6 @@ L.Message_BidPubMessage		= "Новая ставка: %s ставок %d DKP"
 L.Disenchant				= "Распыление"
 
 L.PopUpAcceptDKP			= "Сохранить ставку для %s. Для распыление введите значение DKP = 0."
-
 
 -- GUI
 L.TabCategory_BidBot	 	= "BidBot (DKP)"
@@ -46,8 +46,3 @@ L.NoHistoryAvailable		= "История недоступна"
 L.Button_ShowClients		= "Показ клиентов"
 L.Button_ResetClient		= "сброс bidbot"
 L.Local_NoRaid				= "Чтобы использовать эту функцию вы должны быть в рейд группе"
-
--- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
-L.DateFormat				= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
-L.Local_Version				= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
-

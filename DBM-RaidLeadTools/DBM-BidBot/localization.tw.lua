@@ -1,5 +1,6 @@
-﻿-- readjust by yleaf(yaroot@gmail.com)/Juha
-if GetLocale() ~= "zhTW" then return end
+﻿if GetLocale() ~= "zhTW" then
+	return
+end
 local L = DBM_BidBot_Translations
 
 L.Prefix = "[BidBot]: "
@@ -20,7 +21,6 @@ L.Message_BidPubMessage		= "新出價: %s 出價 %d DKP"
 L.Disenchant				= "分解"
 
 L.PopUpAcceptDKP			= "對%s儲存出價. 分解請輸入0 DKP."
-
 
 -- GUI
 L.TabCategory_BidBot	 	= "競拍助手 (DKP)"
@@ -46,5 +46,3 @@ L.NoHistoryAvailable		= "沒有有效記錄"
 L.Button_ShowClients		= "顯示插件版本"
 L.Button_ResetClient		= "重設競拍助手"
 L.Local_NoRaid				= "你必需在一個團隊才能使用這個功能"
-
-

@@ -1,5 +1,4 @@
 DBM_BidBot_Translations = {}
-
 local L = DBM_BidBot_Translations
 
 L.Prefix = "[BidBot]: "
@@ -20,7 +19,6 @@ L.Message_BidPubMessage		= "New bid: %s bids %d DKP"
 L.Disenchant				= "Disenchant"
 
 L.PopUpAcceptDKP			= "Save bid for %s. For disenchant please type in 0 DKP."
-
 
 -- GUI
 L.TabCategory_BidBot	 	= "BidBot (DKP)"
@@ -50,4 +48,3 @@ L.Local_NoRaid				= "You have to be in a raid group to use this function"
 -- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
 L.DateFormat				= "%m/%d/%y %H:%M:%S"	-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
 L.Local_Version				= "%s: %s"		-- DO NOT PASTE TO TRANSLATE, ONLY IN EN FILE!!!
-

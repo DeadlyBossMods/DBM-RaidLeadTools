@@ -1,5 +1,6 @@
-﻿if GetLocale() ~= "koKR" then return end
-
+﻿if GetLocale() ~= "koKR" then
+	return
+end
 local L = DBM_BidBot_Translations
 
 L.Prefix = "[BidBot]: "
@@ -20,7 +21,6 @@ L.Message_BidPubMessage		= "새로운 경매: %s 입찰가 : %d DKP"
 L.Disenchant				= "마력추출"
 
 L.PopUpAcceptDKP			= "%s 경매를 저장합니다. 마력추출인 경우 0 DKP를 입력해 주세요."
-
 
 -- GUI
 L.TabCategory_BidBot	 	= "BidBot (DKP)"

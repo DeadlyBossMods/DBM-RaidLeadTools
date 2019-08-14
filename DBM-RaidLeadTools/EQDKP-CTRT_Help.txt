@@ -190,4 +190,3 @@ Note Import:
 		<result>Thaddius</result>
 	</RaidNoteTrigger>
 </RaidNoteTriggers>
-

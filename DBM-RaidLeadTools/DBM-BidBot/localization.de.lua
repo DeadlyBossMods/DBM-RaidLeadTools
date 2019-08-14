@@ -1,6 +1,6 @@
-
-if GetLocale() ~= "deDE" then return end
-
+if GetLocale() ~= "deDE" then
+	return
+end
 local L = DBM_BidBot_Translations
 
 L.Whisper_Queue 			= "Zur Zeit wird noch geboten. Item(s) landen in der Warteschlange."
@@ -46,5 +46,3 @@ L.NoHistoryAvailable		= "Es ist keine Historie verfügbar"
 L.Button_ShowClients		= "Zeige BidBot Versionen"
 L.Button_ResetClient		= "Einstellungen zurücksetzen"
 L.Local_NoRaid				= "Du musst in einer Schlachtgruppe sein um diese Funktion zu nutzen."
-
-

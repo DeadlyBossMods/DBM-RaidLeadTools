@@ -1,5 +1,6 @@
-﻿if GetLocale() ~= "koKR" then return end
-
+﻿if GetLocale() ~= "koKR" then
+	return
+end
 local L = DBM_StandbyBot_Translations
 
 L.InRaidGroup			= "대기하기 전에 먼저 공격대를 떠나야 합니다."
@@ -26,7 +27,6 @@ L.SB_History_NotSaved	= "대기자 명단이 없습니다 --> 대기자 목록 �
 
 L.SB_History_Line		= "[ID=%d] %s 레이드 : %d 명 참여"
 
-
 -- GUI
 L.TabCategory_Standby	= "Standby-Bot"
 L.AreaGeneral			= "Standby-Bot 일반 설정"
@@ -52,7 +52,3 @@ L.SB_Documentation		= [[Standby 모듈은 공격대장에게 공격대가 가득
 L.Button_ShowClients	= "버전 확인"
 L.Local_NoRaid			= "이 기능을 사용하기 위해서는 공격대에 참여 해야 합니다."
 L.Local_Version			= "%s: %s"	-- Lacrosa: r123	(please don't translate this line)
-
-
-
-

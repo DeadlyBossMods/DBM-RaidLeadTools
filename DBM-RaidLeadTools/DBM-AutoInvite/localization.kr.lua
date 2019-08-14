@@ -1,6 +1,6 @@
---    * koKR: BlueNyx(bluenyx@gmail.com)/nBlueWiz(everfinale@gmail.com)
-if GetLocale() ~= "koKR" then return end
-
+if GetLocale() ~= "koKR" then
+	return
+end
 local L = DBM_AutoInvite_Translations
 
 L.TabCategory_AutoInvite 	= "자동 초대"
