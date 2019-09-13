@@ -23,16 +23,16 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("AutoInvite")
 
 L:SetOptionLocalization({
-	Enabled				= "Enable auto invite by keyword", -- Bool
-	AllowGuildMates		= "Allow auto-invite from guild mates", -- Bool
-	AllowFriends 		= "Allow auto-invite from friends", -- Bool
-	AllowOthers 		= "Allow auto-invite from everyone", -- Bool
-	PromoteEveryone		= "Promote all new player (not recommended)", -- Bool
-	AOEbyGuildRank		= "Invite all players at or above this rank", -- Dropdown
-	PromoteGuildRank	= "Promote by guild rank", -- Dropdown
-	KeyWord 			= "Keyword to whisper for invite", -- Textbox
-	PromoteByNameList	= "Auto-promote the following players (separate by space)", -- Textbox
-	Button_AOE_Invite	= "AoE guild invite" -- Button
+	Enabled				= "Enable auto invite by keyword",
+	AllowGuildMates		= "Allow auto-invite from guild mates",
+	AllowFriends 		= "Allow auto-invite from friends",
+	AllowOthers 		= "Allow auto-invite from everyone",
+	PromoteEveryone		= "Promote all new player (not recommended)",
+	AOEbyGuildRank		= "Invite all players at or above this rank",
+	PromoteGuildRank	= "Promote by guild rank",
+	KeyWord 			= "Keyword to whisper for invite",
+	PromoteByNameList	= "Auto-promote the following players (separate by space)",
+	Button_AOE_Invite	= "AoE guild invite"
 })
 
 L:SetMiscLocalization({
@@ -50,15 +50,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("BidBot")
 
 L:SetOptionLocalization({
-	Enabled				= "Enable BidBot (!bid [item])", -- Bool
-	Button_ShowClients	= "Show clients", -- Bool
-	ShowinRaidWarn		= "Show Item as Raid Warning", -- Bool
-	PublicBids			= "Post bids to chat for public bidding", -- Bool
-	PayWhatYouBid		= "Pay price of bid, (otherwise second bid + 1)", --Bool
-	ChatChannel			= "Chat to use for output", -- Dropdown
-	MinBid				= "Minimum bid", -- Textbox
-	Duration			= "Time to bid in sec (default 30)", -- Textbox
-	OutputBids			= "How many top biddings to output (default top 3)", -- Textbox
+	Enabled				= "Enable BidBot (!bid [item])",
+	Button_ShowClients	= "Show clients",
+	ShowinRaidWarn		= "Show Item as Raid Warning",
+	PublicBids			= "Post bids to chat for public bidding",
+	PayWhatYouBid		= "Pay price of bid, (otherwise second bid + 1)",
+	ChatChannel			= "Chat to use for output",
+	MinBid				= "Minimum bid",
+	Duration			= "Time to bid in sec",
+	OutputBids			= "How many top biddings to output"
 })
 
 L:SetMiscLocalization({
@@ -92,25 +92,25 @@ L = DBM:GetModLocalization("DKP")
 
 L:SetOptionLocalization({
 	Enabled					= "Enable DKP system to track raid events",
-	Button_StartDKPTracking	= "Start DKP tracking", -- Button
-	Button_StopDKPTracking	= "Stop DKP tracking", -- Button
-	Button_CreateEvent		= "Create special event", -- Button
-	Button_ResetHistory		= "Reset History", -- Button
-	Enable_StarEvent		= "Create event on raid start", -- Button
-	Enable_TimeEvents		= "Create events based on time (e.g. 1 event per hour)", -- Button
-	Enable_BossEvents		= "Create events on boss kills", -- Button
-	Enable_SB_Users			= "Count players on standby as raid members", -- Button
-	Enable_5ppl_tracking	= "Enable DKP Tracking in 5ppl Instances", -- Button
-	CustomPoint				= "Points to award", -- Textbox
-	CustomDescription		= "Description for this event", -- Textbox
-	StartPoints				= "Points on raid start", -- Textbox
-	StartDescription		= "Description for raid start", -- Textbox
-	BossPoints				= "Points per boss kill", -- Textbox
-	BossDescription			= "Description for boss kills (%s is name of the boss)", -- Textbox
-	TimePoints				= "Points per time event (e.g. 10 DKP per hour)", -- Textbox
-	TimeDescription			= "Description for time events", -- Textbox
-	TimeToCount				= "every X min", -- Textbox
-	ChatChannel				= nil, -- Dropdown, missing?
+	Button_StartDKPTracking	= "Start DKP tracking",
+	Button_StopDKPTracking	= "Stop DKP tracking",
+	Button_CreateEvent		= "Create special event",
+	Button_ResetHistory		= "Reset History",
+	Enable_StartEvent		= "Create event on raid start",
+	Enable_TimeEvents		= "Create events based on time (e.g. 1 event per hour)",
+	Enable_BossEvents		= "Create events on boss kills",
+	Enable_SB_Users			= "Count players on standby as raid members",
+	Enable_5ppl_tracking	= "Enable DKP Tracking in 5ppl Instances",
+	CustomPoint				= "Points to award",
+	CustomDescription		= "Description for this event",
+	StartPoints				= "Points on raid start",
+	StartDescription		= "Description for raid start",
+	BossPoints				= "Points per boss kill",
+	BossDescription			= "Description for boss kills (%s is name of the boss)",
+	TimePoints				= "Points per time event (e.g. 10 DKP per hour)",
+	TimeDescription			= "Description for time events",
+	TimeToCount				= "every X min",
+	ChatChannel				= "Chat to use for output"
 })
 
 L:SetMiscLocalization({
@@ -132,9 +132,9 @@ L = DBM:GetModLocalization("StandByBot")
 
 L:SetOptionLocalization({
 	Enabled				= "Enable standby-bot (!sb)",
-	SendWhispers		= "Send information whisper on Raidleave to players", -- Button
-	Button_ShowClients	= "Show clients", -- Button
-	Button_ResetHistory	= "Reset history", -- Button
+	SendWhispers		= "Send information whisper on Raidleave to players",
+	Button_ShowClients	= "Show clients",
+	Button_ResetHistory	= "Reset history"
 })
 
 L:SetMiscLocalization({
@@ -150,7 +150,7 @@ L:SetMiscLocalization({
 	Local_CantRemove	= "Sorry, can't remove player.",
 	Local_CleanList		= "SB list cleaned because (requested by %s)",
 	Current_StandbyTime	= "Standby times from %s:",
-	DateTimeFormat		= "%c",
+	DateTimeFormat		= "%c", -- TODO: Remove?
 	History_OnJoin		= "[%s]: %s is now SB",
 	History_OnLeave		= "[%s]: %s leaves SB after %s min",
 	SB_History_Saved	= "The standby-list was saved as ID %s.",
@@ -170,5 +170,5 @@ Players who want to be standby have to whisper '!sb' to the player who is runnin
 })
 
 -- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
-L.DateFormat			= "%m/%d/%y %H:%M:%S"
-L.Local_Version			= "%s: %s"
+L.DateFormat			= "%m/%d/%y %H:%M:%S" -- TODO: Remove
+L.Local_Version			= "%s: %s" -- TODO: Remove

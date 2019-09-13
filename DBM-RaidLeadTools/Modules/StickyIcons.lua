@@ -4,7 +4,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("Enabled", false)
-mod:AddSliderOption("IconsUpdateTime", 1, 10, 1)
+mod:AddSliderOption("IconsUpdateTime", 1, 10, 1, 1)
 
 local isActive, raidIcons = false, {}
 
