@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 DBM_BidBot_ItemHistory = {}
 
 local select, insert = select, table.insert
-local SendAddonMessage, GetChannelList = SendAddonMessage, GetChannelList
+local GetChannelList = GetChannelList
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -82,9 +82,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_PARTY",
 	"CHAT_MSG_OFFICER",
 	"CHAT_MSG_RAID_LEADER",
-	"CHAT_MSG_WHISPER",
-	"RAID_ROSTER_UPDATE",
-	"CHAT_MSG_ADDON"
+	"CHAT_MSG_WHISPER"
 )
 
 local inProgress, biddings = false, {}
@@ -246,35 +244,25 @@ end
 
 do
 	local time, strsplit = time, strsplit
-	local UnitName, GetItemInfo = UnitName, GetItemInfo
+	local GetItemInfo = GetItemInfo
 
-	function mod:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if prefix == "DBM_BidBot" then
-			if msg:sub(0, 5) == "ITEM:" and sender ~= UnitName("player") then
-				if DBM:GetRaidUnitId(sender) and not channel == "RAID" then
-					return
-				end
-				if not DBM:GetRaidUnitId(sender) and not channel == "GUILD" then
-					return
-				end
-				local _, itemid, dkp, savedbids = strsplit(":", msg)
-				local itembid = {
-					time	= time(),
-					item	= select(2, GetItemInfo(itemid)),
-					points	= dkp,
-					bids	= {}
-				}
-				for bidder, biddkp in savedbids:gmatch("(%a+)%((%d+)%)") do
-					insert(itembid.bids, {
-						points	= biddkp,
-						name	= bidder
-					})
-				end
-				insert(DBM_BidBot_ItemHistory, itembid)
-				if itembid.bids[1] and itembid.bids[1].name then
-					DoInjectToDKPSystem(itembid)
-				end
-			end
+	function mod:OnSync(msg)
+		local _, itemid, dkp, savedbids = strsplit(":", msg)
+		local itembid = {
+			time	= time(),
+			item	= select(2, GetItemInfo(itemid)),
+			points	= dkp,
+			bids	= {}
+		}
+		for bidder, biddkp in savedbids:gmatch("(%a+)%((%d+)%)") do
+			insert(itembid.bids, {
+				points	= biddkp,
+				name	= bidder
+			})
+		end
+		insert(DBM_BidBot_ItemHistory, itembid)
+		if itembid.bids[1] and itembid.bids[1].name then
+			DoInjectToDKPSystem(itembid)
 		end
 	end
 end
@@ -341,7 +329,7 @@ do
 		if counter > 0 then
 			DoInjectToDKPSystem(itembid)
 		end
-		SendAddonMessage("DBM_BidBot", "ITEM:" .. select(2, strsplit(":", itembid.item)) .. ":" .. itembid.points .. ":(" .. msg .. ")", "RAID")
+		mod.SendSync(select(2, strsplit(":", itembid.item)) .. ":" .. itembid.points .. ":(" .. msg .. ")")
 		if max then
 			sendchatmsg(L.Prefix .. L.Message_BiddingsVisible:format(counter))
 		end
