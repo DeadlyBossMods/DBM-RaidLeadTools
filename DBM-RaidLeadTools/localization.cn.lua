@@ -54,7 +54,6 @@ L = DBM:GetModLocalization("BidBot")
 
 L:SetOptionLocalization({
 	Enabled				= "开启竞价助手 (!bid [item])",
-	Button_ShowClients	= "显示插件版本",
 	--ShowinRaidWarn		= "Show Item as Raid Warning",
 	PublicBids			= "发布明拍出价到聊天频道",
 	PayWhatYouBid		= "输入你出的价格, (否则为比第二位多1)",

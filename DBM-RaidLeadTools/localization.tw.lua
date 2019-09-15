@@ -54,7 +54,6 @@ L = DBM:GetModLocalization("BidBot")
 
 L:SetOptionLocalization({
 	Enabled				= "開啟競拍助手 (!bid [item])",
-	Button_ShowClients	= "顯示插件版本",
 	ShowinRaidWarn		= "用團隊警告顯示道具",
 	PublicBids			= "發表公開競標到頻道",
 	PayWhatYouBid		= "支付的競標價格 (否則第二次出價+1)",

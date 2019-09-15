@@ -51,7 +51,6 @@ L = DBM:GetModLocalization("BidBot")
 
 L:SetOptionLocalization({
 	Enabled				= "Enable BidBot (!bid [item])",
-	Button_ShowClients	= "Show clients",
 	ShowinRaidWarn		= "Show Item as Raid Warning",
 	PublicBids			= "Post bids to chat for public bidding",
 	PayWhatYouBid		= "Pay price of bid, (otherwise second bid + 1)",

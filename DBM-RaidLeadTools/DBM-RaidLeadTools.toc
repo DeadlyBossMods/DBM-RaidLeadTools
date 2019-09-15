@@ -37,5 +37,7 @@ localization.cn.lua
 localization.kr.lua
 localization.tw.lua
 
+Modules\AutoInvite.lua
+Modules\BidBot.lua
 Modules\StickyIcons.lua
 Modules\WarnForLootmaster.lua

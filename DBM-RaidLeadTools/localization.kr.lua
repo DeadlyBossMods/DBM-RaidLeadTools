@@ -54,7 +54,6 @@ L = DBM:GetModLocalization("BidBot")
 
 L:SetOptionLocalization({
 	Enabled				= "Bidbot 사용 (!bid [item])",
-	Button_ShowClients	= "버전 확인",
 	ShowinRaidWarn		= "공격대 경보로 아이템 보이기",
 	PublicBids			= "공개 경매 진행하기 (입찰에 채널 사용)",
 	PayWhatYouBid		= "입찰가 대로 지불하기, (설정하지 않으면 2등 입찰가 + 1)",

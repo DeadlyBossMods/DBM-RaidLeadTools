@@ -22,21 +22,36 @@ ignore = {
 }
 globals = {
 	"_G",
+	"strsplit",
 	"table",
+	"time",
 
 	-- DBM
 	"DBM",
 	"DBM_DISABLE_ZONE_DETECTION",
 
+	-- RaidLeadTools
+	"DBM_AddItemToDKP",
+	"DBM_BidBot_ItemHistory",
+
 	-- WoW
+	"ACCEPT",
+	"CANCEL",
+	"SlashCmdList",
+	"StaticPopupDialogs",
+	"UIParent",
 	"WOW_PROJECT_ID",
 	"WOW_PROJECT_CLASSIC",
-	"SlashCmdList",
 
 	-- FrameXML
+	"ChatFrame_AddMessageEventFilter",
 	"ConvertToRaid",
+	"CreateFrame",
+	"GetChannelList",
+	"GetChannelName",
 	"GetFriendInfo",
 	"GetGuildRosterInfo",
+	"GetItemInfo",
 	"GetLocale",
 	"GetLootMaster",
 	"GetNumFriends",
@@ -51,8 +66,11 @@ globals = {
 	"IsGuildMember",
 	"IsInRaid",
 	"PromoteToAssistant",
+	"SendAddonMessage",
 	"SendChatMessage",
 	"SetRaidTarget",
+	"StaticPopup_Show",
 	"UnitIsGroupAssistant",
-	"UnitIsGroupLeader"
+	"UnitIsGroupLeader",
+	"UnitName"
 }
