@@ -139,7 +139,6 @@ L = DBM:GetModLocalization("StandByBot")
 L:SetOptionLocalization({
 	Enabled				= "開啟候補助手 (!sb)",
 	SendWhispers		= "離開團隊時密語玩家",
-	Button_ShowClients	= "顯示客戶端版本",
 	Button_ResetHistory	= "重置"
 })
 

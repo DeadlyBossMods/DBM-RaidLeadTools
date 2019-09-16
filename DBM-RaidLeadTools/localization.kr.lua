@@ -139,7 +139,6 @@ L = DBM:GetModLocalization("StandByBot")
 L:SetOptionLocalization({
 	Enabled				= "Standby-bot 사용 (!sb)",
 	SendWhispers		= "공격대를 떠난 공격대원에게 정보 귓속말 보내기",
-	Button_ShowClients	= "버전 확인",
 	Button_ResetHistory	=  "초기화"
 })
 

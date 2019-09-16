@@ -139,7 +139,6 @@ L = DBM:GetModLocalization("StandByBot")
 L:SetOptionLocalization({
 	Enabled				= "Aktiviere Standby-Bot (!sb)",
 	SendWhispers		= "Informiere spieler über SB beim Verlasen der Schlachtgruppe",
-	Button_ShowClients	= "Zeige SB-Bot Versionen",
 	--Button_ResetHistory	= "Reset history"
 })
 

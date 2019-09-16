@@ -139,7 +139,6 @@ L = DBM:GetModLocalization("StandByBot")
 L:SetOptionLocalization({
 	Enabled				= "Включить standby-bot (!sb)",
 	SendWhispers		= "Выслать информационный шепот игроку при выходе из рейда",
-	Button_ShowClients	= "Показ клиентов",
 	Button_ResetHistory	= "сброс"
 })
 

@@ -40,5 +40,6 @@ localization.tw.lua
 Modules\AutoInvite.lua
 Modules\BidBot.lua
 Modules\DKP.lua
+Modules\StandByBot.lua
 Modules\StickyIcons.lua
 Modules\WarnForLootmaster.lua

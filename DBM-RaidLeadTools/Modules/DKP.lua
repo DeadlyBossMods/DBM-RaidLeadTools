@@ -198,10 +198,6 @@ mod:AddBool("Enable_TimeEvents", false, "General")
 mod:AddSliderOption("TimePoints", 0, 100, 5, 10, "General")
 mod:AddSliderOption("TimeToCount", 1, 300, 5, 60, "General")
 mod:AddEditboxOption("TimeDescription", "Raid Attendance", "General")
-mod:AddButton("Button_ResetHistory", function()
-	mod.Options.items = {}
-	mod.Options.history = {}
-end, "General")
 
 do
 	local type, tonumber, pairs, strsplit, date = type, tonumber, pairs, strsplit, date
@@ -210,7 +206,15 @@ do
 	mod:RegisterOnGuiLoadCallback(function()
 		local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
 		local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
-		local history = area:CreateScrollingMessageFrame(area.frame:GetWidth() - 20, 150, nil, nil, GameFontNormalSmall)
+		local button = area:CreateButton(L.ResetHistory, 100, 16)
+		button:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", -10, 10)
+		button:SetNormalFontObject(GameFontNormalSmall)
+		button:SetHighlightFontObject(GameFontNormalSmall)
+		button:SetScript("OnClick", function()
+			mod.Options.items = {}
+			mod.Options.history = {}
+		end)
+		local history = area:CreateScrollingMessageFrame(area.frame:GetWidth() - 20, 220, nil, nil, GameFontHighlightSmall)
 		history:ClearAllPoints()
 		history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
 		history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)

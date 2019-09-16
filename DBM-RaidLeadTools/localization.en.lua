@@ -136,7 +136,6 @@ L = DBM:GetModLocalization("StandByBot")
 L:SetOptionLocalization({
 	Enabled				= "Enable standby-bot (!sb)",
 	SendWhispers		= "Send information whisper on Raidleave to players",
-	Button_ShowClients	= "Show clients",
 	Button_ResetHistory	= "Reset history"
 })
 

@@ -55,31 +55,40 @@ do
 	local pairs, date = pairs, date
 	local GameFontHighlightSmall = GameFontHighlightSmall
 
-	local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
-	local area = historypanel:CreateArea(L.AreaItemHistory, nil, 360, true)
-	local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 220, nil, nil, GameFontHighlightSmall)
-	history:SetScript("OnShow", function(self)
-		local historyz = DBM_BidBot_ItemHistory
-		if #historyz > 0 then
-			self:SetMaxLines((#historyz * 4) + 1)
-			for _,itembid in pairs(historyz) do
-				if itembid and itembid.item and itembid.points then
-					if #itembid.bids > 0 then
-						self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. itembid.points .. " DKP ")
-						for i = 1, 3, 1 do
-							if itembid.bids[i] then
-								self:AddMessage("               -> " .. i .. ". " .. itembid.bids[i].name .. "(" .. itembid.bids[i].points .. ")")
+	mod:RegisterOnGuiLoadCallback(function()
+		local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
+		local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
+		local button = area:CreateButton(L.ResetHistory, 100, 16)
+		button:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", -10, 10)
+		button:SetNormalFontObject(GameFontNormalSmall)
+		button:SetHighlightFontObject(GameFontNormalSmall)
+		button:SetScript("OnClick", function()
+			mod.Options.DBM_BidBot_ItemHistory = {}
+		end)
+		local history = area:CreateScrollingMessageFrame(area.frame:GetWidth() - 20, 220, nil, nil, GameFontHighlightSmall)
+		history:SetScript("OnShow", function(self)
+			local historyz = DBM_BidBot_ItemHistory
+			if #historyz > 0 then
+				self:SetMaxLines((#historyz * 4) + 1)
+				for _,itembid in pairs(historyz) do
+					if itembid and itembid.item and itembid.points then
+						if #itembid.bids > 0 then
+							self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. itembid.points .. " DKP ")
+							for i = 1, 3, 1 do
+								if itembid.bids[i] then
+									self:AddMessage("               -> " .. i .. ". " .. itembid.bids[i].name .. "(" .. itembid.bids[i].points .. ")")
+								end
 							end
+							self:AddMessage(" ")
+						else
+							self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. L.Disenchant)
 						end
-						self:AddMessage(" ")
-					else
-						self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. L.Disenchant)
 					end
 				end
 			end
-		end
+		end)
+		historypanel:SetMyOwnHeight()
 	end)
-	historypanel:SetMyOwnHeight()
 end
 
 mod:RegisterEvents(
@@ -250,11 +259,13 @@ do
 end
 
 do
-	local time, strsplit, insert = time, strsplit, table.insert
+	local time, insert = time, table.insert
 	local GetItemInfo = GetItemInfo
 
-	function mod:OnSync(msg)
-		local _, itemid, dkp, savedbids = strsplit(":", msg)
+	function mod:OnSync(itemid, dkp, savedbids)
+		if not mod.Options.Enabled then
+			return
+		end
 		local itembid = {
 			time	= time(),
 			item	= select(2, GetItemInfo(itemid)),
@@ -336,7 +347,7 @@ do
 		if counter > 0 then
 			DoInjectToDKPSystem(itembid)
 		end
-		mod.SendSync(select(2, strsplit(":", itembid.item)) .. ":" .. itembid.points .. ":(" .. msg .. ")")
+		mod.SendSync(select(2, strsplit(":", itembid.item)), itembid.points, "(" .. msg .. ")")
 		if max then
 			sendchatmsg(L.Prefix .. L.Message_BiddingsVisible:format(counter))
 		end
