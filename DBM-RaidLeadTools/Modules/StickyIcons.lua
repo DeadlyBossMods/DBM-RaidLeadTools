@@ -9,7 +9,7 @@ mod:AddSliderOption("IconsUpdateTime", 1, 10, 1, 1)
 local isActive, raidIcons = false, {}
 
 do
-	local pairs = pairs
+	local wipe, pairs = table.wipe, pairs
 	local GetNumGroupMembers, IsInRaid, GetRaidTargetIndex, SetRaidTarget = GetNumGroupMembers, IsInRaid, GetRaidTargetIndex, SetRaidTarget
 
 	mod:RegisterOnUpdateHandler(function()
@@ -30,11 +30,6 @@ do
 			end
 		end
 	end, mod.Options.IconsUpdateTime)
-end
-
-do
-	local wipe = table.wipe
-	local GetNumGroupMembers, IsInRaid, GetRaidTargetIndex = GetNumGroupMembers, IsInRaid, GetRaidTargetIndex
 
 	function mod:OnInitialize()
 		DBM:RegisterCallback("pull", function()

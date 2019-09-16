@@ -27,7 +27,7 @@ do
 			checkclients:SetPoint('TOPRIGHT', area.frame, "TOPRIGHT", -10, -10)
 			checkclients:SetNormalFontObject(GameFontNormalSmall)
 			checkclients:SetHighlightFontObject(GameFontNormalSmall)
-			checkclients:SetScript("OnClick", function(self)
+			checkclients:SetScript("OnClick", function()
 				if IsInRaid() then
 					SendAddonMessage("DBM_SbBot", "showversion!", "RAID")
 				else
@@ -46,7 +46,7 @@ do
 			resetdkphistory:SetPoint('BOTTOMRIGHT', area.frame, "TOPRIGHT", 0, 0)
 			resetdkphistory:SetNormalFontObject(GameFontNormalSmall)
 			resetdkphistory:SetHighlightFontObject(GameFontNormalSmall)
-			resetdkphistory:SetScript("OnClick", function(self)
+			resetdkphistory:SetScript("OnClick", function()
 				table.wipe(settings.log)
 				table.wipe(settings.history)
 				table.wipe(settings.sb_users)
@@ -60,7 +60,7 @@ do
 			history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
 			history:SetScript("OnShow", function(self)
 				self:SetMaxLines(#settings.log+1)
-				for k,v in pairs(settings.log) do
+				for _,v in pairs(settings.log) do
 					self:AddMessage(v)
 				end
 			end)
@@ -83,7 +83,7 @@ local function FormatPlayerName(name)
 end
 
 local function table_empty(table)
-	for _,v in pairs(table) do
+	for _,_ in pairs(table) do
 		return false
 	end
 	return true
@@ -98,9 +98,7 @@ local function table_count(table)
 end
 
 local function raidtime(minutes)
-	local hours = math.floor(minutes/60)
-	local minutes = (minutes-(hours*60))
-	return minutes, hours
+	return (minutes-(hours*60)), math.floor(minutes/60)
 end
 
 local function setStandby(name, nowsb)
@@ -142,7 +140,7 @@ end
 
 function amIactive()
 	if not IsInRaid() then return false end
-	for k,v in pairs(sbbot_clients) do
+	for k,_ in pairs(sbbot_clients) do
 		if DBM:GetRaidRank(k) >= 2 then
 			if k == myname then
 				return true
@@ -151,7 +149,7 @@ function amIactive()
 			end
 		end
 	end
-	for k,v in pairs(sbbot_clients) do
+	for k,_ in pairs(sbbot_clients) do
 		if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < myname then
 			return false
 		end
@@ -211,7 +209,7 @@ do
 			DBM:AddMsg( L.SB_History_NotSaved )
 		end
 	end
-	DBM:RegisterCallback("raidLeave", function(event, name)
+	DBM:RegisterCallback("raidLeave", function(_, name)
 		if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
 			if name == myname then
 				SaveTimeHistory()
@@ -220,7 +218,7 @@ do
 			end
 		end
 	end)
-	DBM:RegisterCallback("raidJoin", function(event, ...) return RemoveStandbyMember(...) end)
+	DBM:RegisterCallback("raidJoin", function(_, ...) return RemoveStandbyMember(...) end)
 end
 
 do
@@ -230,7 +228,7 @@ do
 		end
 	end
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER",
-		function(self, event, ...)
+		function(self, _, ...)
 			local msg = ...
 			if not msg then
 				return self:find("^!sb")
@@ -239,9 +237,9 @@ do
 			end
 		end
 	)
-	mainframe:SetScript("OnEvent", function(self, event, ...)
+	mainframe:SetScript("OnEvent", function(_, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
-			DBM:RegisterCallback("raidJoin", function(event, name)
+			DBM:RegisterCallback("raidJoin", function(_, name)
 				if settings.enabled and name and select(2, IsInInstance()) ~= "pvp" and select(2, IsInInstance()) ~= "arena" then
 					if name == myname then
 						SendAddonMessage("DBM_SbBot", "Hi!", "RAID")
@@ -316,7 +314,7 @@ do
 			local msg, author = select(1, ...)
 			if active and msg == "!sb" then
 				local output = ""
-				for k,v in pairs(settings.sb_users) do
+				for k,_ in pairs(settings.sb_users) do
 					output = output..", "..k
 				end
 				output = output:sub(2)
@@ -383,7 +381,7 @@ do
 			elseif msg == "!sb save" and author == myname then
 				SaveTimeHistory()
 			elseif msg == "!sb clients" then
-				for k,v in pairs(sbbot_clients) do
+				for k,_ in pairs(sbbot_clients) do
 					DBM:AddMsg(k)
 				end
 			end

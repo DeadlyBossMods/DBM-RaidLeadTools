@@ -3,51 +3,53 @@ local L		= mod:GetLocalizedStrings()
 
 DBM_BidBot_ItemHistory = {}
 
-local select, insert = select, table.insert
-local GetChannelList = GetChannelList
-
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("Enabled", false, "General")
-mod:AddBoolOption("ShowinRaidWarn", false, "General")--withraidwarn
-mod:AddBoolOption("PublicBids", false, "General")--bidtyp_open
-mod:AddBoolOption("PayWhatYouBid", false, "General")--bidtyp_payall
-local channels = {
-	{
-		text	= L.Local,
-		value	= "LOCAL"
-	},
-	{
-		text	= L.Officer,
-		value	= "OFFICER"
-	},
-	{
-		text	= L.Guild,
-		value	= "GUILD"
-	},
-	{
-		text	= L.Raid,
-		value	= "RAID"
-	},
-	{
-		text	= L.Party,
-		value	= "PARTY"
+mod:AddBoolOption("ShowinRaidWarn", false, "General")
+mod:AddBoolOption("PublicBids", false, "General")
+mod:AddBoolOption("PayWhatYouBid", false, "General")
+do
+	local select, insert = select, table.insert
+	local GetChannelList = GetChannelList
+
+	local channels = {
+		{
+			text	= L.Local,
+			value	= "LOCAL"
+		},
+		{
+			text	= L.Officer,
+			value	= "OFFICER"
+		},
+		{
+			text	= L.Guild,
+			value	= "GUILD"
+		},
+		{
+			text	= L.Raid,
+			value	= "RAID"
+		},
+		{
+			text	= L.Party,
+			value	= "PARTY"
+		}
 	}
-}
-for i = 1, select("#", GetChannelList()), 3 do
-	local chanid, channame = select(i, GetChannelList())
-	if chanid > 3 then
-		insert(channels, {
-			text	= channame,
-			value	= channame
-		})
+	for i = 1, select("#", GetChannelList()), 3 do
+		local chanid, channame = select(i, GetChannelList())
+		if chanid > 3 then
+			insert(channels, {
+				text	= channame,
+				value	= channame
+			})
+		end
 	end
+	mod:AddDropdownOption("ChatChannel", channels, "GUILD")
 end
-mod:AddDropdownOption("ChatChannel", channels, "GUILD")--chatchannel
-mod:AddSliderOption("MinBid", 1, 100, 5, 10, "General")--minGebot
-mod:AddSliderOption("Duration", 1, 300, 5, 30, "General")--duration
-mod:AddSliderOption("OutputBids", 1, 10, 1, 3, "General")--output
+mod:AddSliderOption("MinBid", 1, 100, 5, 10, "General")
+mod:AddSliderOption("Duration", 1, 300, 5, 30, "General")
+mod:AddSliderOption("OutputBids", 1, 10, 1, 3, "General")
 --[[
 do
 	local area = historypanel:CreateArea(L.AreaItemHistory, nil, 360, true)
@@ -120,7 +122,7 @@ do
 end
 
 do
-	local tonumber, pairs = tonumber, pairs
+	local tonumber, pairs, insert = tonumber, pairs, table.insert
 	local SendChatMessage = SendChatMessage
 
 	local function AddBid(bidder, bid)
@@ -197,11 +199,14 @@ do
 	hiddenedit.right:SetVertTile(true)
 	hiddenedit.right:SetTexCoord(0.92, 1, 0, 1)
 	StaticPopupDialogs["DBM_DKP_ACCEPT"] = {
-		text = "bitte Item %s bestätigen",
+		text = "bitte Item %s bestätigen", -- TODO: Locale this
 		button1 = ACCEPT,
 		button2 = CANCEL,
 		hasEditBox = 1,
 		maxLetters = 32,
+		timeout = 0,
+		exclusive = 0,
+		hideOnEscape = 0,
 		OnShow = function(self)
 			hiddenedit:ClearAllPoints()
 			hiddenedit:SetParent(self)
@@ -223,19 +228,16 @@ do
 			hiddenedit:Hide()
 			hiddenedit:SetText("")
 			self.editBox:SetText("")
-		end,
-		timeout = 0,
-		exclusive = 0,
-		hideOnEscape = 0
+		end
 	}
 
 	function DoInjectToDKPSystem(itemtable)
 		if mod.Options.Enabled then
 			hiddenedit.itemtable = {
-				item = itemtable.item,
-				points = itemtable.points,
-				time = itemtable.time,
-				player = itemtable.bids[1].name
+				item	= itemtable.item,
+				points	= itemtable.points,
+				time	= itemtable.time,
+				player	= itemtable.bids[1].name
 			}
 			StaticPopup_Show("DBM_DKP_ACCEPT", itemtable.item)
 		end
@@ -243,7 +245,7 @@ do
 end
 
 do
-	local time, strsplit = time, strsplit
+	local time, strsplit, insert = time, strsplit, table.insert
 	local GetItemInfo = GetItemInfo
 
 	function mod:OnSync(msg)
@@ -268,7 +270,7 @@ do
 end
 
 do
-	local remove, wipe, sort, floor, time, pairs, strsplit = table.remove, table.wipe, table.sort, math.floor, time, pairs, strsplit
+	local insert, remove, wipe, sort, floor, time, pairs, select, strsplit = table.insert, table.remove, table.wipe, table.sort, math.floor, time, pairs, select, strsplit
 	local IsInRaid, UnitName, SendChatMessage = IsInRaid, UnitName, SendChatMessage
 	local currentItem, queue, myname = nil, {}, UnitName("player")
 	local AuctionEnd, StartBidding
@@ -282,12 +284,12 @@ do
 			bids	= {}
 		}
 		local tmp = {}
-		for _,v in pairs(biddings) do
+		for _, v in pairs(biddings) do
 			insert(tmp, v)
 		end
 		biddings = tmp
 		if biddings[1] and biddings[2] then
-			sort(biddings, function(a ,b)
+			sort(biddings, function(a, b)
 				return a.bid > b.bid
 			end)
 			if mod.Options.PayWhatYouBid then

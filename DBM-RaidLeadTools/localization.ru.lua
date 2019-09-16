@@ -112,7 +112,7 @@ L:SetOptionLocalization({
 	TimePoints				= "Очков за время события (пример: 10 DKP в час)",
 	TimeDescription			= "Описание события по времени",
 	TimeToCount				= "каждые X мин",
-	ChatChannel				= "Использовать чат для вывода"
+	--CustomFor				= "Award points to"
 })
 
 L:SetMiscLocalization({

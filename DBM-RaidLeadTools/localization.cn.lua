@@ -112,7 +112,7 @@ L:SetOptionLocalization({
 	TimePoints				= "时间分 (例如每小时10分)",
 	TimeDescription			= "说明",
 	TimeToCount				= "每隔 X 分钟",
-	ChatChannel				= "输出频道"
+	--CustomFor				= "Award points to"
 })
 
 L:SetMiscLocalization({

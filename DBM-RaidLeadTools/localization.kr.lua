@@ -112,7 +112,7 @@ L:SetOptionLocalization({
 	TimePoints				= "시간 포인트(예 : 시간당 10 DKP)",
 	TimeDescription			= "시간 이벤트 설명",
 	TimeToCount				= "X 분 마다",
-	ChatChannel				= "경매 진행에 사용할 채널"
+	--CustomFor				= "Award points to"
 })
 
 L:SetMiscLocalization({

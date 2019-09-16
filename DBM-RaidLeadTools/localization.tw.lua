@@ -112,7 +112,7 @@ L:SetOptionLocalization({
 	TimePoints				= "每一時段的點數(例如:1小時10DKP)",
 	TimeDescription			= "時段的敘述",
 	TimeToCount				= "每X分鐘",
-	ChatChannel				= "使用下列頻道輸出"
+	--CustomFor				= "Award points to"
 })
 
 L:SetMiscLocalization({

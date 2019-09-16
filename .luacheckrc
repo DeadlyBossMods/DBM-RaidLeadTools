@@ -22,6 +22,8 @@ ignore = {
 }
 globals = {
 	"_G",
+	"date",
+	"debugstack",
 	"strsplit",
 	"table",
 	"time",
@@ -59,6 +61,7 @@ globals = {
 	"GetNumGuildMembers",
 	"GetNumSubgroupMembers",
 	"GetRaidTargetIndex",
+	"GetRealZoneText",
 	"GuildControlGetNumRanks",
 	"GuildControlGetRankName",
 	"GuildRoster",
