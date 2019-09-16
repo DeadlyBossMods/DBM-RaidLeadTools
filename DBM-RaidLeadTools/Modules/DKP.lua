@@ -27,13 +27,11 @@ do
 				end
 			end
 		end
-		--[[
 		if mod.Options.Enable_SB_Users then
-			for k, _ in pairs(DBM_Standby_Settings.sb_users) do
+			for k, _ in pairs(mod:GetModByName("StandByBot").Options.sbUsers) do
 				insert(raidusers, k)
 			end
 		end
-		]]--
 		return raidusers
 	end
 end

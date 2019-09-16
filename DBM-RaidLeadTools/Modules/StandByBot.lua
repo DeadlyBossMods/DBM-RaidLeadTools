@@ -8,7 +8,7 @@ mod:AddBoolOption("Enabled", false)
 mod:AddBoolOption("SendWhispers", false)--send_whisper
 mod:AddButton("Button_ShowClients", function() end) -- TODO
 mod:AddButton("Button_ResetHistory", function() end) -- TODO
-mod.Options.sb_users = mod.Options.sb_users or {}
-mod.Options.sb_times = mod.Options.sb_times or {}
+mod.Options.sbUsers = mod.Options.sb_users or {}
+mod.Options.sbTimes = mod.Options.sb_times or {}
 mod.Options.history = mod.Options.history or {}
 mod.Options.log = mod.Options.log or {}
