@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "對%s儲存出價. 分解請輸入0 DKP.",
 	Local_NoRaid			= "你必需在一個團隊才能使用這個功能",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "裝備記錄",
+	AreaHistory				= "裝備記錄",
 	Local					= "只在本地顯示",
 	Guild					= "使用公會頻道",
 	Raid					= "使用團隊頻道",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "成功關閉現在的團隊",
 	CustomDefault				= "漂亮! 額外獎勵!",
 	AllPlayers					= "所有玩家",
+	TabCategory_History			= "團隊記錄",
+	AreaHistory					= "事件記錄",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

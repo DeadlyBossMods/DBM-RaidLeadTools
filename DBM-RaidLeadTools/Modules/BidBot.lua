@@ -50,32 +50,37 @@ end
 mod:AddSliderOption("MinBid", 1, 100, 5, 10, "General")
 mod:AddSliderOption("Duration", 1, 300, 5, 30, "General")
 mod:AddSliderOption("OutputBids", 1, 10, 1, 3, "General")
---[[
+
 do
+	local pairs, date = pairs, date
+	local GameFontHighlightSmall = GameFontHighlightSmall
+
+	local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
 	local area = historypanel:CreateArea(L.AreaItemHistory, nil, 360, true)
 	local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 220, nil, nil, GameFontHighlightSmall)
 	history:SetScript("OnShow", function(self)
-		if #DBM_BidBot_ItemHistory > 0 then
-			self:SetMaxLines((#DBM_BidBot_ItemHistory*4)+1)
-			for _,itembid in pairs(DBM_BidBot_ItemHistory) do
+		local historyz = DBM_BidBot_ItemHistory
+		if #historyz > 0 then
+			self:SetMaxLines((#historyz * 4) + 1)
+			for _,itembid in pairs(historyz) do
 				if itembid and itembid.item and itembid.points then
 					if #itembid.bids > 0 then
-						self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP ")
-						for i=1, 3, 1 do
+						self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. itembid.points .. " DKP ")
+						for i = 1, 3, 1 do
 							if itembid.bids[i] then
-								self:AddMessage("               -> "..i..". "..itembid.bids[i].name.."("..itembid.bids[i].points..")")
+								self:AddMessage("               -> " .. i .. ". " .. itembid.bids[i].name .. "(" .. itembid.bids[i].points .. ")")
 							end
 						end
 						self:AddMessage(" ")
 					else
-						self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..L.Disenchant)
+						self:AddMessage("[" .. date("%m/%d/%y %H:%M:%S", itembid.time) .. "]: " .. itembid.item .. " " .. L.Disenchant)
 					end
 				end
 			end
 		end
 	end)
+	historypanel:SetMyOwnHeight()
 end
-]]--
 
 mod:RegisterEvents(
 	"CHAT_MSG_GUILD",

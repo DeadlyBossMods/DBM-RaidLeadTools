@@ -79,6 +79,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "Save bid for %s. For disenchant please type in 0 DKP.",
 	Local_NoRaid			= "You have to be in a raid group to use this function",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "Item History",
+	AreaHistory				= "Item History",
 	Local					= "only local output",
 	Guild					= "use guild chat",
 	Raid					= "use raid chat",
@@ -123,6 +125,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "Successfully closed the current raid",
 	CustomDefault				= "well played, fast run, extra dkp",
 	AllPlayers					= "all players",
+	TabCategory_History			= "Raid History",
+	AreaHistory					= "Event History",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 
@@ -149,7 +153,6 @@ L:SetMiscLocalization({
 	Local_CantRemove	= "Sorry, can't remove player.",
 	Local_CleanList		= "SB list cleaned because (requested by %s)",
 	Current_StandbyTime	= "Standby times from %s:",
-	DateTimeFormat		= "%c", -- TODO: Remove?
 	History_OnJoin		= "[%s]: %s is now SB",
 	History_OnLeave		= "[%s]: %s leaves SB after %s min",
 	SB_History_Saved	= "The standby-list was saved as ID %s.",
@@ -167,7 +170,3 @@ L:SetMiscLocalization({
 
 Players who want to be standby have to whisper '!sb' to the player who is running this mod. A confirmation will be send to that player. To get off the standby-list they have to whisper '!sb off'.]]
 })
-
--- PLEASE NEVER ADD THIS LINES OUTSIDE OF THE EN TRANSLATION, ADDON WILL BE BROKEN
-L.DateFormat			= "%m/%d/%y %H:%M:%S" -- TODO: Remove
-L.Local_Version			= "%s: %s" -- TODO: Remove

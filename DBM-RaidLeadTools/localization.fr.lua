@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "Sauvegarder l'enchère pour %s. Pour le désenchantement merci de taper 0 DKP.",
 	Local_NoRaid			= "Vous devez être dans un groupe RAID pour utiliser cette fonction",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "Historique des objets",
+	AreaHistory				= "Historique des objets",
 	Local					= "Sortie locale seulement",
 	Guild					= "Utiliser le Chat: Guilde",
 	Raid					= "Utiliser le Chat: Raid",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "A conclu avec succès le RAID en cours",
 	CustomDefault				= "Bien joué, rapide, extra dkp",
 	AllPlayers					= "Tous les joueurs",
+	TabCategory_History			= "Historique de Raid",
+	AreaHistory					= "Evénement Historique",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

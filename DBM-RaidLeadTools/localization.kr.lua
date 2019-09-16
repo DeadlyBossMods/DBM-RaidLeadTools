@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "%s 경매를 저장합니다. 마력추출인 경우 0 DKP를 입력해 주세요.",
 	Local_NoRaid			= "이 기능을 사용하기 위해서는 공격대에 참여 해야 합니다.",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "아이템 기록",
+	AreaHistory				= "아이템 기록",
 	Local					= "나 자신만 보기",
 	Guild					= "길드",
 	Raid					= "공격대",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "현재 레이드를 정상적으로 종료하였습니다.",
 	CustomDefault				= "업적 달성, 빠른 진행 기념, 보너스 포인트 등등..",
 	AllPlayers					= "모든 플레이어",
+	TabCategory_History			= "레이드 기록",
+	AreaHistory					= "이벤트 기록",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

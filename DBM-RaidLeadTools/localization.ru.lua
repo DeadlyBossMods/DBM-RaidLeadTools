@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "Сохранить ставку для %s. Для распыление введите значение DKP = 0.",
 	Local_NoRaid			= "Чтобы использовать эту функцию вы должны быть в рейд группе",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "История предмета",
+	AreaHistory				= "История предмета",
 	Local					= "только локальный вывод",
 	Guild					= "использовать чат гильдии",
 	Raid					= "использовать чат рейда",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "Текущий рейд успешно закрыт",
 	CustomDefault				= "хорошо сыграли, быстрый заход, призовые dkp",
 	AllPlayers					= "все игроки",
+	TabCategory_History			= "История рейда",
+	AreaHistory					= "История событий",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

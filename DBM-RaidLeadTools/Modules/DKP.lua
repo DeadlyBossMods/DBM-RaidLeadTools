@@ -4,6 +4,40 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
+local GetRaidList
+do
+	local insert = table.insert
+	local GetNumGroupMembers, IsInRaid, UnitName, GetNumSubgroupMembers = GetNumGroupMembers, IsInRaid, UnitName, GetNumSubgroupMembers
+
+	function GetRaidList()
+		if GetNumGroupMembers() == 0 and not IsInRaid() then
+			return false
+		end
+		local raidusers = {}
+		for i = 1, GetNumGroupMembers(), 1 do
+			if UnitName("raid" .. i) then
+				insert(raidusers, (UnitName("raid" .. i)))
+			end
+		end
+		if mod.Options.Enable_5ppl_tracking then
+			insert(raidusers, (UnitName("player")) )
+			for i = 1, GetNumSubgroupMembers(), 1 do
+				if UnitName("party" .. i) then
+					insert(raidusers, (UnitName("party" .. i)))
+				end
+			end
+		end
+		--[[
+		if mod.Options.Enable_SB_Users then
+			for k, _ in pairs(DBM_Standby_Settings.sb_users) do
+				insert(raidusers, k)
+			end
+		end
+		]]--
+		return raidusers
+	end
+end
+
 local CreateExportString
 do
 	local type, date, pairs, ipairs, select, strsplit = type, date, pairs, ipairs, select, strsplit
@@ -39,7 +73,7 @@ do
 		if not raid or not event then
 			return "failed to find event"
 		end
-		local players, raidStart = "", date(L.DateFormat, event.timestamp)
+		local players, raidStart = "", date("%m/%d/%y %H:%M:%S", event.timestamp)
 		text = "<RaidInfo><key>" .. raidStart .. "</key><start>" .. raidStart .. "</start><end>" .. raidStart .. "</end><zone>" .. (event.zone or "") .. "</zone><note>" .. (event.points or "") .. "</note><PlayerInfos>"
 		for i, name in ipairs(event.members) do
 			text = text .. "<key" .. i .. "><name>" .. name .. "</name></key" .. i .. ">"
@@ -66,165 +100,163 @@ do
 	end
 end
 
-local RaidEnd, RaidStart, CreateEvent, GetRaidList
+local RaidEnd, RaidStart, CreateEvent
 
 mod:AddBoolOption("Enabled", false, "General")
 mod.Options.workingIn = mod.Options.workingIn or 0
-mod:AddButton("Button_" .. (mod.Options.workingIn == 0 and "Start" or "End") .. "DKPTracking", function(self)
-	if mod.Options.workingIn > 0 then
-		self:SetText(L.Button_StopDKPTracking)
-		RaidEnd()
-		mod.Options.workingIn = 0
-	else
-		self:SetText(L.Button_StartDKPTracking)
-		if GetNumGroupMembers() == 0 then
-			DBM:AddMsg(L.Local_NoRaidPresent)
+do
+	local GetNumGroupMembers = GetNumGroupMembers
+
+	mod:AddButton("Button_" .. (mod.Options.workingIn == 0 and "Start" or "End") .. "DKPTracking", function(self)
+		if mod.Options.workingIn > 0 then
+			self:SetText(L.Button_StopDKPTracking)
+			RaidEnd()
+			mod.Options.workingIn = 0
 		else
-			RaidStart()
+			self:SetText(L.Button_StartDKPTracking)
+			if GetNumGroupMembers() == 0 then
+				DBM:AddMsg(L.Local_NoRaidPresent)
+			else
+				RaidStart()
+			end
 		end
-	end
-end, "General")
---[[
+	end, "General")
+end
 mod:AddEditboxOption("CustomPoint", "", "General")
 mod:AddEditboxOption("CustomDescription", L.CustomDefault, "General")
 do
+	local insert, pairs = table.insert, pairs
+	local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid
+
 	local pltable = {
 		{
 			text	= L.AllPlayers,
 			value	= "RAID"
 		}
 	}
-	mod:AddDropdownOption("CustomFor", pltable, "RAID", "General", function()
-		if GetNumGroupMembers() > 0 and IsInRaid() then
-			wipe(pltable)
+	if GetNumGroupMembers() > 0 and IsInRaid() then
+		for _, v in pairs(GetRaidList()) do
 			insert(pltable, {
-				text	= L.AllPlayers,
-				value	= "RAID"
+				text	= v,
+				value	= v
 			})
-			for _, v in pairs(GetRaidList()) do
-				insert(pltable, {
-					text	= v,
-					value	= v
-				})
-			end
-			self.values = pltable
 		end
-	end)--DKPto
-end
-mod:AddButton("Button_CreateEvent", function()
-	if mod.Options.CustomPoint:GetNumber() <= 0 or mod.Options.CustomDescription:GetText() == "" then
-		DBM:AddMsg(L.Local_NoInformation)
-	else
-		local event = {
-			event_type	= "custom",
-			zone		= GetRealZoneText(),
-			description	= neweventdescr:GetText(),
-			points		= neweventpoints:GetNumber(),
-			timestamp	= time()
-		}
-		if mod.Options.CustomFor == "RAID" then
-			event.members = GetRaidList()
-		else
-			event.members = DKPto
-		end
-		CreateEvent(event)
-		DBM:AddMsg(L.Local_EventCreated)
-		mod.Options.CustomPoint = 0
-		mod.Options.CustomDescription = 0
 	end
-end, "General")
-]]--
-mod:AddBool("Enable_5ppl_tracking", false, "General")--grpandraid
---mod:AddBool("Enable_SB_Users", true, "General")--sb_as_raid
-mod:AddBool("Enable_StartEvent", true, "General")--start_event
-mod:AddSliderOption("StartPoints", 0, 100, 5, 10, "General")--start_points
-mod:AddEditboxOption("StartDescription", "Raid Start", "General")--start_desc
-mod:AddBool("Enable_BossEvents", true, "General")--boss_event
-mod:AddSliderOption("BossPoints", 0, 100, 5, 10, "General")--boss_points
-mod:AddEditboxOption("BossDescription", "%s", "General")--boss_desc
-mod:AddBool("Enable_TimeEvents", false, "General")--time_event
-mod:AddSliderOption("TimePoints", 0, 100, 5, 10, "General")--time_points
-mod:AddSliderOption("TimeToCount", 1, 300, 5, 60, "General")--time_to_count
-mod:AddEditboxOption("TimeDescription", "Raid Attendance", "General")--time_desc
+	mod:AddDropdownOption("CustomFor", pltable, "RAID", "General")
+	-- TODO: OnShow
+	--[[
+	if GetNumGroupMembers() > 0 and IsInRaid() then
+		wipe(pltable)
+		insert(pltable, {
+			text	= L.AllPlayers,
+			value	= "RAID"
+		})
+		for _, v in pairs(GetRaidList()) do
+			insert(pltable, {
+				text	= v,
+				value	= v
+			})
+		end
+		self.values = pltable
+	end
+	]]--
+end
+do
+	local time = time
+	local GetRealZoneText = GetRealZoneText
+
+	mod:AddButton("Button_CreateEvent", function()
+		if mod.Options.CustomPoint <= 0 or mod.Options.CustomDescription == "" then
+			DBM:AddMsg(L.Local_NoInformation)
+		else
+			local event = {
+				event_type	= "custom",
+				zone		= GetRealZoneText(),
+				description	= mod.Options.CustomDescription,
+				points		= mod.Options.CustomPoint,
+				timestamp	= time()
+			}
+			if mod.Options.CustomFor == "RAID" then
+				event.members = GetRaidList()
+			else
+				event.members = mod.Options.CustomFor
+			end
+			CreateEvent(event)
+			DBM:AddMsg(L.Local_EventCreated)
+			mod.Options.CustomPoint = 0
+			mod.Options.CustomDescription = 0
+		end
+	end, "General")
+end
+mod:AddBool("Enable_5ppl_tracking", false, "General")
+--mod:AddBool("Enable_SB_Users", true, "General")
+mod:AddBool("Enable_StartEvent", true, "General")
+mod:AddSliderOption("StartPoints", 0, 100, 5, 10, "General")
+mod:AddEditboxOption("StartDescription", "Raid Start", "General")
+mod:AddBool("Enable_BossEvents", true, "General")
+mod:AddSliderOption("BossPoints", 0, 100, 5, 10, "General")
+mod:AddEditboxOption("BossDescription", "%s", "General")
+mod:AddBool("Enable_TimeEvents", false, "General")
+mod:AddSliderOption("TimePoints", 0, 100, 5, 10, "General")
+mod:AddSliderOption("TimeToCount", 1, 300, 5, 60, "General")
+mod:AddEditboxOption("TimeDescription", "Raid Attendance", "General")
 mod:AddButton("Button_ResetHistory", function()
 	mod.Options.items = {}
 	mod.Options.history = {}
 end, "General")
---[[
+
 do
-	local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
-	local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-20, 150, nil, nil, GameFontNormalSmall)
-	history:ClearAllPoints()
-	history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
-	history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
-	history:SetScript("OnShow", function(self)
-		local history = mod.Options.history
-		if #history > 0 then
-			local lastzone = ""
-			self:SetMaxLines(100)
-			for i = 1, #history, 1 do
-				local raid = history[i]
-				if #raid.events > 0 then
-					for k, event in pairs(raid.events) do
-						if event.zone ~= lastzone then
-							self:AddMessage(" ")
+	local type, tonumber, pairs, strsplit, date = type, tonumber, pairs, strsplit, date
+	local GameFontNormalSmall = GameFontNormalSmall
+
+	mod:RegisterOnGuiLoadCallback(function()
+		local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
+		local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
+		local history = area:CreateScrollingMessageFrame(area.frame:GetWidth() - 20, 150, nil, nil, GameFontNormalSmall)
+		history:ClearAllPoints()
+		history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
+		history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
+		history:SetScript("OnShow", function(self)
+			local historyz = mod.Options.history
+			if #historyz > 0 then
+				local lastzone = ""
+				self:SetMaxLines(100)
+				for i = 1, #historyz, 1 do
+					local raid = historyz[i]
+					if #raid.events > 0 then
+						for k, event in pairs(raid.events) do
+							if event.zone ~= lastzone then
+								self:AddMessage(" ")
+							end
+							if type(event.members) ~= "table" then
+								event.members = {}
+							end
+							self:AddMessage("|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h" .. L.History_Line:format(date("%m/%d/%y %H:%M:%S", event.timestamp), event.zone, event.description, #event.members or 0))
+							lastzone = event.zone
 						end
-						if type(event.members) ~= "table" then
-							event.members = {}
-						end
-						self:AddMessage("|HDBM:showdkp:"..i..":"..k.."|h|cff3588ff[show]|r|h" .. L.History_Line:format(date(L.DateFormat, event.timestamp), event.zone, event.description, #event.members or 0))
-						lastzone = event.zone
 					end
 				end
+			else
+				self:SetMaxLines(2)
 			end
-		else
-			self:SetMaxLines(2)
-		end
-	end)
-	history:SetScript("OnHyperlinkClick", function(_, link)
-		local linkType, arg1, historyz, event = strsplit(":", link)
-		if linkType == "DBM" and arg1 == "showdkp" and historyz and event then
-			historyz = tonumber(historyz)
-			event = tonumber(event)
-			CreateExportString(historyz, event)
-		end
+		end)
+		history:SetScript("OnHyperlinkClick", function(_, link)
+			local linkType, arg1, historyz, event = strsplit(":", link)
+			if linkType == "DBM" and arg1 == "showdkp" and historyz and event then
+				historyz = tonumber(historyz)
+				event = tonumber(event)
+				CreateExportString(historyz, event)
+			end
+		end)
+		historypanel:SetMyOwnHeight()
 	end)
 end
-]]--
 mod.Options.lastevent = mod.Options.lastevent or 0
 
 do
 	local insert, time, type = table.insert, time, type
-	local GetRealZoneText, GetNumGroupMembers, IsInRaid, UnitName, GetNumSubgroupMembers = GetRealZoneText, GetNumGroupMembers, IsInRaid, UnitName, GetNumSubgroupMembers
+	local GetRealZoneText = GetRealZoneText
 	local startTime = 0
-
-	function GetRaidList()
-		if GetNumGroupMembers() == 0 and not IsInRaid() then
-			return false
-		end
-		local raidusers = {}
-		for i = 1, GetNumGroupMembers(), 1 do
-			if UnitName("raid" .. i) then
-				insert(raidusers, (UnitName("raid" .. i)))
-			end
-		end
-		if mod.Options.Enable_5ppl_tracking then
-			insert(raidusers, (UnitName("player")) )
-			for i = 1, GetNumSubgroupMembers(), 1 do
-				if UnitName("party" .. i) then
-					insert(raidusers, (UnitName("party" .. i)))
-				end
-			end
-		end
-		--[[
-		if mod.Options.Enable_SB_Users then
-			for k, _ in pairs(DBM_Standby_Settings.sb_users) do
-				insert(raidusers, k)
-			end
-		end
-		]]--
-		return raidusers
-	end
 
 	function RaidStart()
 		local workingIn, history = mod.Options.workingIn, mod.Options.history

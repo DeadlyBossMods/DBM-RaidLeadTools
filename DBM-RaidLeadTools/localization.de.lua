@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "Speichere Gebot für %s. Bei Disenchant bitte 0 DKP eingeben.",
 	Local_NoRaid			= "Du musst in einer Schlachtgruppe sein um diese Funktion zu nutzen.",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "Gegenstands Historie",
+	AreaHistory				= "Gegenstands Historie",
 	Local					= "nur lokal ausgeben",
 	Guild					= "nutze Gilden Chat",
 	Raid					= "nutze Schlachtzug Chat",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "Schlachtgruppe erfolgreich geschlossen.",
 	CustomDefault				= "super gespielt, extra dkp",
 	AllPlayers					= "alle Spieler",
+	TabCategory_History			= "Schlachtzug Historie",
+	AreaHistory					= "Event Historie",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

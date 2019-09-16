@@ -200,7 +200,7 @@ do
 		if not table_empty(settings.sb_times) then
 			table.wipe(settings.sb_users)
 			table.insert(settings.history, {
-				["date"] = date(L.DateTimeFormat),
+				["date"] = date("%c"),
 				["member"] = settings.sb_times
 			})
 			settings.sb_times = {}
@@ -323,7 +323,7 @@ do
 			elseif msg == "!sb time" or msg == "!sb times" then
 				UpdateTimes()
 				if not table_empty(settings.sb_times) then
-					SendChatMessage(L.Current_StandbyTime:format(date(L.DateTimeFormat)), "GUILD")
+					SendChatMessage(L.Current_StandbyTime:format(date("%c")), "GUILD")
 					local users = ""
 					local count = 0
 					for k,v in pairs(settings.sb_times) do

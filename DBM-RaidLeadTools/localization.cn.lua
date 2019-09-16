@@ -82,6 +82,8 @@ L:SetMiscLocalization({
 	PopUpAcceptDKP			= "保存 %s 的竞价. 分解请设置为 0 DKP.",
 	Local_NoRaid			= "在团队中才能使用此功能",
 	Prefix					= "[BidBot]: ",
+	TabCategory_History		= "物品历史",
+	AreaHistory				= "物品历史",
 	Local					= "只在本地提示",
 	Guild					= "工会频道",
 	Raid					= "团队频道",
@@ -126,6 +128,8 @@ L:SetMiscLocalization({
 	Local_RaidSaved				= "成功保存当前团队",
 	CustomDefault				= "漂亮! 额外奖励!",
 	AllPlayers					= "所有玩家",
+	TabCategory_History			= "RAID历史",
+	AreaHistory					= "RIAD历史",
 	History_Line				= "[%s][%s]: %s (%d)" -- [date][zone] Hogger (playercount)
 })
 

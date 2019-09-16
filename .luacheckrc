@@ -39,6 +39,8 @@ globals = {
 	-- WoW
 	"ACCEPT",
 	"CANCEL",
+	"GameFontHighlightSmall",
+	"GameFontNormalSmall",
 	"SlashCmdList",
 	"StaticPopupDialogs",
 	"UIParent",
