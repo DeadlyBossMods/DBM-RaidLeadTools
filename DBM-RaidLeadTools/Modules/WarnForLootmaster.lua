@@ -11,11 +11,11 @@ do
 
 	function mod:OnInitialize()
 		DBM:RegisterCallback("pull", function()
-			if not mod.Options.Enabled then
+			if not self.Options.Enabled then
 				return
 			end
 			if GetLootMaster() ~= "master" then
-				mod:AddMsg(L.WarningNoLootMaster)
+				self:AddMsg(L.WarningNoLootMaster)
 			end
 		end)
 	end

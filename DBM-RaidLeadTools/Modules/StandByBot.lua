@@ -163,10 +163,10 @@ do
 			return msg:find("^!sb"), ...
 		end)
 		DBM:RegisterCallback("raidLeave", function(_, name)
-			if mod.Options.Enabled and name and IsInRaid() then
+			if self.Options.Enabled and name and IsInRaid() then
 				if name == UnitName("player") then
 					SaveTimeHistory()
-				elseif mod.Options.SendWhispers then
+				elseif self.Options.SendWhispers then
 					SendChatMessage("<DBM> " .. L.LeftRaidGroup, "WHISPER", nil, name)
 				end
 			end
@@ -181,7 +181,7 @@ do
 	local strtrim = strtrim
 
 	function mod:OnSync(msg, name)
-		if not mod.Options.Enabled then
+		if not self.Options.Enabled then
 			return
 		end
 		name = FormatPlayerName(strtrim(name))

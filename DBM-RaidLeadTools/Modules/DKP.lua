@@ -352,12 +352,12 @@ do
 
 	function mod:OnInitialize()
 		DBM:RegisterCallback("kill", function(_, bossmod)
-			if mod.Options.Enable_BossEvents then
+			if self.Options.Enable_BossEvents then
 				CreateEvent({
 					event_type	= "bosskill",
 					zone		= GetRealZoneText(),
-					description	= mod.options.BossDescription:format(bossmod.localization.general.name),
-					points		= mod.options.BossPoints,
+					description	= self.options.BossDescription:format(bossmod.localization.general.name),
+					points		= self.options.BossPoints,
 					timestamp	= time()
 				})
 			end

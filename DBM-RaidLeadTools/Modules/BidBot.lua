@@ -263,7 +263,7 @@ do
 	local GetItemInfo = GetItemInfo
 
 	function mod:OnSync(itemid, dkp, savedbids)
-		if not mod.Options.Enabled then
+		if not self.Options.Enabled then
 			return
 		end
 		local itembid = {

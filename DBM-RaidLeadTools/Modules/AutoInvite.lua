@@ -115,8 +115,8 @@ do
 	function mod:OnInitialize()
 		GuildRoster()
 		DBM:RegisterCallback("raidJoin", function(_, name)
-			if mod.Options.Enabled and name and DBM:GetRaidRank() > 0 then
-				if (IsGuildMember(name) and GetGuildRank(name, true) <= mod.Options.PromoteGuildRank) or mod.Options.PromoteByNameList[name] or mod.Options.PromoteEveryone then
+			if self.Options.Enabled and name and DBM:GetRaidRank() > 0 then
+				if (IsGuildMember(name) and GetGuildRank(name, true) <= self.Options.PromoteGuildRank) or self.Options.PromoteByNameList[name] or self.Options.PromoteEveryone then
 					PromoteToAssistant(name)
 				end
 			end

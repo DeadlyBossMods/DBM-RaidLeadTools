@@ -33,7 +33,7 @@ do
 
 	function mod:OnInitialize()
 		DBM:RegisterCallback("pull", function()
-			if not mod.Options.Enabled then
+			if not self.Options.Enabled then
 				return
 			end
 			wipe(raidIcons)
