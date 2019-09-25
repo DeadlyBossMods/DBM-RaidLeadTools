@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("BidBot", "RaidLeadTools")
+local mod	= DBM:NewMod("StandByBot", "RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")

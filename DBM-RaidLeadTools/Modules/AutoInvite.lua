@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("BidBot", "RaidLeadTools")
+local mod	= DBM:NewMod("AutoInvite", "RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 local DoInvite, SlashCommand
