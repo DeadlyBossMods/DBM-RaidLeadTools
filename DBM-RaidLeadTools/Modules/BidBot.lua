@@ -55,7 +55,7 @@ do
 	local pairs, date = pairs, date
 	local GameFontHighlightSmall = GameFontHighlightSmall
 
-	mod:RegisterOnGuiLoadCallback(function()
+	DBM:RegisterOnGuiLoadCallback(function()
 		local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
 		local area = historypanel:CreateArea(L.AreaHistory, nil, 360, true)
 		local button = area:CreateButton(L.ResetHistory, 100, 16)
