@@ -19,7 +19,7 @@ do
 	local GameFontNormalSmall, GameFontHighlightSmall = GameFontNormalSmall, GameFontHighlightSmall
 
 	DBM:RegisterOnGuiLoadCallback(function()
-		local historypanel = mod.panel:CreateNewPanel(L.TabCategory_History, "option")
+		local historypanel = DBM_GUI:CreateNewPanel(L.TabCategory_History, "option")
 		local area = historypanel:CreateArea(L.AreaStandbyHistory, nil, 260, true)
 		local resetdkphistory = area:CreateButton(L.Button_ResetHistory, 100, 16)
 		resetdkphistory:SetPoint('BOTTOMRIGHT', area.frame, "TOPRIGHT", 0, 0)
