@@ -22,9 +22,11 @@ ignore = {
 }
 globals = {
 	"_G",
+	"bit",
 	"date",
 	"debugstack",
 	"strsplit",
+	"strtrim",
 	"table",
 	"time",
 
