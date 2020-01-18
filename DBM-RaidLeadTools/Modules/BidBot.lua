@@ -396,11 +396,11 @@ do
 	end
 
 	local function OnMsgRecived(msg, name)
-		if IsInRaid() and msg and msg:lower():find("^!bid ") then
+		if IsInRaid() and msg and msg:find("^![bB][iI][dD] ") then
 			if name ~= myname and not DBM:GetRaidUnitId(name) then
 				return false
 			end
-			local itemLink = msg:gsub("^!(%w+) ", "")
+			local itemLink = msg:gsub("^![bB][iI][dD] ", "")
 			if itemLink:find("|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
 				for link in itemLink:gmatch("(|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r)") do
 					AddItem(link)
