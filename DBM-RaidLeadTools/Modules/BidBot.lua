@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("BidBot", "RaidLeadTools")
+local mod	= DBM:NewMod("BidBot", "DBM-RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 DBM_BidBot_ItemHistory = {}
@@ -6,7 +6,6 @@ DBM_BidBot_ItemHistory = {}
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:AddBoolOption("Enabled", false, "General")
 mod:AddBoolOption("ShowinRaidWarn", false, "General")
 mod:AddBoolOption("PublicBids", false, "General")
 mod:AddBoolOption("PayWhatYouBid", false, "General")
@@ -170,7 +169,7 @@ do
 	end
 
 	function mod:CHAT_MSG_WHISPER(arg1, arg2)
-		if self.Options.Enabled and inProgress then
+		if inProgress then
 			if arg1:find("^%d+$") then
 				local biddkp = tonumber(arg1)
 				if biddkp > 0 and biddkp < 50000 then
@@ -246,15 +245,13 @@ do
 	}
 
 	function DoInjectToDKPSystem(itemtable)
-		if mod.Options.Enabled then
-			hiddenedit.itemtable = {
-				item	= itemtable.item,
-				points	= itemtable.points,
-				time	= itemtable.time,
-				player	= itemtable.bids[1].name
-			}
-			StaticPopup_Show("DBM_DKP_ACCEPT", itemtable.item)
-		end
+		hiddenedit.itemtable = {
+			item	= itemtable.item,
+			points	= itemtable.points,
+			time	= itemtable.time,
+			player	= itemtable.bids[1].name
+		}
+		StaticPopup_Show("DBM_DKP_ACCEPT", itemtable.item)
 	end
 end
 
@@ -263,9 +260,6 @@ do
 	local GetItemInfo = GetItemInfo
 
 	function mod:OnSync(itemid, dkp, savedbids)
-		if not self.Options.Enabled then
-			return
-		end
 		local itembid = {
 			time	= time(),
 			item	= select(2, GetItemInfo(itemid)),
@@ -402,7 +396,7 @@ do
 	end
 
 	local function OnMsgRecived(msg, name)
-		if mod.Options.Enabled and IsInRaid() and msg and msg:lower():find("^!bid ") then
+		if IsInRaid() and msg and msg:lower():find("^!bid ") then
 			if name ~= myname and not DBM:GetRaidUnitId(name) then
 				return false
 			end

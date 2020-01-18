@@ -1,9 +1,8 @@
-local mod	= DBM:NewMod("StickyIcons", "RaidLeadTools")
+local mod	= DBM:NewMod("StickyIcons", "DBM-RaidLeadTools")
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:AddBoolOption("Enabled", false)
 mod:AddSliderOption("IconsUpdateTime", 1, 10, 1, 1)
 
 local isActive, raidIcons = false, {}
@@ -13,7 +12,7 @@ do
 	local GetNumGroupMembers, IsInRaid, GetRaidTargetIndex, SetRaidTarget = GetNumGroupMembers, IsInRaid, GetRaidTargetIndex, SetRaidTarget
 
 	mod:RegisterOnUpdateHandler(function()
-		if mod.Options.Enabled and isActive then
+		if isActive then
 			local iconsUsed = {}
 			if GetNumGroupMembers() >= 1 and IsInRaid() then
 				for i = 1, GetNumGroupMembers() do
@@ -33,9 +32,6 @@ do
 
 	function mod:OnInitialize()
 		DBM:RegisterCallback("pull", function()
-			if not self.Options.Enabled then
-				return
-			end
 			wipe(raidIcons)
 			if GetNumGroupMembers() >= 1 and IsInRaid() then
 				for i = 1, GetNumGroupMembers() do

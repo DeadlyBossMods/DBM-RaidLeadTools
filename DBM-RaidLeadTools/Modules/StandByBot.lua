@@ -1,16 +1,16 @@
-local mod	= DBM:NewMod("StandByBot", "RaidLeadTools")
+local mod	= DBM:NewMod("StandByBot", "DBM-RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:AddBoolOption("Enabled", false, "General")
 mod:AddBoolOption("SendWhispers", false, "General")
 do
 	local GameFontHighlightSmall = GameFontHighlightSmall
 
 	DBM:RegisterOnGuiLoadCallback(function()
-		mod.panel.areas[1]:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
+		local docpanel = DBM_GUI:CreateNewPanel(L.TabCategory_Docs, "option")
+		docpanel:CreateText(L.SB_Documentation, nil, nil, GameFontHighlightSmall, "LEFT")
 	end)
 end
 
@@ -98,7 +98,7 @@ do
 	end
 
 	function AddStandbyMember(name, quiet)
-		if not mod.Options.Enabled or not name or name:len() < 2 then
+		if not name or name:len() < 2 then
 			return false
 		end
 		if not mod.Options.sbUsers[name] then
@@ -115,7 +115,7 @@ do
 	end
 
 	function RemoveStandbyMember(name, quiet)
-		if not mod.Options.Enabled or not name or not mod.Options.sbUsers[name] then
+		if not name or not mod.Options.sbUsers[name] then
 			return false
 		end
 		local sbtime = SetStandby(name, false)
@@ -163,7 +163,7 @@ do
 			return msg:find("^!sb"), ...
 		end)
 		DBM:RegisterCallback("raidLeave", function(_, name)
-			if self.Options.Enabled and name and IsInRaid() then
+			if name and IsInRaid() then
 				if name == UnitName("player") then
 					SaveTimeHistory()
 				elseif self.Options.SendWhispers then
@@ -181,9 +181,6 @@ do
 	local strtrim = strtrim
 
 	function mod:OnSync(msg, name)
-		if not self.Options.Enabled then
-			return
-		end
 		name = FormatPlayerName(strtrim(name))
 		if msg == "add" then
 			AddStandbyMember(name, true)
@@ -214,9 +211,6 @@ do
 	local SendChatMessage = SendChatMessage
 
 	local function OnMsgRecived(msg, author)
-		if not mod.Options.Enabled then
-			return
-		end
 		if msg == "!sb" then
 			local output = ""
 			for k, _ in pairs(mod.Options.sbUsers) do

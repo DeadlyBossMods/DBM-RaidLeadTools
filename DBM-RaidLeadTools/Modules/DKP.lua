@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("DKP", "RaidLeadTools")
+local mod	= DBM:NewMod("DKP", "DBM-RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
@@ -100,7 +100,6 @@ end
 
 local RaidEnd, RaidStart, CreateEvent
 
-mod:AddBoolOption("Enabled", false, "General")
 mod.Options.workingIn = mod.Options.workingIn or 0
 do
 	local GetNumGroupMembers = GetNumGroupMembers
@@ -219,7 +218,7 @@ do
 		history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 5, -5)
 		history:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", 5, 5)
 		history:SetScript("OnShow", function(self)
-			local historyz = mod.Options.history
+			local historyz = mod.Options.history or {}
 			if #historyz > 0 then
 				local lastzone = ""
 				self:SetMaxLines(100)
@@ -335,7 +334,7 @@ do
 	local GetRealZoneText = GetRealZoneText
 
 	mod:RegisterOnUpdateHandler(function()
-		if not mod.options.Enabled or mod.Options.lastevent == 0 then
+		if mod.Options.lastevent == 0 then
 			return
 		end
 		if time() - mod.Options.lastevent > (mod.Options.TimeToCount * 60) then

@@ -3,17 +3,16 @@ local L
 -- StickyIcons
 L = DBM:GetModLocalization("StickyIcons")
 
+L:SetGeneralLocalization({
+	name	= "StickyIcons"
+})
+
 L:SetOptionLocalization({
-	Enabled			= "Always set Raidicons back to as they where on combat start",
 	IconsUpdateTime	= "How frequent should it check for icon updates?"
 })
 
 -- WarnForLootmaster
 L = DBM:GetModLocalization("WarnForLootmaster")
-
-L:SetOptionLocalization({
-	Enabled	= "Show a warning on combat start if Masterloot is not enabled"
-})
 
 L:SetMiscLocalization({
 	WarningNoLootmaster	= "Lootmaster is currently disabled! - Please enable Lootmaster now!"
@@ -22,8 +21,11 @@ L:SetMiscLocalization({
 -- AutoInvite
 L = DBM:GetModLocalization("AutoInvite")
 
+L:SetGeneralLocalization({
+	name	= "AutoInvite"
+})
+
 L:SetOptionLocalization({
-	Enabled				= "Enable auto invite by keyword",
 	AllowGuildMates		= "Allow auto-invite from guild mates",
 	AllowFriends 		= "Allow auto-invite from friends",
 	AllowOthers 		= "Allow auto-invite from everyone",
@@ -49,8 +51,11 @@ L:SetMiscLocalization({
 -- BidBot
 L = DBM:GetModLocalization("BidBot")
 
+L:SetGeneralLocalization({
+	name	= "BidBot"
+})
+
 L:SetOptionLocalization({
-	Enabled				= "Enable BidBot (!bid [item])",
 	ShowinRaidWarn		= "Show Item as Raid Warning",
 	PublicBids			= "Post bids to chat for public bidding",
 	PayWhatYouBid		= "Pay price of bid, (otherwise second bid + 1)",
@@ -91,8 +96,11 @@ L:SetMiscLocalization({
 -- DKP
 L = DBM:GetModLocalization("DKP")
 
+L:SetGeneralLocalization({
+	name	= "DKP"
+})
+
 L:SetOptionLocalization({
-	Enabled					= "Enable DKP system to track raid events",
 	Button_StartDKPTracking	= "Start DKP tracking",
 	Button_StopDKPTracking	= "Stop DKP tracking",
 	Button_CreateEvent		= "Create special event",
@@ -133,8 +141,11 @@ L:SetMiscLocalization({
 -- StandByBot
 L = DBM:GetModLocalization("StandByBot")
 
+L:SetGeneralLocalization({
+	name	= "StandByBot"
+})
+
 L:SetOptionLocalization({
-	Enabled				= "Enable standby-bot (!sb)",
 	SendWhispers		= "Send information whisper on Raidleave to players",
 	Button_ResetHistory	= "Reset history"
 })
@@ -157,6 +168,9 @@ L:SetMiscLocalization({
 	SB_History_Saved	= "The standby-list was saved as ID %s.",
 	SB_History_NotSaved	= "No player was standby --> no history was saved",
 	SB_History_Line		= "[ID=%d] Raid at %s with %d members",
+	AreaStandbyHistory	= "History",
+	TabCategory_History	= "History",
+	TabCategory_Docs	= "Documentation",
 	SB_Documentation	= [[This standby module allows raid leaders to manage players who currently can't raid because of a full raid or something like this. All listed commands can be used in the guildchat.
 
 !sb               - shows a list of standby players

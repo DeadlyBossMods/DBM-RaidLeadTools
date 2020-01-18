@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("AutoInvite", "RaidLeadTools")
+local mod	= DBM:NewMod("AutoInvite", "DBM-RaidLeadTools")
 local L		= mod:GetLocalizedStrings()
 
 local DoInvite, SlashCommand
@@ -32,7 +32,6 @@ do
 	SlashCmdList["DBMAUTOINVITE"] = SlashCommand
 end
 
-mod:AddBoolOption("Enabled", false, "General")
 mod:AddBoolOption("AllowGuildMates", true, "General")
 mod:AddBoolOption("AllowFriends", true, "General")
 mod:AddBoolOption("AllowOthers", false, "General")
@@ -115,7 +114,7 @@ do
 	function mod:OnInitialize()
 		GuildRoster()
 		DBM:RegisterCallback("raidJoin", function(_, name)
-			if self.Options.Enabled and name and DBM:GetRaidRank() > 0 then
+			if name and DBM:GetRaidRank() > 0 then
 				if (IsGuildMember(name) and GetGuildRank(name, true) <= self.Options.PromoteGuildRank) or self.Options.PromoteByNameList[name] or self.Options.PromoteEveryone then
 					PromoteToAssistant(name)
 				end
@@ -157,7 +156,7 @@ do
 	end
 
 	function mod:CHAT_MSG_WHISPER(msg, name)
-		if self.Options.Enabled and IsKeyword(msg:lower()) then
+		if IsKeyword(msg:lower()) then
 			if self.Options.AllowFriends and IsFriend(name) then
 				DoInvite(name)
 			elseif self.Options.AllowOther then

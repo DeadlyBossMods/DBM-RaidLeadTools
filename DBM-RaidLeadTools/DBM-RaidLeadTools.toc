@@ -19,7 +19,7 @@
 ## RequiredDeps: DBM-Core
 ## DefaultState: enabled
 ## Author: Nitra/Tandanu/Developaws
-## SavedVariables: DBM_BidBot_ItemHistory, DBM_RaidLeadTools_AllSavedVars
+## SavedVariables: DBM_BidBot_ItemHistory, DBMRaidLeadTools_AllSavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: OTHER
