@@ -14,6 +14,10 @@ L:SetOptionLocalization({
 -- WarnForLootmaster
 L = DBM:GetModLocalization("WarnForLootmaster")
 
+L:SetGeneralLocalization({
+	name	= "WarnForLootmaster"
+})
+
 L:SetMiscLocalization({
 	WarningNoLootmaster	= "Lootmaster is currently disabled! - Please enable Lootmaster now!"
 })
