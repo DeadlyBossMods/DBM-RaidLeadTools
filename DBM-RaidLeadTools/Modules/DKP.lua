@@ -252,7 +252,6 @@ do
 		historypanel:SetMyOwnHeight()
 	end)
 end
-mod.Options.lastevent = mod.Options.lastevent or 0
 
 do
 	local insert, time, type = table.insert, time, type
@@ -276,7 +275,7 @@ do
 			CreateEvent({
 				eventType	= "raidstart",
 				zone		= GetRealZoneText(),
-				description	= mod.options.StartDescription,
+				description	= mod.Options.StartDescription,
 				points		= mod.Options.StartPoints,
 				timestamp	= time(),
 			})
@@ -304,6 +303,9 @@ do
 				timeEnd		= time(),
 				events		= {}
 			}
+			if mod.Options.history == nil then
+				mod.Options.history = {}
+			end
 			insert(mod.Options.history, historyz)
 			mod.Options.workingIn = #mod.Options.history
 		end
@@ -322,7 +324,9 @@ do
 			event.members = {}
 		end
 		if #event.members then
-			insert(mod.Options.history[workingIn].events, event)
+			if mod.Options.history[workingIn] ~= nil then
+				insert(mod.Options.history[workingIn].events, event)
+			end
 		else
 			DBM:AddMsg(L.Local_Debug_NoRaid)
 		end
@@ -337,13 +341,13 @@ do
 		if mod.Options.lastevent == 0 then
 			return
 		end
-		if time() - mod.Options.lastevent > (mod.Options.TimeToCount * 60) then
+		if time() - (mod.Options.lastevent or time()) > (mod.Options.TimeToCount * 60) then
 			DBM:AddMsg(L.Local_TimeReached)
 			CreateEvent({
 				eventType	= "",
 				zone		= GetRealZoneText(),
-				description	= mod.options.TimeDescription,
-				points		= mod.options.TimePoints,
+				description	= mod.Options.TimeDescription,
+				points		= mod.Options.TimePoints,
 				timestamp	= time(),
 			})
 		end
