@@ -210,7 +210,7 @@ do
 	local pairs, date, tonumber, strtrim = pairs, date, tonumber, strtrim
 	local SendChatMessage = SendChatMessage
 
-	local function OnMsgRecived(msg, author)
+	local function OnMsgRecived(_, msg, author)
 		if msg == "!sb" then
 			local output = ""
 			for k, _ in pairs(mod.Options.sbUsers) do

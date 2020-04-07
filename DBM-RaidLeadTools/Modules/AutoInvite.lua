@@ -147,7 +147,7 @@ do
 	end
 
 	local function IsKeyword(msg)
-		for _,v in pairs(mod.Options.KeyWord) do
+		for v in mod.Options.KeyWord:gmatch('[^,%s]+') do
 			if v == msg then
 				return true
 			end
