@@ -155,7 +155,7 @@ do
 		return false
 	end
 
-	function mod:CHAT_MSG_WHISPER(msg, name)
+	function mod:CHAT_MSG_WHISPER(_, msg, name)
 		if IsKeyword(msg:lower()) then
 			if self.Options.AllowFriends and IsFriend(name) then
 				DoInvite(name)

@@ -395,7 +395,7 @@ do
 		insert(queue, itemLink)
 	end
 
-	local function OnMsgRecived(msg, name)
+	local function OnMsgRecived(_, msg, name)
 		if IsInRaid() and msg ~= nil and msg:find("^![bB][iI][dD] ") then
 			if name ~= myname and not DBM:GetRaidUnitId(name) then
 				return false
