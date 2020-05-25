@@ -249,7 +249,6 @@ do
 				CreateExportString(historyz, event)
 			end
 		end)
-		historypanel:SetMyOwnHeight()
 	end)
 end
 

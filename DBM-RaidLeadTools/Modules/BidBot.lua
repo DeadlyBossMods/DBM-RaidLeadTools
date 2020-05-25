@@ -86,7 +86,6 @@ do
 				end
 			end
 		end)
-		historypanel:SetMyOwnHeight()
 	end)
 end
 
