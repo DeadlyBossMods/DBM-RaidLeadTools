@@ -25,6 +25,7 @@
 ## X-DBM-Mod-Category: OTHER
 ## X-DBM-Mod-No-Statistics: 1
 ## X-DBM-Mod-Name: RaidLeadTools
+## X-DBM-Mod-MinCoreRevision: 20200524142133
 ## X-DBM-Mod-Sort: 1500
 ## X-Curse-Project-ID: 21364
 ## Version: @project-version@
