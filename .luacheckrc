@@ -35,6 +35,7 @@ globals = {
 	"DBM",
 	"DBM_CORE_L",
 	"DBM_DISABLE_ZONE_DETECTION",
+	"DBM_GUI",
 
 	-- RaidLeadTools
 	"DBM_AddItemToDKP",
