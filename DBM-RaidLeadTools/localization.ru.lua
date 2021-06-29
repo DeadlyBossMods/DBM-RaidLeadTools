@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("StickyIcons")
 
 L:SetOptionLocalization({
-	Enabled			= "Всегда устанавливать метки рейда обратна, на те места где они были при начале боя",
+	Enabled			= "Всегда устанавливать метки рейда обратно, на те места где они были при начале боя",
 	--IconsUpdateTime	= "How frequent should it check for icon updates?"
 })
 
@@ -64,7 +64,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	WarnMsg_ChanNotFound	= "Unknown channel for: %s",
+	WarnMsg_ChanNotFound	= "Неизвестный канал для: %s",
 	Whisper_Queue 			= "Запущен другой аукцион. Ваш предмет добавлен в очередь.",
 	Whisper_Bid_OK 			= "Ваша ставка в размере %d DKP принята.",
 	Whisper_Bid_DEL			= "Ваша ставка удалена!",
@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Local_NoRaidPresent			= "Пожылуйста вступите в группу рейда перед началом отслеживания DKP",
+	Local_NoRaidPresent			= "Пожалуйста, вступите в группу рейда перед началом отслеживания DKP",
 	Local_EventCreated			= "Ваше событие успешно создано",
 	Local_Debug_NoRaid			= "Событие НЕ создано, нету игроков! Пожалуйста, создайте событие вручную!",
 	Local_TimeReached 			= "Создано новое событие рейда основанное по времени",
@@ -126,7 +126,7 @@ L:SetMiscLocalization({
 	Local_NoInformation			= "Пожалуйста, укажите название данного события и очки",
 	LocalError_AddItemNoRaid	= "Нет запущенного рейда для сохранения данного предмета",
 	Local_RaidSaved				= "Текущий рейд успешно закрыт",
-	CustomDefault				= "хорошо сыграли, быстрый заход, призовые dkp",
+	CustomDefault				= "хорошо сыграли, быстрый заход, призовые DKP",
 	AllPlayers					= "все игроки",
 	TabCategory_History			= "История рейда",
 	AreaHistory					= "История событий",
@@ -149,7 +149,7 @@ L:SetMiscLocalization({
 	AddedSBUser			= "Вы добавлены в резерв. Пожалуйста, оставайтесь в сети пока вы нам не понадобитесь или будете убраны из резерва.",
 	UserIsAllreadySB	= "К сожалению, вы уже состоите в резерве. Чтобы удалить вас из резерва, шепните мне \"!sb off\".",
 	NoLongerStandby		= "Вы больше не состоите в резерве. Вы пробыли в резерве %d ч. и %d м.",
-	PostStandybyList	= "В тукущий момент в резерве:",
+	PostStandybyList	= "В текущий момент в резерве:",
 	Local_AddedPlayer	= "[SB]: %s добавлен в резерв.",
 	Local_RemovedPlayer	= "[SB]: %s убран из резерва.",
 	Local_CantRemove	= "К сожалению, не могу удалить игрока.",
@@ -160,7 +160,7 @@ L:SetMiscLocalization({
 	SB_History_Saved	= "Список резерва сохранен под ID %s.",
 	SB_History_NotSaved	= "В резерве нет игроков --> история не сохранена",
 	SB_History_Line		= "[ID=%d] Рейд: %s, с %d участниками",
-	SB_Documentation	= [[Этот модуль резерва, позволяет рейд лидерам управлять игроками, которые в настоящее время не могут рейдить из-за полного состава рейда или чегото еще. Все перечисленные команды могут быть использованы в чате гильдии.
+	SB_Documentation	= [[Этот модуль резерва, позволяет рейд лидерам управлять игроками, которые в настоящее время не могут рейдить из-за полного состава рейда или чего-то еще. Все перечисленные команды могут быть использованы в чате гильдии.
 
 !sb               - показать список игроков в резерве
 !sb times         - показать текущее время резерва
